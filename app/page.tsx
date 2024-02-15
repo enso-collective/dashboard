@@ -1,36 +1,591 @@
-import { sql } from '@vercel/postgres';
-import { Card, Title, Text } from '@tremor/react';
-import Search from './search';
-import UsersTable from './table';
+'use client';
 
-interface User {
-  id: number;
-  name: string;
-  username: string;
-  email: string;
-}
+import axios from 'axios';
+import React, { useState, useEffect, useContext } from 'react';
+import {
+  useMfaEnrollment,
+  usePrivy,
+  useWallets,
+  WalletWithMetadata
+} from '@privy-io/react-auth';
+import AuthLinker from '../components/auth-linker';
+import { clearDatadogUser } from '../lib/datadog';
+import {
+  DismissableInfo,
+  DismissableError,
+  DismissableSuccess
+} from '../components/toast';
+import { formatWallet } from '../lib/utils';
+import CanvasContainer from '../components/canvas-container';
+import CanvasCard from '../components/canvas-card';
+import {
+  ArrowLeftOnRectangleIcon,
+  ArrowUpOnSquareIcon,
+  ArrowsUpDownIcon,
+  CommandLineIcon,
+  DevicePhoneMobileIcon,
+  EnvelopeIcon,
+  PencilIcon,
+  PlusIcon,
+  UserCircleIcon,
+  WalletIcon,
+  ShieldCheckIcon,
+  LockClosedIcon
+} from '@heroicons/react/24/outline';
+import CanvasRow from '../components/canvas-row';
+import CanvasCardHeader from '../components/canvas-card-header';
+import PrivyConfigContext from '../lib/hooks/usePrivyConfig';
+import Image from 'next/image';
+import PrivyBlobIcon from '../components/icons/outline/privy-blob';
+import GitHubIcon from '../components/icons/social/github';
+import AppleIcon from '../components/icons/social/apple';
+import TikTokIcon from '../components/icons/social/tiktok';
+import TwitterXIcon from '../components/icons/social/twitter-x';
+import FarcasterIcon from '../components/icons/social/farcaster';
 
-export default async function IndexPage({
+export default function IndexPage({
   searchParams
 }: {
   searchParams: { q: string };
 }) {
-  const search = searchParams.q ?? '';
-  const result = await sql`
-    SELECT id, name, username, email 
-    FROM users 
-    WHERE name ILIKE ${'%' + search + '%'};
-  `;
-  const users = result.rows as User[];
-
-  return (
-    <main className="p-4 md:p-10 mx-auto max-w-7xl">
-      <Title>Users</Title>
-      <Text>A list of users retrieved from a Postgres database.</Text>
-      <Search />
-      <Card className="mt-6">
-        <UsersTable users={users} />
-      </Card>
-    </main>
+  const {
+    ready,
+    authenticated,
+    user,
+    logout,
+    linkEmail,
+    linkWallet,
+    unlinkEmail,
+    linkPhone,
+    unlinkPhone,
+    linkGoogle,
+    unlinkGoogle,
+    linkTwitter,
+    unlinkTwitter,
+    linkDiscord,
+    unlinkDiscord,
+    linkGithub,
+    unlinkGithub,
+    linkApple,
+    unlinkApple,
+    linkLinkedIn,
+    unlinkLinkedIn,
+    linkTiktok,
+    unlinkTiktok,
+    linkFarcaster,
+    unlinkFarcaster,
+    getAccessToken,
+    createWallet,
+    exportWallet,
+    unlinkWallet,
+    setWalletPassword,
+    login,
+    connectWallet
+  } = usePrivy();
+  const [signLoading, setSignLoading] = useState(false);
+  const [signSuccess, setSignSuccess] = useState(false);
+  const [signError, setSignError] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
+  const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
+    null
   );
+  const { setConfig } = useContext(PrivyConfigContext);
+  const { showMfaEnrollmentModal } = useMfaEnrollment();
+  const { wallets: connectedWallets } = useWallets();
+  const mfaEnabled = user?.mfaMethods.length ?? 0 > 0;
+  const linkedAccounts = user?.linkedAccounts || [];
+  const wallets = linkedAccounts.filter(
+    (a) => a.type === 'wallet'
+  ) as WalletWithMetadata[];
+  const hasSetPassword = wallets.some(
+    (w) =>
+      w.walletClientType === 'privy' && w.recoveryMethod === 'user-passcode'
+  );
+
+  const linkedAndConnectedWallets = wallets
+    .filter((w) => connectedWallets.some((cw) => cw.address === w.address))
+    .sort((a, b) =>
+      b.verifiedAt.toLocaleString().localeCompare(a.verifiedAt.toLocaleString())
+    );
+
+  useEffect(() => {
+    // if no active wallet is set, set it to the first one if available
+    if (!activeWallet && linkedAndConnectedWallets.length > 0) {
+      setActiveWallet(linkedAndConnectedWallets[0]!);
+    }
+    // if an active wallet was removed from wallets, clear it out
+    if (
+      !linkedAndConnectedWallets.some(
+        (w) => w.address === activeWallet?.address
+      )
+    ) {
+      setActiveWallet(
+        linkedAndConnectedWallets.length > 0
+          ? linkedAndConnectedWallets[0]!
+          : null
+      );
+    }
+  }, [activeWallet, linkedAndConnectedWallets]);
+  const embeddedWallet = wallets.filter(
+    (wallet) => wallet.walletClient === 'privy'
+  )?.[0];
+
+  const numAccounts = linkedAccounts.length || 0;
+  const canRemoveAccount = numAccounts > 1;
+
+  const emailAddress = user?.email?.address;
+  const phoneNumber = user?.phone?.number;
+
+  const googleSubject = user?.google?.subject;
+  const googleName = user?.google?.name;
+
+  const twitterSubject = user?.twitter?.subject;
+  const twitterUsername = user?.twitter?.username;
+
+  const discordSubject = user?.discord?.subject;
+  const discordUsername = user?.discord?.username;
+
+  const githubSubject = user?.github?.subject;
+  const githubUsername = user?.github?.username;
+
+  const linkedinSubject = user?.linkedin?.subject;
+  const linkedinName = user?.linkedin?.name;
+
+  const appleSubject = user?.apple?.subject;
+  const appleEmail = user?.apple?.email;
+
+  const tiktokSubject = user?.tiktok?.subject;
+  const tiktokUsername = user?.tiktok?.username;
+
+  const farcasterSubject = user?.farcaster?.fid;
+  const farcasterName = user?.farcaster?.username;
+
+  // if (!ready) {
+  //   return <Loading />;
+  // }
+  const removeUnknownWalletClients = (user: any) => {
+    user.linkedAccounts.forEach(function (linkedAccount: any, index: number) {
+      if (
+        linkedAccount.type === 'wallet' &&
+        linkedAccount.walletClient === 'unknown'
+      ) {
+        delete user.linkedAccounts[index].walletClient;
+      }
+    });
+    if (user.wallet?.walletClient === 'unknown') {
+      delete user.wallet.walletClient;
+    }
+    return user;
+  };
+
+  useEffect(() => {
+    if (!authenticated && ready) {
+      login();
+    }
+  }, [ready, authenticated]);
+
+  if (authenticated) {
+    return (
+      <div className=" bg-[#F9FAFB]">
+        <div className="p-4 md:p-10 mx-auto max-w-7xl">
+          <div
+            style={{
+              display: 'grid',
+              gridTemplateColumns: 'repeat(2,288px)',
+              gridColumnGap: '1rem'
+            }}
+          >
+            <CanvasRow>
+              <CanvasCard className="">
+                <CanvasCardHeader>
+                  <WalletIcon className="h-5 w-5 mr-2" strokeWidth={2} />
+                  Wallets
+                </CanvasCardHeader>
+                <div className="pb-1 text-sm text-privy-color-foreground-3">
+                  Connect and link wallets to your account.
+                </div>
+                <div className="flex flex-col gap-2">
+                  {wallets.map((wallet) => {
+                    return (
+                      <AuthLinker
+                        className="space"
+                        isLinked
+                        wallet={wallet}
+                        isActive={wallet.address === activeWallet?.address}
+                        setActiveWallet={setActiveWallet}
+                        key={wallet.address}
+                        label={formatWallet(wallet.address)}
+                        canUnlink={canRemoveAccount}
+                        unlinkAction={() => {
+                          unlinkWallet(wallet.address);
+                        }}
+                        walletConnectorName={
+                          connectedWallets.find(
+                            (cw) => cw.address === wallet.address
+                          )?.walletClientType
+                        }
+                        linkAction={linkWallet}
+                        isConnected={connectedWallets.some(
+                          (cw) => cw.address === wallet.address
+                        )}
+                        connectAction={connectWallet}
+                      />
+                    );
+                  })}
+                  <button
+                    className="button h-10 gap-x-1 px-4 text-sm"
+                    onClick={linkWallet}
+                  >
+                    <PlusIcon className="h-4 w-4" strokeWidth={2} />
+                    Link a Wallet
+                  </button>
+                </div>
+              </CanvasCard>
+              <CanvasCard>
+                <CanvasCardHeader>
+                  <ArrowsUpDownIcon className="h-5 w-5 mr-2" strokeWidth={2} />
+                  Wallet Actions
+                </CanvasCardHeader>
+                <div className="text-sm text-privy-color-foreground-3">
+                  Whether they came in with Metamask or an embedded wallet, a
+                  user is a user. Trigger wallet actions below.
+                </div>
+                <div className="flex flex-col gap-2 pt-4">
+                  <button
+                    className="button h-10 gap-x-1 px-4 text-sm"
+                    disabled={signLoading || !wallets.length || !activeWallet}
+                    onClick={() => {
+                      setSignError(false);
+                      setSignSuccess(false);
+                      setSignLoading(true);
+                      connectedWallets
+                        .find(
+                          (wallet) => wallet.address === activeWallet?.address
+                        )
+                        ?.sign(
+                          'Signing with the active wallet in Privy: ' +
+                            activeWallet?.address
+                        )
+                        .then(() => {
+                          setSignSuccess(true);
+                          setSignLoading(false);
+                        })
+                        .catch(() => {
+                          setSignError(true);
+                          setSignLoading(false);
+                        });
+                    }}
+                  >
+                    <PencilIcon className="h-4 w-4" strokeWidth={2} />
+                    Sign a Message
+                  </button>
+                  {signSuccess && (
+                    <DismissableSuccess
+                      message="Success!"
+                      clickHandler={() => setSignSuccess(false)}
+                    />
+                  )}
+                  {signError && (
+                    <DismissableError
+                      message="Signature failed"
+                      clickHandler={() => setSignError(false)}
+                    />
+                  )}
+                  {signLoading && (
+                    <DismissableInfo message="Waiting for signature" />
+                  )}
+                </div>
+              </CanvasCard>
+              {embeddedWallet ? (
+                <CanvasCard>
+                  <CanvasCardHeader>
+                    <PrivyBlobIcon
+                      className="h-5 w-5 shrink-0 grow-0 mr-2"
+                      strokeWidth={2}
+                    />
+                    <div className="w-full">Embedded Wallet</div>
+                    <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1 text-privy-color-foreground-3">
+                      {formatWallet(embeddedWallet.address)}
+                    </div>
+                  </CanvasCardHeader>
+                  <div className="text-sm text-privy-color-foreground-3">
+                    A user&apos;s embedded wallet is theirs to keep, and even
+                    take with them.
+                  </div>
+                  <div className="flex flex-col gap-2 pt-4">
+                    {!hasSetPassword && (
+                      <button
+                        className="button h-10 gap-x-1 px-4 text-sm"
+                        disabled={!(ready && authenticated)}
+                        onClick={setWalletPassword}
+                      >
+                        <ShieldCheckIcon className="h-4 w-4" strokeWidth={2} />
+                        Set a recovery password
+                      </button>
+                    )}
+                    <button
+                      className="button h-10 gap-x-1 px-4 text-sm"
+                      disabled={!(ready && authenticated)}
+                      onClick={exportWallet}
+                    >
+                      <ArrowUpOnSquareIcon
+                        className="h-4 w-4"
+                        strokeWidth={2}
+                      />
+                      Export Embedded wallet
+                    </button>
+                  </div>
+                </CanvasCard>
+              ) : (
+                // If they don't have an Embedded Wallet
+                <CanvasCard>
+                  <CanvasCardHeader>
+                    <PrivyBlobIcon
+                      className="h-5 w-5 shrink-0 grow-0 mr-2"
+                      strokeWidth={2}
+                    />
+                    Embedded Wallet
+                  </CanvasCardHeader>
+                  <div className="text-sm text-privy-color-foreground-3">
+                    With Privy, even non web3 natives can enjoy the benefits of
+                    life on chain.
+                  </div>
+                  <div className="flex flex-col gap-2 pt-4">
+                    <button
+                      className="button h-10 gap-x-1 px-4 text-sm"
+                      disabled={!(ready && authenticated)}
+                      onClick={() => {
+                        createWallet();
+                      }}
+                    >
+                      <PlusIcon className="h-4 w-4" strokeWidth={2} />
+                      Create an Embedded Wallet
+                    </button>
+                  </div>
+                </CanvasCard>
+              )}
+            </CanvasRow>
+
+            <CanvasRow>
+              <CanvasCard>
+                <CanvasCardHeader>
+                  <UserCircleIcon className="h-5 w-5 mr-2" strokeWidth={2} />
+                  Linked Socials
+                </CanvasCardHeader>
+                <div className="flex flex-col gap-2">
+                  <AuthLinker
+                    socialIcon={
+                      <EnvelopeIcon
+                        className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5"
+                        strokeWidth={2}
+                      />
+                    }
+                    label="Email"
+                    linkedLabel={`${emailAddress}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!emailAddress}
+                    unlinkAction={() => {
+                      unlinkEmail(emailAddress as string);
+                    }}
+                    linkAction={linkEmail}
+                  />
+
+                  <AuthLinker
+                    socialIcon={
+                      <DevicePhoneMobileIcon
+                        className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5"
+                        strokeWidth={2}
+                      />
+                    }
+                    label="Phone"
+                    linkedLabel={`${phoneNumber}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!phoneNumber}
+                    unlinkAction={() => {
+                      unlinkPhone(phoneNumber as string);
+                    }}
+                    linkAction={linkPhone}
+                  />
+
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                        <Image
+                          src="/social-icons/color/google.svg"
+                          height={20}
+                          width={20}
+                          alt="Google"
+                        />
+                      </div>
+                    }
+                    label="Google"
+                    linkedLabel={`${googleName}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!googleSubject}
+                    unlinkAction={() => {
+                      unlinkGoogle(googleSubject as string);
+                    }}
+                    linkAction={linkGoogle}
+                  />
+
+                  <AuthLinker
+                    className="hidden md:flex"
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                        <TwitterXIcon height={18} width={18} />
+                      </div>
+                    }
+                    label="Twitter"
+                    linkedLabel={`${twitterUsername}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!twitterSubject}
+                    unlinkAction={() => {
+                      unlinkTwitter(twitterSubject as string);
+                    }}
+                    linkAction={linkTwitter}
+                  />
+
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                        <Image
+                          src="/social-icons/color/discord.svg"
+                          height={20}
+                          width={20}
+                          alt="Discord"
+                        />
+                      </div>
+                    }
+                    label="Discord"
+                    linkedLabel={`${discordUsername}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!discordSubject}
+                    unlinkAction={() => {
+                      unlinkDiscord(discordSubject as string);
+                    }}
+                    linkAction={linkDiscord}
+                  />
+
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                        <GitHubIcon height={18} width={18} />
+                      </div>
+                    }
+                    label="Github"
+                    linkedLabel={`${githubUsername}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!githubSubject}
+                    unlinkAction={() => {
+                      unlinkGithub(githubSubject as string);
+                    }}
+                    linkAction={linkGithub}
+                  />
+
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                        <AppleIcon height={18} width={18} />
+                      </div>
+                    }
+                    label="Apple"
+                    linkedLabel={`${appleEmail}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!appleSubject}
+                    unlinkAction={() => {
+                      unlinkApple(appleSubject as string);
+                    }}
+                    linkAction={linkApple}
+                  />
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                        <Image
+                          src="/social-icons/color/linkedin.svg"
+                          height={20}
+                          width={20}
+                          alt="LinkedIn"
+                        />
+                      </div>
+                    }
+                    label="LinkedIn"
+                    linkedLabel={`${linkedinName}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!linkedinSubject}
+                    unlinkAction={() => {
+                      unlinkLinkedIn(linkedinSubject as string);
+                    }}
+                    linkAction={linkLinkedIn}
+                  />
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                        <TikTokIcon height={18} width={18} />
+                      </div>
+                    }
+                    label="TikTok"
+                    linkedLabel={`${tiktokUsername}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!tiktokSubject}
+                    unlinkAction={() => {
+                      unlinkTiktok(tiktokSubject as string);
+                    }}
+                    linkAction={linkTiktok}
+                  />
+                  <AuthLinker
+                    socialIcon={
+                      <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                        <FarcasterIcon height={18} width={18} />
+                      </div>
+                    }
+                    label="Farcaster"
+                    linkedLabel={`${farcasterName}`}
+                    canUnlink={canRemoveAccount}
+                    isLinked={!!farcasterSubject}
+                    unlinkAction={() => {
+                      unlinkFarcaster(farcasterSubject as number);
+                    }}
+                    linkAction={linkFarcaster}
+                  />
+                </div>
+              </CanvasCard>
+              <CanvasCard>
+                <CanvasCardHeader>
+                  <LockClosedIcon className="h-5 w-5 mr-2" strokeWidth={2} />
+                  <div className="w-full">Transaction MFA</div>
+                  <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1 text-privy-color-foreground-3">
+                    {mfaEnabled ? 'Enabled' : 'Disabled'}
+                  </div>
+                </CanvasCardHeader>
+                <div className="text-sm text-privy-color-foreground-3">
+                  Add a second factor to sensitive embedded wallet actions to
+                  protect your account. Verification lasts for 15 minutes.
+                </div>
+                <div className="flex flex-col gap-2 pt-4">
+                  <button
+                    className="button h-10 gap-x-1 px-4 text-sm"
+                    disabled={!(ready && authenticated)}
+                    onClick={showMfaEnrollmentModal}
+                  >
+                    {!mfaEnabled ? (
+                      <>
+                        <PlusIcon className="h-4 w-4" strokeWidth={2} />
+                        Add MFA
+                      </>
+                    ) : (
+                      <>
+                        <PencilIcon className="h-4 w-4" strokeWidth={2} />
+                        Manage MFA
+                      </>
+                    )}
+                  </button>
+                </div>
+              </CanvasCard>
+            </CanvasRow>
+          </div>
+        </div>
+      </div>
+    );
+  }
+  return <main className="p-4 md:p-10 mx-auto max-w-7xl"></main>;
 }
