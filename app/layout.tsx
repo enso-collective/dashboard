@@ -2,8 +2,9 @@ import './globals.css';
 
 import { Analytics } from '@vercel/analytics/react';
 import Nav from './nav';
-import Toast from './toast';
 import { Suspense } from 'react';
+
+import PrivyProviderWrapper from '../components/privyProvider';
 
 export const metadata = {
   title: 'Next.js App Router + NextAuth + Tailwind CSS',
@@ -12,19 +13,23 @@ export const metadata = {
 };
 
 export default function RootLayout({
-  children
+  children,
+  params
 }: {
   children: React.ReactNode;
+  params: {
+    tag: string;
+    item: string;
+  };
 }) {
   return (
     <html lang="en" className="h-full bg-gray-50">
-      <body className="h-full">
+      <body className="h-full" suppressHydrationWarning={true}>
         <Suspense>
           <Nav />
         </Suspense>
-        {children}
+        <PrivyProviderWrapper>{children}</PrivyProviderWrapper>
         <Analytics />
-        <Toast />
       </body>
     </html>
   );
