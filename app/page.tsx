@@ -553,6 +553,10 @@ export default function IndexPage() {
             </CanvasRow>
           </div>
         </div>
+        <div
+          style={authenticated ? { display: 'none' } : {}}
+          id="render-privy"
+        />
       </div>
     );
   }
