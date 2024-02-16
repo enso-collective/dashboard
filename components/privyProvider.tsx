@@ -1,8 +1,5 @@
 'use client';
 import { PrivyProvider } from '@privy-io/react-auth';
-import PlausibleProvider from 'next-plausible';
-import { useCallback, useMemo, useState } from 'react';
-import { useRouter } from 'next/navigation';
 
 export default function PrivyProviderWrapper({
   children
@@ -16,7 +13,11 @@ export default function PrivyProviderWrapper({
         appearance: {
           showWalletLoginFirst: true
         },
-
+        // @ts-ignore
+        _render: {
+          inDialog: false,
+          inParentNodeId: 'render-privy'
+        },
         loginMethods: [
           'wallet',
           'email',

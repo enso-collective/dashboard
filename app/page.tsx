@@ -1,7 +1,7 @@
 'use client';
 
 import axios from 'axios';
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   useMfaEnrollment,
   usePrivy,
@@ -9,14 +9,7 @@ import {
   WalletWithMetadata
 } from '@privy-io/react-auth';
 import AuthLinker from '../components/auth-linker';
-import { clearDatadogUser } from '../lib/datadog';
-import {
-  DismissableInfo,
-  DismissableError,
-  DismissableSuccess
-} from '../components/toast';
 import { formatWallet } from '../lib/utils';
-import CanvasContainer from '../components/canvas-container';
 import CanvasCard from '../components/canvas-card';
 import {
   ArrowLeftOnRectangleIcon,
@@ -34,7 +27,6 @@ import {
 } from '@heroicons/react/24/outline';
 import CanvasRow from '../components/canvas-row';
 import CanvasCardHeader from '../components/canvas-card-header';
-import PrivyConfigContext from '../lib/hooks/usePrivyConfig';
 import Image from 'next/image';
 import PrivyBlobIcon from '../components/icons/outline/privy-blob';
 import GitHubIcon from '../components/icons/social/github';
@@ -43,11 +35,7 @@ import TikTokIcon from '../components/icons/social/tiktok';
 import TwitterXIcon from '../components/icons/social/twitter-x';
 import FarcasterIcon from '../components/icons/social/farcaster';
 
-export default function IndexPage({
-  searchParams
-}: {
-  searchParams: { q: string };
-}) {
+export default function IndexPage() {
   const {
     ready,
     authenticated,
@@ -82,14 +70,11 @@ export default function IndexPage({
     login,
     connectWallet
   } = usePrivy();
-  const [signLoading, setSignLoading] = useState(false);
-  const [signSuccess, setSignSuccess] = useState(false);
-  const [signError, setSignError] = useState(false);
   const [isDeleting, setIsDeleting] = useState(false);
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
     null
   );
-  const { setConfig } = useContext(PrivyConfigContext);
+
   const { showMfaEnrollmentModal } = useMfaEnrollment();
   const { wallets: connectedWallets } = useWallets();
   const mfaEnabled = user?.mfaMethods.length ?? 0 > 0;
@@ -177,6 +162,19 @@ export default function IndexPage({
     }
     return user;
   };
+  async function deleteUser() {
+    const authToken = await getAccessToken();
+    try {
+      await axios.delete('/api/users/me', {
+        headers: {
+          Authorization: `Bearer ${authToken}`
+        }
+      });
+    } catch (error) {
+      console.error(error);
+    }
+    logout();
+  }
 
   useEffect(() => {
     if (!authenticated && ready) {
@@ -188,13 +186,7 @@ export default function IndexPage({
     return (
       <div className=" bg-[#F9FAFB]">
         <div className="p-4 md:p-10 mx-auto max-w-7xl">
-          <div
-            style={{
-              display: 'grid',
-              gridTemplateColumns: 'repeat(2,288px)',
-              gridColumnGap: '1rem'
-            }}
-          >
+          <div className="griddy">
             <CanvasRow>
               <CanvasCard className="">
                 <CanvasCardHeader>
@@ -241,61 +233,7 @@ export default function IndexPage({
                   </button>
                 </div>
               </CanvasCard>
-              <CanvasCard>
-                <CanvasCardHeader>
-                  <ArrowsUpDownIcon className="h-5 w-5 mr-2" strokeWidth={2} />
-                  Wallet Actions
-                </CanvasCardHeader>
-                <div className="text-sm text-privy-color-foreground-3">
-                  Whether they came in with Metamask or an embedded wallet, a
-                  user is a user. Trigger wallet actions below.
-                </div>
-                <div className="flex flex-col gap-2 pt-4">
-                  <button
-                    className="button h-10 gap-x-1 px-4 text-sm"
-                    disabled={signLoading || !wallets.length || !activeWallet}
-                    onClick={() => {
-                      setSignError(false);
-                      setSignSuccess(false);
-                      setSignLoading(true);
-                      connectedWallets
-                        .find(
-                          (wallet) => wallet.address === activeWallet?.address
-                        )
-                        ?.sign(
-                          'Signing with the active wallet in Privy: ' +
-                            activeWallet?.address
-                        )
-                        .then(() => {
-                          setSignSuccess(true);
-                          setSignLoading(false);
-                        })
-                        .catch(() => {
-                          setSignError(true);
-                          setSignLoading(false);
-                        });
-                    }}
-                  >
-                    <PencilIcon className="h-4 w-4" strokeWidth={2} />
-                    Sign a Message
-                  </button>
-                  {signSuccess && (
-                    <DismissableSuccess
-                      message="Success!"
-                      clickHandler={() => setSignSuccess(false)}
-                    />
-                  )}
-                  {signError && (
-                    <DismissableError
-                      message="Signature failed"
-                      clickHandler={() => setSignError(false)}
-                    />
-                  )}
-                  {signLoading && (
-                    <DismissableInfo message="Waiting for signature" />
-                  )}
-                </div>
-              </CanvasCard>
+
               {embeddedWallet ? (
                 <CanvasCard>
                   <CanvasCardHeader>
@@ -364,6 +302,37 @@ export default function IndexPage({
                   </div>
                 </CanvasCard>
               )}
+              <CanvasCard className="mb-8 shrink-0 grow-0 md:mb-0 md:!shadow-none">
+                <div className="pb-4 text-sm text-privy-color-foreground-3">
+                  Sign out or delete your data to restart the demo and customize
+                  your theme.
+                </div>
+                <div className="flex items-center gap-2">
+                  <button
+                    onClick={(e) => {
+                      e.preventDefault();
+                      logout();
+                    }}
+                    className="button h-8 gap-x-1 px-3 text-sm"
+                  >
+                    <ArrowLeftOnRectangleIcon
+                      className="h-4 w-4"
+                      strokeWidth={2}
+                    />
+                    Sign out
+                  </button>
+                  <button
+                    onClick={async () => {
+                      setIsDeleting(true);
+                      await deleteUser();
+                      setIsDeleting(true);
+                    }}
+                    className="button h-8 gap-x-2 px-3 text-sm !text-red-400"
+                  >
+                    {!isDeleting ? 'Delete Account' : 'Deleting account...'}
+                  </button>
+                </div>
+              </CanvasCard>
             </CanvasRow>
 
             <CanvasRow>
@@ -587,5 +556,12 @@ export default function IndexPage({
       </div>
     );
   }
-  return <main className="p-4 md:p-10 mx-auto max-w-7xl"></main>;
+  return (
+    <main className="p-4 md:p-10 mx-auto max-w-7xl flex justify-center items-center">
+      <div
+        id="render-privy"
+        className="z-[2] min-w-[360px] max-w-[360px] pt-8 md:mx-0 md:pt-0"
+      />
+    </main>
+  );
 }

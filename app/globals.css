@@ -2,18 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-@layer base {
-  html,
-  body,
-  #__next {
-    @apply h-full bg-privy-color-background text-privy-color-foreground-2;
-  }
-
-  a {
-    @apply text-privy-color-accent underline;
-  }
-}
-
 @layer components {
   .button {
     @apply flex items-center justify-center rounded-md border border-privy-color-foreground-4 font-medium text-privy-color-accent no-underline transition-all duration-200 ease-in-out hover:bg-privy-color-background-2 disabled:cursor-not-allowed disabled:border-privy-color-foreground-4 disabled:bg-privy-color-foreground-4 disabled:text-privy-color-foreground-3 hover:disabled:bg-privy-color-foreground-4;
@@ -63,12 +51,8 @@
   }
 }
 
-.canvas-card {
-  border-radius: 0.7rem;
-  margin-bottom: 1.5rem;
-  background-color: #fff;
-}
-
-.space > div .shrink-0 {
-  margin-right: 10px;
+.griddy {
+  display: grid;
+  grid-gap: 1rem;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
 }
