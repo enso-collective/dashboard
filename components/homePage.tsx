@@ -1,4 +1,11 @@
 import { Card, List, ListItem, Title, Subtitle, Text } from '@tremor/react';
+import Link from 'next/link';
+import { useEffect, useRef, useState } from 'react';
+import { MoonLoader } from 'react-spinners';
+
+function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
 
 const sampleData = [
   { points: 100, ensName: 'john_doe.eth', id: 'abc123' },
@@ -81,6 +88,57 @@ const sampleQuestsData = [
   }
 ];
 export default function HomePage() {
+  const [items, setItems] = useState(sampleData);
+  const [page, setPage] = useState(1);
+  const loaderRef = useRef(null);
+  const [loading, setLoading] = useState(true);
+
+  const fetchMoreData = () => {
+    setLoading(true);
+    // Simulate fetching more data from an API
+    sleep(1000)
+      .then(() => {
+        setItems((t) => [
+          ...t,
+          ...sampleData.map((a) => ({ ...a, id: Math.random().toString() }))
+        ]);
+      })
+      .finally(() => {
+        setLoading(false);
+      })
+      .catch(console.error);
+  };
+
+  const handleObserver = (entries: IntersectionObserverEntry[]) => {
+    const target = entries[0];
+    if (target.isIntersecting) {
+      setPage((prevPage) => prevPage + 1);
+    }
+  };
+
+  useEffect(() => {
+    const options = {
+      root: null,
+      rootMargin: '20px', // Adjust this value based on your layout
+      threshold: 1.0
+    };
+
+    const observer = new IntersectionObserver(handleObserver, options);
+    if (loaderRef.current) {
+      observer.observe(loaderRef.current);
+    }
+
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+      }
+    };
+  }, []);
+
+  useEffect(() => {
+    fetchMoreData();
+  }, [page]);
+
   return (
     <div className="bg-denver">
       <div className="p-4 md:p-10 mx-auto max-w-7xl">
@@ -134,7 +192,7 @@ export default function HomePage() {
         <Card>
           <Title>Leaderboard</Title>
           <List>
-            {sampleData.map((t, index) => (
+            {items.map((t, index) => (
               <ListItem key={t.id} className="list-fix">
                 <div>
                   <Subtitle className="inline">
@@ -147,6 +205,12 @@ export default function HomePage() {
               </ListItem>
             ))}
           </List>
+          <div
+            ref={loaderRef}
+            className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"
+          >
+            {loading ? <MoonLoader size={40} color="rgba(0,0,0,.9)" /> : null}
+          </div>
         </Card>
       </div>
     </div>
