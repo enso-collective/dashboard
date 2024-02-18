@@ -11,7 +11,7 @@ export default function IndexPage() {
     if (!authenticated && ready) {
       login();
     }
-  }, [ready, authenticated]);
+  }, [ready, authenticated, login]);
 
   if (ready && authenticated) {
     return <ProfilePage />;

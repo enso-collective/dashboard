@@ -128,9 +128,10 @@ export default function HomePage() {
       observer.observe(loaderRef.current);
     }
 
+    const tempRefValue = loaderRef.current;
     return () => {
-      if (loaderRef.current) {
-        observer.unobserve(loaderRef.current);
+      if (tempRefValue) {
+        observer.unobserve(tempRefValue);
       }
     };
   }, []);
