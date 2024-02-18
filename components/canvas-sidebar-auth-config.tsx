@@ -2,21 +2,22 @@ import {
   DevicePhoneMobileIcon,
   EllipsisVerticalIcon,
   LockClosedIcon,
-  SparklesIcon,
+  SparklesIcon
 } from '@heroicons/react/24/outline';
-import {useContext, useEffect, useMemo, useState} from 'react';
+import { useContext, useEffect, useMemo, useState } from 'react';
 import Toggle from './toggle';
 import LoginMethodButton from './login-method-button';
-import {WalletIcon} from '@heroicons/react/24/outline';
+import { WalletIcon } from '@heroicons/react/24/outline';
 import CanvasSidebarHeader from './canvas-sidebar-header';
 import PrivyConfigContext, {
   PrivyConfigContextType,
   privyLogo,
-  privyLogoDark,
+  privyLogoDark
 } from '../lib/hooks/usePrivyConfig';
-import {classNames} from '../lib/classNames';
-import {isDark} from '../lib/color';
-import {isValidUrl} from '@datadog/browser-core';
+import { classNames } from '../lib/classNames';
+import { isDark } from '../lib/color';
+// import {isValidUrl} from '@datadog/browser-core';
+import { isURL } from 'validator';
 import Image from 'next/image';
 import AppleIcon from './icons/social/apple';
 import GitHubIcon from './icons/social/github';
@@ -25,7 +26,12 @@ import TwitterXIcon from './icons/social/twitter-x';
 import FarcasterIcon from './icons/social/farcaster';
 
 function getLogo(hex: `#${string}`, userLogoUrl: string) {
-  return isValidUrl(userLogoUrl) ? userLogoUrl : isDark(hex) ? privyLogoDark : privyLogo;
+  return isURL(userLogoUrl)
+    ? userLogoUrl
+    : isDark(hex)
+      ? privyLogoDark
+      : privyLogo;
+  // return isValidUrl(userLogoUrl) ? userLogoUrl : isDark(hex) ? privyLogoDark : privyLogo;
 }
 
 function StaticColorPicker({
@@ -34,7 +40,7 @@ function StaticColorPicker({
   setConfig,
   configAttr = 'theme',
   border = false,
-  userLogoUrl = '',
+  userLogoUrl = ''
 }: {
   hex: `#${string}`;
   config: PrivyConfigContextType['config'];
@@ -43,22 +49,25 @@ function StaticColorPicker({
   border?: boolean;
   userLogoUrl?: string;
 }) {
-  const logoConfig = configAttr === 'theme' ? {logo: getLogo(hex, userLogoUrl)} : {};
+  const logoConfig =
+    configAttr === 'theme' ? { logo: getLogo(hex, userLogoUrl) } : {};
   return (
     <div
       className={classNames(
         'h-6 w-6 cursor-pointer rounded-full border',
-        border ? 'border-privy-color-foreground-4' : 'border-privy-color-background',
+        border
+          ? 'border-privy-color-foreground-4'
+          : 'border-privy-color-background'
       )}
-      style={{backgroundColor: hex}}
+      style={{ backgroundColor: hex }}
       onClick={() =>
         setConfig?.({
           ...config,
           appearance: {
             ...config.appearance,
             [configAttr]: hex,
-            ...logoConfig,
-          },
+            ...logoConfig
+          }
         })
       }
     />
@@ -69,15 +78,17 @@ type AuthConfiguration = 'wallets' | 'socials';
 
 export default function CanvasSidebarAuthConfig({
   readyToSetTheme,
-  className,
+  className
 }: {
   readyToSetTheme: boolean;
   className?: string;
 }) {
-  const [draggedConfig, setDraggedConfig] = useState<AuthConfiguration | null>(null);
-  const {config, setConfig} = useContext(PrivyConfigContext);
+  const [draggedConfig, setDraggedConfig] = useState<AuthConfiguration | null>(
+    null
+  );
+  const { config, setConfig } = useContext(PrivyConfigContext);
   const [defaultConfigStyles, setDefaultConfigStyles] = useState<string>(
-    '!border-b-privy-color-background !border-t-privy-color-background cursor-grab',
+    '!border-b-privy-color-background !border-t-privy-color-background cursor-grab'
   );
   const [userLogoUrl, setUserLogoUrl] = useState<string>('');
 
@@ -89,15 +100,21 @@ export default function CanvasSidebarAuthConfig({
       ...config,
       appearance: {
         ...config.appearance,
-        logo: getLogo(config?.appearance?.theme as `#${string}`, userLogoUrl),
-      },
+        logo: getLogo(config?.appearance?.theme as `#${string}`, userLogoUrl)
+      }
     });
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [userLogoUrl, readyToSetTheme]);
 
-  const handleDrag = (e: React.DragEvent<HTMLDivElement>, config: AuthConfiguration) => {
+  const handleDrag = (
+    e: React.DragEvent<HTMLDivElement>,
+    config: AuthConfiguration
+  ) => {
     setDraggedConfig(config);
-    e.currentTarget.classList.add('!border-privy-color-background', 'rounded-md');
+    e.currentTarget.classList.add(
+      '!border-privy-color-background',
+      'rounded-md'
+    );
   };
 
   const handleDragOver = (e: React.DragEvent<HTMLDivElement>) => {
@@ -105,18 +122,23 @@ export default function CanvasSidebarAuthConfig({
     if (!draggedConfig) return;
     const isTarget = e.currentTarget.id !== draggedConfig;
     const borderBottom =
-      (draggedConfig === 'wallets' && config.appearance?.showWalletLoginFirst) ||
+      (draggedConfig === 'wallets' &&
+        config.appearance?.showWalletLoginFirst) ||
       (draggedConfig === 'socials' && !config.appearance?.showWalletLoginFirst);
 
     if (isTarget) {
       setDefaultConfigStyles('');
       e.currentTarget.classList.add(
-        borderBottom ? '!border-b-privy-color-accent' : '!border-t-privy-color-accent',
+        borderBottom
+          ? '!border-b-privy-color-accent'
+          : '!border-t-privy-color-accent'
       );
-      setDefaultConfigStyles('!border-t-privy-color-background cursor-grabbing');
+      setDefaultConfigStyles(
+        '!border-t-privy-color-background cursor-grabbing'
+      );
     } else {
       setDefaultConfigStyles(
-        'border-b-privy-color-background !border-t-privy-color-background cursor-grab',
+        'border-b-privy-color-background !border-t-privy-color-background cursor-grab'
       );
     }
   };
@@ -125,7 +147,7 @@ export default function CanvasSidebarAuthConfig({
     if (!draggedConfig) return;
 
     setDefaultConfigStyles(
-      '!border-b-privy-color-background !border-t-privy-color-background cursor-grab',
+      '!border-b-privy-color-background !border-t-privy-color-background cursor-grab'
     );
 
     if (draggedConfig === e.currentTarget.id) return;
@@ -134,13 +156,16 @@ export default function CanvasSidebarAuthConfig({
       ...config,
       appearance: {
         ...config.appearance,
-        showWalletLoginFirst: !config.appearance!.showWalletLoginFirst,
-      },
+        showWalletLoginFirst: !config.appearance!.showWalletLoginFirst
+      }
     });
     setDraggedConfig(null);
   };
 
-  const loginMethods = useMemo(() => config.loginMethods ?? [], [config.loginMethods]);
+  const loginMethods = useMemo(
+    () => config.loginMethods ?? [],
+    [config.loginMethods]
+  );
   const hasSocials = loginMethods.some((m) =>
     [
       'sms',
@@ -152,8 +177,8 @@ export default function CanvasSidebarAuthConfig({
       'linkedin',
       'apple',
       'tiktok',
-      'farcaster',
-    ].includes(m),
+      'farcaster'
+    ].includes(m)
   );
 
   function socialLoginMethodSelected(
@@ -165,7 +190,7 @@ export default function CanvasSidebarAuthConfig({
       | 'linkedin'
       | 'tiktok'
       | 'apple'
-      | 'farcaster',
+      | 'farcaster'
   ) {
     return !loginMethods.includes(loginMethod) ?? false;
   }
@@ -208,8 +233,8 @@ export default function CanvasSidebarAuthConfig({
                     appearance: {
                       ...config.appearance,
                       theme: e.target.value as `#${string}`,
-                      logo: getLogo(e.target.value as `#${string}`, userLogoUrl),
-                    },
+                      logo: getLogo(e.target.value as `#${string}`, userLogoUrl)
+                    }
                   });
                 }}
               />
@@ -250,8 +275,8 @@ export default function CanvasSidebarAuthConfig({
                     ...config,
                     appearance: {
                       ...config.appearance,
-                      accentColor: e.target.value as `#${string}`,
-                    },
+                      accentColor: e.target.value as `#${string}`
+                    }
                   });
                 }}
               />
@@ -284,21 +309,26 @@ export default function CanvasSidebarAuthConfig({
         <div
           className={classNames(
             'flex flex-col gap-y-4 py-4 md:px-4',
-            !config.appearance?.showWalletLoginFirst ? 'flex-col-reverse' : '',
+            !config.appearance?.showWalletLoginFirst ? 'flex-col-reverse' : ''
           )}
         >
           <div
             draggable
             id="wallets"
             onDragOver={handleDragOver}
-            onDragStart={(e) => handleDrag(e, e.currentTarget.id as AuthConfiguration)}
+            onDragStart={(e) =>
+              handleDrag(e, e.currentTarget.id as AuthConfiguration)
+            }
             onDrop={handleDrop}
             className={`flex flex-col gap-y-2 border-y-2 ${defaultConfigStyles} bg-privy-color-background py-2 pl-1 pr-2`}
           >
             <div className="flex w-full items-center gap-4">
               <div className="flex shrink-0 grow-0 items-center">
                 <EllipsisVerticalIcon className="h-4 w-4" strokeWidth={2} />
-                <EllipsisVerticalIcon className="-m-3 h-4 w-4" strokeWidth={2} />
+                <EllipsisVerticalIcon
+                  className="-m-3 h-4 w-4"
+                  strokeWidth={2}
+                />
               </div>
               <div className="w-full text-sm">Wallets</div>
               <Toggle
@@ -308,7 +338,9 @@ export default function CanvasSidebarAuthConfig({
                     ...config,
                     loginMethods: checked
                       ? [...(config.loginMethods ?? []), 'wallet']
-                      : (config.loginMethods ?? []).filter((m) => m !== 'wallet'),
+                      : (config.loginMethods ?? []).filter(
+                          (m) => m !== 'wallet'
+                        )
                   });
                 }}
                 disabled={!hasSocials}
@@ -316,7 +348,12 @@ export default function CanvasSidebarAuthConfig({
             </div>
             <LoginMethodButton
               className="cursor-auto"
-              icon={<WalletIcon className="h-4 w-4 text-privy-color-accent" strokeWidth={2} />}
+              icon={
+                <WalletIcon
+                  className="h-4 w-4 text-privy-color-accent"
+                  strokeWidth={2}
+                />
+              }
               label="External Wallets"
             ></LoginMethodButton>
           </div>
@@ -324,14 +361,19 @@ export default function CanvasSidebarAuthConfig({
             draggable
             id="socials"
             onDragOver={handleDragOver}
-            onDragStart={(e) => handleDrag(e, e.currentTarget.id as AuthConfiguration)}
+            onDragStart={(e) =>
+              handleDrag(e, e.currentTarget.id as AuthConfiguration)
+            }
             onDrop={handleDrop}
             className={`flex flex-col gap-y-2 border-y-2 ${defaultConfigStyles} bg-privy-color-background py-2 pl-1 pr-2`}
           >
             <div className="flex w-full items-center gap-4">
               <div className="flex shrink-0 grow-0 items-center">
                 <EllipsisVerticalIcon className="h-4 w-4" strokeWidth={2} />
-                <EllipsisVerticalIcon className="-m-3 h-4 w-4" strokeWidth={2} />
+                <EllipsisVerticalIcon
+                  className="-m-3 h-4 w-4"
+                  strokeWidth={2}
+                />
               </div>
               <div className="w-full text-sm">Email / SMS / Socials</div>
               <Toggle
@@ -341,7 +383,9 @@ export default function CanvasSidebarAuthConfig({
                     ...config,
                     loginMethods: checked
                       ? [...(config.loginMethods ?? []), 'email']
-                      : (config.loginMethods ?? []).filter((m) => m === 'wallet'),
+                      : (config.loginMethods ?? []).filter(
+                          (m) => m === 'wallet'
+                        )
                   });
                 }}
                 disabled={!config.loginMethods?.includes('wallet')}
@@ -349,14 +393,17 @@ export default function CanvasSidebarAuthConfig({
             </div>
             <div className="flex gap-x-4">
               <LoginMethodButton
-                className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                className={classNames(
+                  'w-full',
+                  !hasSocials ? 'opacity-50' : ''
+                )}
                 icon={
                   <WalletIcon
                     className={classNames(
                       'h-4 w-4',
                       config?.loginMethods?.includes('email') ?? true
                         ? 'text-privy-color-accent'
-                        : '',
+                        : ''
                     )}
                     strokeWidth={2}
                   />
@@ -373,20 +420,25 @@ export default function CanvasSidebarAuthConfig({
                       ...config,
                       loginMethods: e.target.checked
                         ? [...(config.loginMethods ?? []), 'email']
-                        : (config.loginMethods ?? []).filter((m) => m !== 'email'),
+                        : (config.loginMethods ?? []).filter(
+                            (m) => m !== 'email'
+                          )
                     });
                   }}
                 />
               </LoginMethodButton>
               <LoginMethodButton
-                className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                className={classNames(
+                  'w-full',
+                  !hasSocials ? 'opacity-50' : ''
+                )}
                 icon={
                   <DevicePhoneMobileIcon
                     className={classNames(
                       'h-4 w-4',
                       config?.loginMethods?.includes('sms') ?? true
                         ? 'text-privy-color-accent'
-                        : '',
+                        : ''
                     )}
                     strokeWidth={2}
                   />
@@ -403,7 +455,7 @@ export default function CanvasSidebarAuthConfig({
                       ...config,
                       loginMethods: e.target.checked
                         ? [...(config.loginMethods ?? []), 'sms']
-                        : (config.loginMethods ?? []).filter((m) => m !== 'sms'),
+                        : (config.loginMethods ?? []).filter((m) => m !== 'sms')
                     });
                   }}
                 />
@@ -413,7 +465,10 @@ export default function CanvasSidebarAuthConfig({
             <div className="flex flex-col gap-y-2">
               <div className="flex gap-x-4">
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <Image
@@ -436,13 +491,18 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'google']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'google'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'google'
+                            )
                       });
                     }}
                   />
                 </LoginMethodButton>
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
                       <AppleIcon height={18} width={18} />
@@ -460,7 +520,9 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'apple']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'apple'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'apple'
+                            )
                       });
                     }}
                   />
@@ -468,7 +530,10 @@ export default function CanvasSidebarAuthConfig({
               </div>
               <div className="flex gap-x-4">
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <TwitterXIcon height={18} width={18} />
@@ -486,13 +551,18 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'twitter']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'twitter'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'twitter'
+                            )
                       });
                     }}
                   />
                 </LoginMethodButton>
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <Image
@@ -515,7 +585,9 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'discord']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'discord'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'discord'
+                            )
                       });
                     }}
                   />
@@ -523,7 +595,10 @@ export default function CanvasSidebarAuthConfig({
               </div>
               <div className="flex gap-x-4">
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <GitHubIcon height={18} width={18} />
@@ -541,13 +616,18 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'github']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'github'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'github'
+                            )
                       });
                     }}
                   />
                 </LoginMethodButton>
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <Image
@@ -570,7 +650,9 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'linkedin']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'linkedin'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'linkedin'
+                            )
                       });
                     }}
                   />
@@ -578,7 +660,10 @@ export default function CanvasSidebarAuthConfig({
               </div>
               <div className="flex gap-x-4">
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <TikTokIcon height={18} width={18} />
@@ -596,14 +681,19 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'tiktok']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'tiktok'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'tiktok'
+                            )
                       });
                     }}
                   />
                 </LoginMethodButton>
 
                 <LoginMethodButton
-                  className={classNames('w-full', !hasSocials ? 'opacity-50' : '')}
+                  className={classNames(
+                    'w-full',
+                    !hasSocials ? 'opacity-50' : ''
+                  )}
                   icon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0">
                       <FarcasterIcon height={18} width={18} />
@@ -621,7 +711,9 @@ export default function CanvasSidebarAuthConfig({
                         ...config,
                         loginMethods: e.target.checked
                           ? [...(config.loginMethods ?? []), 'farcaster']
-                          : (config.loginMethods ?? []).filter((m) => m !== 'farcaster'),
+                          : (config.loginMethods ?? []).filter(
+                              (m) => m !== 'farcaster'
+                            )
                       });
                     }}
                   />
@@ -650,8 +742,8 @@ export default function CanvasSidebarAuthConfig({
                   ...config,
                   embeddedWallets: {
                     ...config.embeddedWallets,
-                    requireUserPasswordOnCreate: checked,
-                  },
+                    requireUserPasswordOnCreate: checked
+                  }
                 });
               }}
             />
@@ -665,7 +757,8 @@ export default function CanvasSidebarAuthConfig({
             >
               provision embedded wallets
             </a>{' '}
-            for your users. In this demo a wallet is created upon non-wallet login.
+            for your users. In this demo a wallet is created upon non-wallet
+            login.
           </div>
         </div>
       </div>
