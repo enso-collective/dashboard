@@ -169,23 +169,25 @@ export default function ProfilePage() {
         <div className="griddy">
           <Card className="mb-5 grid-span">
             <Title className="mb-3">Items</Title>
-            <AuthLinker
-              className="space mb-3"
-              isLinked
-              wallet={activeWallet as any}
-              isActive={true}
-              setActiveWallet={setActiveWallet}
-              key={activeWallet?.address}
-              label={formatWallet(activeWallet?.address)}
-              canUnlink={canRemoveAccount}
-              unlinkAction={() => {
-                unlinkWallet(activeWallet?.address as string);
-              }}
-              walletConnectorName={activeWallet?.walletClientType}
-              linkAction={linkWallet}
-              isConnected={true}
-              connectAction={connectWallet}
-            />
+            {activeWallet ? (
+              <AuthLinker
+                className="space mb-3"
+                isLinked
+                wallet={activeWallet as any}
+                isActive={true}
+                setActiveWallet={setActiveWallet}
+                key={activeWallet?.address}
+                label={formatWallet(activeWallet?.address)}
+                canUnlink={canRemoveAccount}
+                unlinkAction={() => {
+                  unlinkWallet(activeWallet?.address as string);
+                }}
+                walletConnectorName={activeWallet?.walletClientType}
+                linkAction={linkWallet}
+                isConnected={true}
+                connectAction={connectWallet}
+              />
+            ) : null}
             <AuthLinker
               socialIcon={
                 <EnvelopeIcon
