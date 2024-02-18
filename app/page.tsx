@@ -11,7 +11,11 @@ export default function IndexPage() {
     if (!authenticated && ready) {
       login();
     }
+<<<<<<< HEAD
   }, [ready, authenticated, login]);
+=======
+  }, [ready, authenticated]);
+>>>>>>> 18fe6773f5a9e05fb4b1cf2f26370bff25c2867b
 
   if (ready && authenticated) {
     return <ProfilePage />;

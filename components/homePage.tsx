@@ -128,10 +128,16 @@ export default function HomePage() {
       observer.observe(loaderRef.current);
     }
 
+<<<<<<< HEAD
     const tempRefValue = loaderRef.current;
     return () => {
       if (tempRefValue) {
         observer.unobserve(tempRefValue);
+=======
+    return () => {
+      if (loaderRef.current) {
+        observer.unobserve(loaderRef.current);
+>>>>>>> 18fe6773f5a9e05fb4b1cf2f26370bff25c2867b
       }
     };
   }, []);
