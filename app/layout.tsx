@@ -13,14 +13,9 @@ export const metadata = {
 };
 
 export default function RootLayout({
-  children,
-  params
+  children
 }: {
   children: React.ReactNode;
-  params: {
-    tag: string;
-    item: string;
-  };
 }) {
   return (
     <html lang="en" className="h-full bg-gray-50">
