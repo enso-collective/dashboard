@@ -8,7 +8,6 @@ export default function IndexPage() {
   const { ready, authenticated, login } = usePrivy();
   const cachedCountRef = useRef(0);
 
-  console.log(cachedCountRef);
   useEffect(() => {
     if (!authenticated && ready) {
       if (cachedCountRef.current < 1) {
