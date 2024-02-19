@@ -9,7 +9,7 @@ import {
   WalletWithMetadata
 } from '@privy-io/react-auth';
 
-import AuthLinker from '../components/auth-linker';
+import AuthLinker, { ExternalLinker } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
 import CanvasCard from '../components/canvas-card';
 import {
@@ -203,6 +203,16 @@ export default function ProfilePage() {
                 unlinkEmail(emailAddress as string);
               }}
               linkAction={linkEmail}
+            />
+
+            <ExternalLinker
+              url="https://example.com"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <FarcasterIcon height={18} width={18} />
+                </div>
+              }
+              label="Farcaster"
             />
           </Card>
           <CanvasRow>

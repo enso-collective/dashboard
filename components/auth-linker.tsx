@@ -8,6 +8,7 @@ import { formatWallet, getHumanReadableWalletType } from '../lib/utils';
 import type { WalletWithMetadata } from '@privy-io/react-auth';
 import type React from 'react';
 import Image from 'next/image';
+import ArrowUpRightIconWithGradient from './icons/social/arrowTopRight';
 
 export default function AuthLinker({
   wallet,
@@ -183,5 +184,39 @@ export default function AuthLinker({
         </div>
       </div>
     </>
+  );
+}
+export function ExternalLinker({
+  icon,
+  url,
+  isActive,
+  className,
+  label
+}: {
+  icon?: JSX.Element;
+  url: string;
+  isActive?: boolean;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <div
+      className={`group mt-3 flex h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
+        isActive
+          ? 'border-privy-color-accent'
+          : 'border-privy-color-foreground-4'
+      } ${className}`}
+    >
+      <div className="flex shrink-0 grow-0 items-center gap-x-2">
+        {icon ? icon : null}
+        <div className="w-full">{label}</div>
+      </div>
+
+      <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
+        <a href="https://warpcast.com/" target="_blank">
+          <ArrowUpRightIconWithGradient />
+        </a>
+      </div>
+    </div>
   );
 }
