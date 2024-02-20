@@ -1,6 +1,5 @@
 'use client';
 
-import axios from 'axios';
 import React, { useState, useEffect } from 'react';
 import {
   useMfaEnrollment,
@@ -13,16 +12,13 @@ import AuthLinker, { ExternalLinker } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
 import CanvasCard from '../components/canvas-card';
 import {
-  ArrowLeftOnRectangleIcon,
   ArrowUpOnSquareIcon,
   DevicePhoneMobileIcon,
   EnvelopeIcon,
-  PencilIcon,
   PlusIcon,
   UserCircleIcon,
   WalletIcon,
-  ShieldCheckIcon,
-  LockClosedIcon
+  ShieldCheckIcon
 } from '@heroicons/react/24/outline';
 import CanvasRow from '../components/canvas-row';
 import CanvasCardHeader from '../components/canvas-card-header';
@@ -149,26 +145,12 @@ export default function ProfilePage() {
   //   return <Loading />;
   // }
 
-  async function deleteUser() {
-    const authToken = await getAccessToken();
-    try {
-      await axios.delete('/api/users/me', {
-        headers: {
-          Authorization: `Bearer ${authToken}`
-        }
-      });
-    } catch (error) {
-      console.error(error);
-    }
-    logout();
-  }
-
   return (
     <div className=" bg-[#F9FAFB] bg-denver">
       <div className="p-4 md:p-10 mx-auto max-w-7xl">
         <div className="griddy">
           <Card className="mb-5 grid-span">
-            <Title className="mb-3">Items</Title>
+            <Title className="mb-3">Pre-Shefi Summit Quests</Title>
             {activeWallet ? (
               <AuthLinker
                 className="space mb-3"
@@ -327,37 +309,6 @@ export default function ProfilePage() {
                 </div>
               </CanvasCard>
             )}
-            <CanvasCard className="mb-8 shrink-0 grow-0 md:mb-0 md:!shadow-none">
-              <div className="pb-4 text-sm text-privy-color-foreground-3">
-                Sign out or delete your data to restart the demo and customize
-                your theme.
-              </div>
-              <div className="flex items-center gap-2">
-                <button
-                  onClick={(e) => {
-                    e.preventDefault();
-                    logout();
-                  }}
-                  className="button h-8 gap-x-1 px-3 text-sm"
-                >
-                  <ArrowLeftOnRectangleIcon
-                    className="h-4 w-4"
-                    strokeWidth={2}
-                  />
-                  Sign out
-                </button>
-                <button
-                  onClick={async () => {
-                    setIsDeleting(true);
-                    await deleteUser();
-                    setIsDeleting(true);
-                  }}
-                  className="button h-8 gap-x-2 px-3 text-sm !text-red-400"
-                >
-                  {!isDeleting ? 'Delete Account' : 'Deleting account...'}
-                </button>
-              </div>
-            </CanvasCard>
           </CanvasRow>
 
           <CanvasRow>

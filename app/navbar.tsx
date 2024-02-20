@@ -4,12 +4,12 @@ import { Fragment } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { signIn, signOut } from 'next-auth/react';
+import { usePrivy } from '@privy-io/react-auth';
 import Image from 'next/image';
 
 const navigation = [
-  { name: 'Home', href: '/home' },
   { name: 'Profile', href: '/' },
+  { name: 'Home', href: '/home' },
   { name: 'Quests', href: '/quests' }
 ];
 
@@ -18,6 +18,7 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar({ user }: { user: any }) {
+  const { authenticated, login, logout } = usePrivy();
   const pathname = usePathname();
 
   return (
@@ -51,24 +52,41 @@ export default function Navbar({ user }: { user: any }) {
                   </svg>
                 </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={
-                        'no-underline ' +
-                        classNames(
-                          pathname === item.href
-                            ? 'border-slate-500 text-gray-900'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                        )
-                      }
-                      aria-current={pathname === item.href ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+                  {navigation.map((item) =>
+                    item.href === '/' ? (
+                      <a
+                        key={item.name}
+                        href={item.href}
+                        className={
+                          'no-underline ' +
+                          classNames(
+                            pathname === item.href
+                              ? 'border-slate-500 text-gray-900'
+                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                          )
+                        }
+                        aria-current={
+                          pathname === item.href ? 'page' : undefined
+                        }
+                      >
+                        {item.name}
+                      </a>
+                    ) : (
+                      <span
+                        key={item.name}
+                        className={
+                          'no-underline ' +
+                          classNames(
+                            'border-transparent text-gray-300 ',
+                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer'
+                          )
+                        }
+                      >
+                        {item.name}
+                      </span>
+                    )
+                  )}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -78,7 +96,7 @@ export default function Navbar({ user }: { user: any }) {
                       <span className="sr-only">Open user menu</span>
                       <Image
                         className="h-8 w-8 rounded-full"
-                        src={user?.image || 'https://avatar.vercel.sh/leerob'}
+                        src={'https://avatar.vercel.sh/leerob'}
                         height={32}
                         width={32}
                         alt={`${user?.name || 'placeholder'} avatar`}
@@ -95,7 +113,7 @@ export default function Navbar({ user }: { user: any }) {
                     leaveTo="transform opacity-0 scale-95"
                   >
                     <Menu.Items className="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none">
-                      {user ? (
+                      {authenticated ? (
                         <Menu.Item>
                           {({ active }) => (
                             <button
@@ -103,7 +121,7 @@ export default function Navbar({ user }: { user: any }) {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signOut()}
+                              onClick={() => logout()}
                             >
                               Sign out
                             </button>
@@ -117,7 +135,7 @@ export default function Navbar({ user }: { user: any }) {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => signIn('github')}
+                              onClick={() => login()}
                             >
                               Sign in
                             </button>
@@ -143,48 +161,53 @@ export default function Navbar({ user }: { user: any }) {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    pathname === item.href
-                      ? 'bg-slate-50 border-slate-500 text-slate-700'
-                      : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
-                    'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
-                  )}
-                  aria-current={pathname === item.href ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              {navigation.map((item) =>
+                item.href === '/' ? (
+                  <Disclosure.Button
+                    key={item.name}
+                    as="a"
+                    href={item.href}
+                    className={classNames(
+                      pathname === item.href
+                        ? 'bg-slate-50 border-slate-500 text-slate-700'
+                        : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                    )}
+                    aria-current={pathname === item.href ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </Disclosure.Button>
+                ) : (
+                  <span
+                    key={item.name}
+                    className={classNames(
+                      'border-transparent text-gray-300 ',
+                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                    )}
+                    aria-current={pathname === item.href ? 'page' : undefined}
+                  >
+                    {item.name}
+                  </span>
+                )
+              )}
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
-              {user ? (
+              {authenticated ? (
                 <>
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
                       <Image
                         className="h-8 w-8 rounded-full"
-                        src={user.image}
+                        src="https://avatar.vercel.sh/leerob"
                         height={32}
                         width={32}
-                        alt={`${user.name} avatar`}
+                        alt={`Avatar`}
                       />
-                    </div>
-                    <div className="ml-3">
-                      <div className="text-base font-medium text-gray-800">
-                        {user.name}
-                      </div>
-                      <div className="text-sm font-medium text-gray-500">
-                        {user.email}
-                      </div>
                     </div>
                   </div>
                   <div className="mt-3 space-y-1">
                     <button
-                      onClick={() => signOut()}
+                      onClick={() => logout()}
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                     >
                       Sign out
@@ -194,7 +217,7 @@ export default function Navbar({ user }: { user: any }) {
               ) : (
                 <div className="mt-3 space-y-1">
                   <button
-                    onClick={() => signIn('github')}
+                    onClick={() => login()}
                     className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                   >
                     Sign in

@@ -189,29 +189,38 @@ export default function HomePage() {
             ))}
           </div>
         </div>
-        <Card>
-          <Title>Leaderboard</Title>
-          <List>
-            {items.map((t, index) => (
-              <ListItem key={t.id} className="list-fix">
-                <div>
-                  <Subtitle className="inline">
-                    <span className="mr-2">#{index + 1}</span>
-                  </Subtitle>
-                  <span>{t.ensName}</span>
+        <div className="leaderboard">
+          <Title className="mb-3">Leaderboard</Title>
+
+          {items.map((t, index) => (
+            <div className="list-fix" key={t.id}>
+              <div className="number-col">#{index + 1}</div>
+              <div className="list-body pl-4 pr-4">
+                <div style={{ fontWeight: '600' }} className="list-wrap">
+                  {t.ensName.length > 15
+                    ? t.ensName.slice(0, 15) + '...'
+                    : t.ensName}
                 </div>
 
-                <span>{new Intl.NumberFormat().format(t.points)} points</span>
-              </ListItem>
-            ))}
-          </List>
+                <p>
+                  <span style={{ fontWeight: '600' }}>
+                    {new Intl.NumberFormat().format(t.points)}
+                  </span>{' '}
+                  points
+                </p>
+              </div>
+            </div>
+          ))}
+
           <div
             ref={loaderRef}
             className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"
           >
-            {loading ? <MoonLoader size={40} color="rgba(0,0,0,.9)" /> : null}
+            {loading ? (
+              <MoonLoader size={40} color="rgba(255,255,255,.9)" />
+            ) : null}
           </div>
-        </Card>
+        </div>
       </div>
     </div>
   );
