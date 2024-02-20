@@ -20,10 +20,12 @@ export default function RootLayout({
   return (
     <html lang="en" className="h-full bg-gray-50">
       <body className="h-full" suppressHydrationWarning={true}>
-        <Suspense>
-          <Nav />
-        </Suspense>
-        <PrivyProviderWrapper>{children}</PrivyProviderWrapper>
+        <PrivyProviderWrapper>
+          <Suspense>
+            <Nav />
+          </Suspense>
+          {children}
+        </PrivyProviderWrapper>
         <Analytics />
       </body>
     </html>
