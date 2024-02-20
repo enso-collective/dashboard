@@ -197,9 +197,7 @@ export default function HomePage() {
               <div className="number-col">#{index + 1}</div>
               <div className="list-body pl-4 pr-4">
                 <div style={{ fontWeight: '600' }} className="list-wrap">
-                  {t.ensName.length > 15
-                    ? t.ensName.slice(0, 15) + '...'
-                    : t.ensName}
+                  {t.ensName}
                 </div>
 
                 <p>
