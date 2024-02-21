@@ -21,9 +21,7 @@ export default function Navbar() {
   const { authenticated, login, logout, user } = usePrivy();
   const pathname = usePathname();
 
-  const [avatar, setAvatar] = useState(
-    'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fbg.svg?alt=media&token=271da2ea-1b15-413a-97e9-e35d649ac04c'
-  );
+  const [avatar, setAvatar] = useState('https://avatar.vercel.sh/leerob');
   const linkedAccounts = user?.linkedAccounts || [];
   const wallets: WalletWithMetadata[] = Object.assign(
     [],
