@@ -1,5 +1,0 @@
-{
-    "rewrites": [
-      { "source": "/.well-known/did.json", "destination": "/public/did.json" }
-    ]
-  }
