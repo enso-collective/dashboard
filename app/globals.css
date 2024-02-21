@@ -117,3 +117,45 @@
   flex-grow: 1;
   justify-content: space-between;
 }
+
+.floating-callout {
+  position: relative;
+}
+
+.floating-callout:hover::after {
+  content: 'Enabled for SheFi Summit';
+  position: absolute;
+  top: 2px;
+  left: -40px;
+  background-image: linear-gradient(to right, hsl(238, 87%, 69%), #fca5a5);
+  font-size: 8px;
+  color: #fff;
+  padding: 2px;
+  border-radius: 10px;
+  line-height: 1.7;
+  width: 135px;
+  text-align: center;
+  font-weight: 600;
+  /* display: none; */
+}
+
+.floating-callout-x {
+  position: relative;
+}
+
+.floating-callout-x:hover::after {
+  content: 'Enabled for SheFi Summit';
+  position: absolute;
+  top: 30%;
+  left: 65%;
+  background-image: linear-gradient(to right, hsl(238, 87%, 69%), #fca5a5);
+  font-size: 8px;
+  color: #fff;
+  padding: 2px;
+  border-radius: 10px;
+  line-height: 1.7;
+  width: 135px;
+  text-align: center;
+  font-weight: 600;
+  /* display: none; */
+}

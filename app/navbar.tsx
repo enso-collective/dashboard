@@ -51,27 +51,12 @@ export default function Navbar() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between flex-grow">
               <div className="flex flex-shrink-0 items-center ">
-                <svg
-                  width="32"
-                  height="32"
-                  viewBox="0 0 32 32"
-                  fill="none"
-                  className="text-gray-100"
-                  xmlns="http://www.w3.org/2000/svg"
-                >
-                  <rect
-                    width="100%"
-                    height="100%"
-                    rx="16"
-                    fill="currentColor"
-                  />
-                  <path
-                    fillRule="evenodd"
-                    clipRule="evenodd"
-                    d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                    fill="black"
-                  />
-                </svg>
+                <img
+                  width="50"
+                  height="50"
+                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
+                  alt="logo"
+                />
               </div>
               <div className="flex">
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
@@ -102,7 +87,7 @@ export default function Navbar() {
                           'no-underline ' +
                           classNames(
                             'border-transparent text-gray-300 ',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer'
+                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer floating-callout'
                           )
                         }
                       >
@@ -205,7 +190,7 @@ export default function Navbar() {
                     key={item.name}
                     className={classNames(
                       'border-transparent text-gray-300 ',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium floating-callout-x'
                     )}
                     aria-current={pathname === item.href ? 'page' : undefined}
                   >
