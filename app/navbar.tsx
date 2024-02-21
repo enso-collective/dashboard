@@ -1,11 +1,11 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePrivy } from '@privy-io/react-auth';
-import Image from 'next/image';
+import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
+import { getEnsAvatar } from '../lib/fetchEnsAvatarFromAirstack';
 
 const navigation = [
   { name: 'Profile', href: '/' },
@@ -17,9 +17,32 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
-  const { authenticated, login, logout } = usePrivy();
+export default function Navbar() {
+  const { authenticated, login, logout, user } = usePrivy();
   const pathname = usePathname();
+  const [avatar, setAvatar] = useState('https://avatar.vercel.sh/leerob');
+  const linkedAccounts = user?.linkedAccounts || [];
+  const wallets: WalletWithMetadata[] = Object.assign(
+    [],
+    linkedAccounts.filter((a) => a.type === 'wallet')
+  ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
+    a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
+  ) as WalletWithMetadata[];
+
+  useEffect(() => {
+    if (wallets.length > 0) {
+      const currentWallet = wallets[0];
+      getEnsAvatar(
+        '0xD7029BDEa1c17493893AAfE29AAD69EF892B8ff2' || currentWallet.address
+      )
+        .then((t) => {
+          if (t) {
+            return setAvatar(t);
+          }
+        })
+        .catch(console.log);
+    }
+  }, [wallets]);
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
@@ -94,12 +117,12 @@ export default function Navbar({ user }: { user: any }) {
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <Image
+                      <img
                         className="h-8 w-8 rounded-full"
-                        src={'https://avatar.vercel.sh/leerob'}
+                        src={avatar}
                         height={32}
                         width={32}
-                        alt={`${user?.name || 'placeholder'} avatar`}
+                        alt={`avatar`}
                       />
                     </Menu.Button>
                   </div>
@@ -196,9 +219,9 @@ export default function Navbar({ user }: { user: any }) {
                 <>
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <Image
+                      <img
                         className="h-8 w-8 rounded-full"
-                        src="https://avatar.vercel.sh/leerob"
+                        src={avatar}
                         height={32}
                         width={32}
                         alt={`Avatar`}
