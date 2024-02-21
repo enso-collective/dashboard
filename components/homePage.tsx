@@ -1,4 +1,4 @@
-import { Card, List, ListItem, Title, Subtitle, Text } from '@tremor/react';
+import { Card, Title, Subtitle, Text } from '@tremor/react';
 import { useEffect, useRef, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 

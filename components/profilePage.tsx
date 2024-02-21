@@ -1,12 +1,7 @@
 'use client';
 
 import React, { useState, useEffect } from 'react';
-import {
-  useMfaEnrollment,
-  usePrivy,
-  useWallets,
-  WalletWithMetadata
-} from '@privy-io/react-auth';
+import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 
 import AuthLinker, { ExternalLinker } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
@@ -30,13 +25,13 @@ import TikTokIcon from '../components/icons/social/tiktok';
 import TwitterXIcon from '../components/icons/social/twitter-x';
 import FarcasterIcon from '../components/icons/social/farcaster';
 import { Card, Title } from '@tremor/react';
+import { usePrivyContext } from './privyProvider';
 
 export default function ProfilePage() {
   const {
     ready,
     authenticated,
     user,
-    logout,
     linkEmail,
     linkWallet,
     unlinkEmail,
@@ -58,22 +53,36 @@ export default function ProfilePage() {
     unlinkTiktok,
     linkFarcaster,
     unlinkFarcaster,
-    getAccessToken,
     createWallet,
     exportWallet,
     unlinkWallet,
     setWalletPassword,
-    login,
     connectWallet
   } = usePrivy();
-  const [isDeleting, setIsDeleting] = useState(false);
+  const { setConfig } = usePrivyContext();
+  useEffect(() => {
+    setConfig((c: any) => ({
+      ...c,
+      _render: {
+        inDialog: true,
+        inParentNodeId: null
+      }
+    }));
+    return () => {
+      setConfig((c: any) => ({
+        ...c,
+        _render: {
+          inDialog: false,
+          inParentNodeId: 'render-privy'
+        }
+      }));
+    };
+  }, []);
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
     null
   );
 
-  const { showMfaEnrollmentModal } = useMfaEnrollment();
   const { wallets: connectedWallets } = useWallets();
-  const mfaEnabled = user?.mfaMethods.length ?? 0 > 0;
   const linkedAccounts = user?.linkedAccounts || [];
   const wallets = linkedAccounts.filter(
     (a) => a.type === 'wallet'
@@ -236,7 +245,9 @@ export default function ProfilePage() {
                 })}
                 <button
                   className="button h-10 gap-x-1 px-4 text-sm"
-                  onClick={linkWallet}
+                  onClick={() => {
+                    linkWallet();
+                  }}
                 >
                   <PlusIcon className="h-4 w-4" strokeWidth={2} />
                   Link a Wallet

@@ -1,37 +1,62 @@
 'use client';
 import { PrivyProvider } from '@privy-io/react-auth';
+import { createContext, useContext, useState, ReactNode } from 'react';
+
+const defaultConfig = {
+  appearance: {
+    showWalletLoginFirst: true
+  },
+  _render: {
+    inDialog: true,
+    inParentNodeId: null
+  },
+  loginMethods: [
+    'wallet',
+    'email',
+    'google',
+    'twitter',
+    'discord',
+    'farcaster',
+    'github',
+    'linkedin',
+    'apple'
+  ]
+};
+interface PrivyConfigObject {
+  appearance: {
+    showWalletLoginFirst: boolean;
+  };
+  _render: {
+    inDialog: boolean;
+    inParentNodeId: string | null;
+  };
+  loginMethods: string[];
+}
+interface PrivyContextObject {
+  config: PrivyConfigObject;
+  setConfig: Function;
+}
+
+export const PrivyContext = createContext<any>({});
+
+export const usePrivyContext = () => useContext(PrivyContext);
 
 export default function PrivyProviderWrapper({
   children
 }: {
   children: React.ReactNode;
 }) {
+  const [config, setConfig] = useState({ ...defaultConfig });
+
   return (
-    <PrivyProvider
-      appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
-      config={{
-        appearance: {
-          showWalletLoginFirst: true
-        },
+    <PrivyContext.Provider value={{ config, setConfig }}>
+      <PrivyProvider
+        appId={process.env.NEXT_PUBLIC_PRIVY_APP_ID || ''}
         // @ts-ignore
-        _render: {
-          inDialog: false,
-          inParentNodeId: 'render-privy'
-        },
-        loginMethods: [
-          'wallet',
-          'email',
-          'google',
-          'twitter',
-          'discord',
-          'farcaster',
-          'github',
-          'linkedin',
-          'apple'
-        ]
-      }}
-    >
-      {children}
-    </PrivyProvider>
+        config={config}
+      >
+        {children}
+      </PrivyProvider>
+    </PrivyContext.Provider>
   );
 }

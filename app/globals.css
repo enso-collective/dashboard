@@ -51,8 +51,7 @@
   }
 }
 
-
-.sc-kpDqfm.UksyR { 
+.sc-kpDqfm.UksyR {
   display: none;
 }
 
@@ -60,6 +59,7 @@
   display: grid;
   grid-gap: 1rem;
   grid-template-columns: repeat(2, 280px);
+  justify-content: center;
 }
 .grid-span {
   grid-column: 1 / 3;
