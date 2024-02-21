@@ -32,9 +32,7 @@ export default function Navbar() {
   useEffect(() => {
     if (wallets.length > 0) {
       const currentWallet = wallets[0];
-      getEnsAvatar(
-        '0xD7029BDEa1c17493893AAfE29AAD69EF892B8ff2' || currentWallet.address
-      )
+      getEnsAvatar(currentWallet.address)
         .then((t) => {
           if (t) {
             return setAvatar(t);
