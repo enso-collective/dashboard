@@ -237,7 +237,7 @@ export default function ProfilePage() {
                   <Image src={PYUSDIcon} height={18} width={18} alt='' />
                 </div>
               }
-              label="Convert $2 USD to PYUSD on Venmo"
+              label="Convert $2 USD to PYUSD in Venmo app"
             />
             <ExternalLinker
               url="https://connect.usecapsule.com"
@@ -264,7 +264,7 @@ export default function ProfilePage() {
                 <FarcasterIcon height={18} width={18} />
               </div>
             }
-            label="Connect Farcaster Account"
+            label="Create/Connect Farcaster Account"
             linkedLabel={`${farcasterName}`}
             canUnlink={canRemoveAccount}
             isLinked={!!farcasterSubject}
@@ -280,7 +280,7 @@ export default function ProfilePage() {
                   <FarcasterIcon height={18} width={18} />
                 </div>
               }
-              label="Verify wallet on Farcaster to use @proofof bot"
+              label="Verify Wallet on Warpcast to use @proofof bot"
             />
           </Card>
           <CanvasRow>
