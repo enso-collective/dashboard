@@ -218,8 +218,8 @@ export default function Navbar() {
                       <img
                         className="h-8 w-8 rounded-full"
                         src={avatar}
-                        height={50}
-                        width={50}
+                        height={32}
+                        width={32}
                         alt={`Avatar`}
                       />
                     </div>

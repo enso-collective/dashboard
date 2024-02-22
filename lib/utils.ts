@@ -21,7 +21,7 @@ export const getHumanReadableWalletType = (
     case 'phantom':
       return 'Phantom';
     case 'capsule':
-      return 'Capsule';
+      return 'Capsule'; //not working? more setup to do?
     case 'embedded':
       return 'Privy';
     default:
