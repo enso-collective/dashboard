@@ -5,7 +5,9 @@ import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
-import { getEnsAvatar } from '../lib/fetchEnsAvatarFromAirstack';
+import { publicClient } from '../lib/utils';
+
+const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 const navigation = [
   { name: 'Profile', href: '/' },
@@ -21,7 +23,7 @@ export default function Navbar() {
   const { authenticated, login, logout, user } = usePrivy();
   const pathname = usePathname();
 
-  const [avatar, setAvatar] = useState('https://avatar.vercel.sh/leerob');
+  const [avatar, setAvatar] = useState(defaultAvatarUrl);
   const linkedAccounts = user?.linkedAccounts || [];
   const wallets: WalletWithMetadata[] = Object.assign(
     [],
@@ -31,16 +33,20 @@ export default function Navbar() {
   ) as WalletWithMetadata[];
 
   useEffect(() => {
-    if (wallets.length > 0) {
+    const resolveEnsAvatar = async () => {
       const currentWallet = wallets[0];
-      getEnsAvatar(currentWallet.address)
-        .then((t) => {
-          if (t) {
-            return setAvatar(t);
-          }
-          setAvatar('https://avatar.vercel.sh/leerob');
-        })
-        .catch(console.log);
+      const ensName = await publicClient.getEnsName({
+        address: `${currentWallet.address}` as any
+      });
+      if (ensName) {
+        const ensAvatar = await publicClient.getEnsAvatar({ name: ensName });
+        if (ensAvatar) {
+          setAvatar(ensAvatar);
+        }
+      }
+    };
+    if (wallets.length > 0) {
+      resolveEnsAvatar().catch(console.log);
     }
   }, [wallets]);
 

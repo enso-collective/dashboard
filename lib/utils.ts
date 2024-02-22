@@ -1,4 +1,6 @@
-// TODO: Release types for WalletType
+import { createPublicClient, http } from 'viem';
+import { mainnet } from 'viem/chains';
+
 export const getHumanReadableWalletType = (
   walletType:
     | 'metamask'
@@ -6,7 +8,7 @@ export const getHumanReadableWalletType = (
     | 'wallet_connect'
     | 'phantom'
     | 'embedded'
-    | undefined,
+    | undefined
 ) => {
   switch (walletType) {
     case 'metamask':
@@ -34,5 +36,12 @@ export const formatWallet = (address: string | undefined): string => {
 };
 
 export const isEmpty = (value: any) => {
-  return value == null || (typeof value === 'string' && value.trim().length === 0);
+  return (
+    value == null || (typeof value === 'string' && value.trim().length === 0)
+  );
 };
+
+export const publicClient = createPublicClient({
+  chain: mainnet,
+  transport: http()
+});

@@ -7,7 +7,6 @@ import AuthLinker, { ExternalLinker } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
 import CanvasCard from '../components/canvas-card';
 import {
-  DevicePhoneMobileIcon,
   EnvelopeIcon,
   PlusIcon,
   UserCircleIcon,
@@ -16,9 +15,7 @@ import {
 import CanvasRow from '../components/canvas-row';
 import CanvasCardHeader from '../components/canvas-card-header';
 import Image from 'next/image';
-import GitHubIcon from '../components/icons/social/github';
 import AppleIcon from '../components/icons/social/apple';
-import TikTokIcon from '../components/icons/social/tiktok';
 import TwitterXIcon from '../components/icons/social/twitter-x';
 import FarcasterIcon from '../components/icons/social/farcaster';
 import { Card, Title } from '@tremor/react';
@@ -26,33 +23,20 @@ import { usePrivyContext } from './privyProvider';
 
 export default function ProfilePage() {
   const {
-    ready,
     authenticated,
     user,
     linkEmail,
     linkWallet,
     unlinkEmail,
-    linkPhone,
-    unlinkPhone,
     linkGoogle,
     unlinkGoogle,
     linkTwitter,
     unlinkTwitter,
-    linkDiscord,
-    unlinkDiscord,
-    linkGithub,
-    unlinkGithub,
     linkApple,
     unlinkApple,
-    linkLinkedIn,
-    unlinkLinkedIn,
-    linkTiktok,
-    unlinkTiktok,
     linkFarcaster,
     unlinkFarcaster,
-
     unlinkWallet,
-
     connectWallet
   } = usePrivy();
   const { setConfig } = usePrivyContext();
@@ -83,10 +67,6 @@ export default function ProfilePage() {
   const wallets = linkedAccounts.filter(
     (a) => a.type === 'wallet'
   ) as WalletWithMetadata[];
-  const hasSetPassword = wallets.some(
-    (w) =>
-      w.walletClientType === 'privy' && w.recoveryMethod === 'user-passcode'
-  );
 
   const linkedAndConnectedWallets = wallets
     .filter((w) => connectedWallets.some((cw) => cw.address === w.address))
