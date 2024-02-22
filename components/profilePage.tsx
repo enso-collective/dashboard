@@ -260,7 +260,7 @@ export default function ProfilePage() {
               label="Convert $2 USD to PYUSD on Venmo"
             />
             <ExternalLinker
-              url="https://usecapsule.com"
+              url="https://connect.usecapsule.com"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
                   <Image src={CapsuleIcon} height={14} width={16} alt=''/>
