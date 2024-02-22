@@ -35,12 +35,17 @@ export default function Navbar() {
   useEffect(() => {
     const resolveEnsAvatar = async () => {
       const currentWallet = wallets[0];
+      const cachedAvatar = localStorage.getItem(currentWallet.address);
+      if (cachedAvatar) {
+        return setAvatar(cachedAvatar);
+      }
       const ensName = await publicClient.getEnsName({
         address: `${currentWallet.address}` as any
       });
       if (ensName) {
         const ensAvatar = await publicClient.getEnsAvatar({ name: ensName });
         if (ensAvatar) {
+          localStorage.setItem(currentWallet.address, ensAvatar);
           setAvatar(ensAvatar);
         }
       }
