@@ -167,7 +167,7 @@ export default function ProfilePage() {
                   <TwitterXIcon height={18} width={18} />
                 </div>
               }
-              label="Verify Twitter to use @0xproofof bot"
+              label="Verify Twitter to use @0xproofof quest bot"
               linkedLabel={`${twitterUsername}`}
               canUnlink={canRemoveAccount}
               isLinked={!!twitterSubject}
@@ -257,6 +257,15 @@ export default function ProfilePage() {
                <PlusIcon className="h-4 w-4" strokeWidth={2} />
                Link Capsule Wallet via WalletConnect
              </button>
+            <ExternalLinker
+              url="https://warpcast.com/~/settings/verified-addresses"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <FarcasterIcon height={18} width={18} />
+                </div>
+              }
+              label="Verify Farcaster Wallet to use @proofof quest bot"
+            />
             <AuthLinker
             className="mb-3"
             socialIcon={
@@ -264,7 +273,7 @@ export default function ProfilePage() {
                 <FarcasterIcon height={18} width={18} />
               </div>
             }
-            label="Create/Connect Farcaster Account"
+            label="Connect Farcaster Account"
             linkedLabel={`${farcasterName}`}
             canUnlink={canRemoveAccount}
             isLinked={!!farcasterSubject}
@@ -273,15 +282,6 @@ export default function ProfilePage() {
             }}
             linkAction={linkFarcaster}
           />
-            <ExternalLinker
-              url="https://warpcast.com/~/settings/verified-addresses"
-              icon={
-                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <FarcasterIcon height={18} width={18} />
-                </div>
-              }
-              label="Verify Wallet on Warpcast to use @proofof bot"
-            />
           </Card>
           <CanvasRow>
             <CanvasCard className="">
