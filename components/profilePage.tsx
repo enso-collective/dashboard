@@ -219,7 +219,7 @@ export default function ProfilePage() {
               url="https://guild.xyz/shefisummit#!"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={GuildIcon} height={18} width={18} />
+                  <Image src={GuildIcon} height={18} width={18} alt='' />
                 </div>
               }
               label="Join the SheFi Summit Guild"
@@ -228,7 +228,7 @@ export default function ProfilePage() {
               url="https://phaver.com/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={PhaverIcon} height={18} width={18} />
+                  <Image src={PhaverIcon} height={18} width={18} alt='' />
                 </div>
               }
               label="Download the Phaver App"
@@ -246,7 +246,7 @@ export default function ProfilePage() {
               url="https://help.venmo.com/hc/en-us/articles/360063753053-Cryptocurrency-FAQ"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={PYUSDIcon} height={18} width={18} />
+                  <Image src={PYUSDIcon} height={18} width={18} alt='' />
                 </div>
               }
               label="Convert $2 USD to PYUSD on Venmo"
