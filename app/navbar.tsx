@@ -1,11 +1,13 @@
 'use client';
 
-import { Fragment } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePrivy } from '@privy-io/react-auth';
-import Image from 'next/image';
+import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
+import { publicClient } from '../lib/utils';
+
+const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 const navigation = [
   { name: 'Profile', href: '/' },
@@ -17,40 +19,57 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-export default function Navbar({ user }: { user: any }) {
-  const { authenticated, login, logout } = usePrivy();
+export default function Navbar() {
+  const { authenticated, login, logout, user } = usePrivy();
   const pathname = usePathname();
+
+  const [avatar, setAvatar] = useState(defaultAvatarUrl);
+  const linkedAccounts = user?.linkedAccounts || [];
+  const wallets: WalletWithMetadata[] = Object.assign(
+    [],
+    linkedAccounts.filter((a) => a.type === 'wallet')
+  ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
+    a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
+  ) as WalletWithMetadata[];
+
+  useEffect(() => {
+    const resolveEnsAvatar = async () => {
+      const currentWallet = wallets[0];
+      const cachedAvatar = localStorage.getItem(currentWallet.address);
+      if (cachedAvatar) {
+        return setAvatar(cachedAvatar);
+      }
+      const ensName = await publicClient.getEnsName({
+        address: `${currentWallet.address}` as any
+      });
+      if (ensName) {
+        const ensAvatar = await publicClient.getEnsAvatar({ name: ensName });
+        if (ensAvatar) {
+          localStorage.setItem(currentWallet.address, ensAvatar);
+          setAvatar(ensAvatar);
+        }
+      }
+    };
+    if (wallets.length > 0) {
+      resolveEnsAvatar().catch(console.log);
+    }
+  }, [wallets]);
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
       {({ open }) => (
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
-            <div className="flex h-16 justify-between">
+            <div className="flex h-16 justify-between flex-grow">
+              <div className="flex flex-shrink-0 items-center ">
+                <img
+                  width="50"
+                  height="50"
+                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
+                  alt="logo"
+                />
+              </div>
               <div className="flex">
-                <div className="flex flex-shrink-0 items-center">
-                  <svg
-                    width="32"
-                    height="32"
-                    viewBox="0 0 32 32"
-                    fill="none"
-                    className="text-gray-100"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <rect
-                      width="100%"
-                      height="100%"
-                      rx="16"
-                      fill="currentColor"
-                    />
-                    <path
-                      fillRule="evenodd"
-                      clipRule="evenodd"
-                      d="M17.6482 10.1305L15.8785 7.02583L7.02979 22.5499H10.5278L17.6482 10.1305ZM19.8798 14.0457L18.11 17.1983L19.394 19.4511H16.8453L15.1056 22.5499H24.7272L19.8798 14.0457Z"
-                      fill="black"
-                    />
-                  </svg>
-                </div>
                 <div className="hidden sm:-my-px sm:ml-6 sm:flex sm:space-x-8">
                   {navigation.map((item) =>
                     item.href === '/' ? (
@@ -79,7 +98,7 @@ export default function Navbar({ user }: { user: any }) {
                           'no-underline ' +
                           classNames(
                             'border-transparent text-gray-300 ',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer'
+                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer floating-callout'
                           )
                         }
                       >
@@ -94,12 +113,12 @@ export default function Navbar({ user }: { user: any }) {
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
-                      <Image
+                      <img
                         className="h-8 w-8 rounded-full"
-                        src={'https://avatar.vercel.sh/leerob'}
+                        src={avatar}
                         height={32}
                         width={32}
-                        alt={`${user?.name || 'placeholder'} avatar`}
+                        alt={`avatar`}
                       />
                     </Menu.Button>
                   </div>
@@ -182,7 +201,7 @@ export default function Navbar({ user }: { user: any }) {
                     key={item.name}
                     className={classNames(
                       'border-transparent text-gray-300 ',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium floating-callout-x'
                     )}
                     aria-current={pathname === item.href ? 'page' : undefined}
                   >
@@ -196,9 +215,9 @@ export default function Navbar({ user }: { user: any }) {
                 <>
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
-                      <Image
+                      <img
                         className="h-8 w-8 rounded-full"
-                        src="https://avatar.vercel.sh/leerob"
+                        src={avatar}
                         height={32}
                         width={32}
                         alt={`Avatar`}
