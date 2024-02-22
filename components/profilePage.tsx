@@ -203,7 +203,7 @@ export default function ProfilePage() {
                   <Image src={MetamaskIcon} height={18} width={18} alt='' />
                 </div>
               }
-              label="Install Metamask"
+              label="Install Metamask on iOS/Android"
             />
             <ExternalLinker
               url="https://web3inbox.com/"
@@ -212,7 +212,16 @@ export default function ProfilePage() {
                   <Image src={WalletConnectIcon} height={18} width={18} alt='' />
                 </div>
               }
-              label="Web3Inbox on your Phone"
+              label="Download Web3Inbox PWA App"
+            />
+            <ExternalLinker
+              url="https://web3inbox.com/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={WalletConnectIcon} height={18} width={18} alt='' />
+                </div>
+              }
+              label="Subscribe to SheFi Summt in Web3Inbox"
             />
             <ExternalLinker
               url="https://guild.xyz/shefisummit#!"

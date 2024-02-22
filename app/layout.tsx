@@ -7,9 +7,9 @@ import { Suspense } from 'react';
 import PrivyProviderWrapper from '../components/privyProvider';
 
 export const metadata = {
-  title: 'Next.js App Router + NextAuth + Tailwind CSS',
+  title: 'SheFi Summit Quests',
   description:
-    'A user admin dashboard configured with Next.js, Postgres, NextAuth, Tailwind CSS, TypeScript, ESLint, and Prettier.'
+    'A dashboard to track your Quests at SheFi Summit. Quests are completed through the @proofof bot on Farcaster and Lens, or @0xproofof bot on Twitter.'
 };
 
 export default function RootLayout({
