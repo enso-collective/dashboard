@@ -6,6 +6,7 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import AuthLinker, { ExternalLinker } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
 import CanvasCard from '../components/canvas-card';
+
 import {
   EnvelopeIcon,
   PlusIcon,
@@ -18,6 +19,13 @@ import Image from 'next/image';
 import AppleIcon from '../components/icons/social/apple';
 import TwitterXIcon from '../components/icons/social/twitter-x';
 import FarcasterIcon from '../components/icons/social/farcaster';
+import CapsuleIcon from '../components/icons/social/capsule.svg';
+import GuildIcon from '../components/icons/social/guild.jpeg';
+import PYUSDIcon from '../components/icons/social/pyusd.png';
+import MetamaskIcon from '../public/wallet-icons/metamask.svg';
+import HarpieIcon from '../components/icons/social/harpie.svg';
+import PhaverIcon from '../components/icons/social/phaver.jpg';
+import WalletConnectIcon from '../public/wallet-icons/wallet_connect.svg';
 import { Card, Title } from '@tremor/react';
 import { usePrivyContext } from './privyProvider';
 
@@ -57,7 +65,7 @@ export default function ProfilePage() {
         }
       }));
     };
-  }, []);
+  }, [setConfig]);
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
     null
   );
@@ -132,7 +140,7 @@ export default function ProfilePage() {
       <div className="p-4 md:p-10 mx-auto max-w-7xl">
         <div className="griddy">
           <Card className="mb-5 grid-span">
-            <Title className="mb-3">Pre-Shefi Summit Quests</Title>
+            <Title className="mb-3">SheFi Summit Quest</Title>
             {activeWallet ? (
               <AuthLinker
                 className="space mb-3"
@@ -155,27 +163,11 @@ export default function ProfilePage() {
             <AuthLinker
               className="mb-3"
               socialIcon={
-                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <FarcasterIcon height={18} width={18} />
-                </div>
-              }
-              label="Farcaster"
-              linkedLabel={`${farcasterName}`}
-              canUnlink={canRemoveAccount}
-              isLinked={!!farcasterSubject}
-              unlinkAction={() => {
-                unlinkFarcaster(farcasterSubject as number);
-              }}
-              linkAction={linkFarcaster}
-            />
-            <AuthLinker
-              className="mb-3"
-              socialIcon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
                   <TwitterXIcon height={18} width={18} />
                 </div>
               }
-              label="Twitter"
+              label="Verify Twitter to use @0xproofof bot"
               linkedLabel={`${twitterUsername}`}
               canUnlink={canRemoveAccount}
               isLinked={!!twitterSubject}
@@ -185,30 +177,122 @@ export default function ProfilePage() {
               linkAction={linkTwitter}
             />
             <AuthLinker
-              socialIcon={
-                <EnvelopeIcon
-                  className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5"
-                  strokeWidth={2}
+                  socialIcon={
+                    <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                      <Image
+                        src="/social-icons/color/google.svg"
+                        height={18}
+                        width={18}
+                        alt="Google"
+                      />
+                    </div>
+                  }
+                  label="Google"
+                  linkedLabel={`${googleName}`}
+                  canUnlink={canRemoveAccount}
+                  isLinked={!!googleSubject}
+                  unlinkAction={() => {
+                    unlinkGoogle(googleSubject as string);
+                  }}
+                  linkAction={linkGoogle}
                 />
-              }
-              label="Email"
-              linkedLabel={`${emailAddress}`}
-              canUnlink={canRemoveAccount}
-              isLinked={!!emailAddress}
-              unlinkAction={() => {
-                unlinkEmail(emailAddress as string);
-              }}
-              linkAction={linkEmail}
-            />
 
             <ExternalLinker
-              url="https://example.com"
+              url="https://metamask.io/download/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <MetamaskIcon height={18} width={18} />
+                </div>
+              }
+              label="Install Metamask"
+            />
+            <ExternalLinker
+              url="https://web3inbox.com/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <WalletConnectIcon height={18} width={18} />
+                </div>
+              }
+              label="Web3Inbox on your Phone"
+            />
+            <ExternalLinker
+              url="https://guild.xyz/shefisummit#!"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={GuildIcon} height={18} width={18} />
+                </div>
+              }
+              label="Join the SheFi Summit Guild"
+            />
+            <ExternalLinker
+              url="https://phaver.com/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={PhaverIcon} height={18} width={18} />
+                </div>
+              }
+              label="Download the Phaver App"
+            />
+            <ExternalLinker
+              url="https://harpie.io/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <HarpieIcon height={18} width={18} />
+                </div>
+              }
+              label="Create Harpie Account"
+            />
+            <ExternalLinker
+              url="https://help.venmo.com/hc/en-us/articles/360063753053-Cryptocurrency-FAQ"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={PYUSDIcon} height={18} width={18} />
+                </div>
+              }
+              label="Convert $2 USD to PYUSD on Venmo"
+            />
+            <ExternalLinker
+              url="https://usecapsule.com"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <CapsuleIcon height={18} width={18} />
+                </div>
+              }
+              label="Create Capsule Wallet"
+            />
+            <button
+                className="button h-10 gap-x-1 px-4 text-sm"
+                onClick={() => {
+                  linkWallet();
+                }}
+              >
+                <PlusIcon className="h-4 w-4" strokeWidth={2} />
+                Link Capsule Wallet
+              </button>
+            <AuthLinker
+            className="mb-3"
+            socialIcon={
+              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                <FarcasterIcon height={18} width={18} />
+              </div>
+            }
+            label="Connect Farcaster Account"
+            linkedLabel={`${farcasterName}`}
+            canUnlink={canRemoveAccount}
+            isLinked={!!farcasterSubject}
+            unlinkAction={() => {
+              unlinkFarcaster(farcasterSubject as number);
+            }}
+            linkAction={linkFarcaster}
+          />
+          <ExternalLinker
+              url="https://warpcast.com/~/settings/verified-addresses"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
                   <FarcasterIcon height={18} width={18} />
                 </div>
               }
-              label="Farcaster"
+              label="Verify wallet on Farcaster for use of @proofof bot"
             />
           </Card>
           <CanvasRow>
@@ -268,27 +352,6 @@ export default function ProfilePage() {
                 Linked Socials
               </CanvasCardHeader>
               <div className="flex flex-col gap-2">
-                <AuthLinker
-                  socialIcon={
-                    <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
-                      <Image
-                        src="/social-icons/color/google.svg"
-                        height={20}
-                        width={20}
-                        alt="Google"
-                      />
-                    </div>
-                  }
-                  label="Google"
-                  linkedLabel={`${googleName}`}
-                  canUnlink={canRemoveAccount}
-                  isLinked={!!googleSubject}
-                  unlinkAction={() => {
-                    unlinkGoogle(googleSubject as string);
-                  }}
-                  linkAction={linkGoogle}
-                />
-
                 <AuthLinker
                   socialIcon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
