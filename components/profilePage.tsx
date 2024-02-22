@@ -140,7 +140,7 @@ export default function ProfilePage() {
       <div className="p-4 md:p-10 mx-auto max-w-7xl">
         <div className="griddy">
           <Card className="mb-5 grid-span">
-            <Title className="mb-3">SheFi Summit Quest</Title>
+            <Title className="mb-3">Road to SheFi Summit Quest</Title>
             {activeWallet ? (
               <AuthLinker
                 className="space mb-3"
