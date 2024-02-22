@@ -213,7 +213,7 @@ export function ExternalLinker({
       </div>
 
       <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
-        <a href="https://warpcast.com/" target="_blank">
+        <a href={url} target="_blank">
           <ArrowUpRightIconWithGradient />
         </a>
       </div>

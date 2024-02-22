@@ -180,7 +180,7 @@ export default function ProfilePage() {
                   socialIcon={
                     <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
                       <Image
-                        src="/social-icons/color/google.svg"
+                        src="/social-icons/google.svg"
                         height={18}
                         width={18}
                         alt="Google"
@@ -196,12 +196,11 @@ export default function ProfilePage() {
                   }}
                   linkAction={linkGoogle}
                 />
-
             <ExternalLinker
               url="https://metamask.io/download/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <MetamaskIcon height={18} width={18} />
+                  <Image src={MetamaskIcon} height={18} width={18} alt='' />
                 </div>
               }
               label="Install Metamask"
@@ -210,7 +209,7 @@ export default function ProfilePage() {
               url="https://web3inbox.com/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <WalletConnectIcon height={18} width={18} />
+                  <Image src={WalletConnectIcon} height={18} width={18} alt='' />
                 </div>
               }
               label="Web3Inbox on your Phone"
@@ -255,11 +254,20 @@ export default function ProfilePage() {
               url="https://usecapsule.com"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={CapsuleIcon} height={18} width={18} alt=''/>
+                  <Image src={CapsuleIcon} height={14} width={16} alt=''/>
                 </div>
               }
               label="Create Capsule Wallet"
             />
+            <button
+               className="button h-10 gap-x-1 px-4 text-sm"
+               onClick={() => {
+                 linkWallet();
+               }}
+             >
+               <PlusIcon className="h-4 w-4" strokeWidth={2} />
+               Link Capsule Wallet via WalletConnect
+             </button>
             <AuthLinker
             className="mb-3"
             socialIcon={
@@ -276,14 +284,14 @@ export default function ProfilePage() {
             }}
             linkAction={linkFarcaster}
           />
-          <ExternalLinker
+            <ExternalLinker
               url="https://warpcast.com/~/settings/verified-addresses"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
                   <FarcasterIcon height={18} width={18} />
                 </div>
               }
-              label="Verify wallet on Farcaster for use of @proofof bot"
+              label="Verify wallet on Farcaster to use @proofof bot"
             />
           </Card>
           <CanvasRow>
