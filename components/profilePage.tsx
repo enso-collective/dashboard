@@ -237,7 +237,7 @@ export default function ProfilePage() {
               url="https://harpie.io/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <HarpieIcon height={18} width={18} />
+                  <Image src={HarpieIcon} height={18} width={18} alt=''/>
                 </div>
               }
               label="Create Harpie Account"
@@ -255,20 +255,11 @@ export default function ProfilePage() {
               url="https://usecapsule.com"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <CapsuleIcon height={18} width={18} />
+                  <Image src={CapsuleIcon} height={18} width={18} alt=''/>
                 </div>
               }
               label="Create Capsule Wallet"
             />
-            <button
-                className="button h-10 gap-x-1 px-4 text-sm"
-                onClick={() => {
-                  linkWallet();
-                }}
-              >
-                <PlusIcon className="h-4 w-4" strokeWidth={2} />
-                Link Capsule Wallet
-              </button>
             <AuthLinker
             className="mb-3"
             socialIcon={
