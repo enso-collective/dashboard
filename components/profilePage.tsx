@@ -19,7 +19,7 @@ import Image from 'next/image';
 import AppleIcon from '../components/icons/social/apple';
 import TwitterXIcon from '../components/icons/social/twitter-x';
 import FarcasterIcon from '../components/icons/social/farcaster';
-import CapsuleIcon from '../public/social-icons/capsule.svg';
+import CapsuleIcon from '../public/wallet-icons/capsule.svg';
 import GuildIcon from '../public/social-icons/guild.jpeg';
 import PYUSDIcon from '../public/social-icons/pyusd.png';
 import MetamaskIcon from '../public/wallet-icons/metamask.svg';

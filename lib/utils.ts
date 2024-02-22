@@ -8,6 +8,7 @@ export const getHumanReadableWalletType = (
     | 'wallet_connect'
     | 'phantom'
     | 'embedded'
+    | 'capsule'
     | undefined
 ) => {
   switch (walletType) {
@@ -19,6 +20,8 @@ export const getHumanReadableWalletType = (
       return 'WalletConnect';
     case 'phantom':
       return 'Phantom';
+    case 'capsule':
+      return 'Capsule';
     case 'embedded':
       return 'Privy';
     default:
