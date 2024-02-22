@@ -31,7 +31,6 @@ export default function Navbar() {
   ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
     a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
   ) as WalletWithMetadata[];
-
   useEffect(() => {
     const resolveEnsAvatar = async () => {
       const currentWallet = wallets[0];
@@ -53,7 +52,7 @@ export default function Navbar() {
     if (wallets.length > 0) {
       resolveEnsAvatar().catch(console.log);
     }
-  }, [wallets]);
+  }, [wallets.length]);
 
   return (
     <Disclosure as="nav" className="bg-white shadow-sm">
@@ -114,10 +113,10 @@ export default function Navbar() {
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                       <span className="sr-only">Open user menu</span>
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-[46px] w-[46px] rounded-full"
                         src={avatar}
-                        height={32}
-                        width={32}
+                        height={44}
+                        width={44}
                         alt={`avatar`}
                       />
                     </Menu.Button>
@@ -216,10 +215,10 @@ export default function Navbar() {
                   <div className="flex items-center px-4">
                     <div className="flex-shrink-0">
                       <img
-                        className="h-8 w-8 rounded-full"
+                        className="h-[46px] w-[46px] rounded-full"
                         src={avatar}
-                        height={32}
-                        width={32}
+                        height={44}
+                        width={44}
                         alt={`Avatar`}
                       />
                     </div>
