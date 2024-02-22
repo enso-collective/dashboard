@@ -176,26 +176,6 @@ export default function ProfilePage() {
               }}
               linkAction={linkTwitter}
             />
-            <AuthLinker
-                  socialIcon={
-                    <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
-                      <Image
-                        src="/social-icons/google.svg"
-                        height={18}
-                        width={18}
-                        alt="Google"
-                      />
-                    </div>
-                  }
-                  label="Google"
-                  linkedLabel={`${googleName}`}
-                  canUnlink={canRemoveAccount}
-                  isLinked={!!googleSubject}
-                  unlinkAction={() => {
-                    unlinkGoogle(googleSubject as string);
-                  }}
-                  linkAction={linkGoogle}
-                />
             <ExternalLinker
               url="https://metamask.io/download/"
               icon={
@@ -374,6 +354,26 @@ export default function ProfilePage() {
                     unlinkApple(appleSubject as string);
                   }}
                   linkAction={linkApple}
+                />
+                <AuthLinker
+                  socialIcon={
+                    <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                      <Image
+                        src="/social-icons/google.svg"
+                        height={18}
+                        width={18}
+                        alt="Google"
+                      />
+                    </div>
+                  }
+                  label="Google"
+                  linkedLabel={`${googleName}`}
+                  canUnlink={canRemoveAccount}
+                  isLinked={!!googleSubject}
+                  unlinkAction={() => {
+                    unlinkGoogle(googleSubject as string);
+                  }}
+                  linkAction={linkGoogle}
                 />
               </div>
             </CanvasCard>

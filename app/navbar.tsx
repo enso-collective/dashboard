@@ -63,8 +63,7 @@ export default function Navbar() {
             <div className="flex h-16 justify-between flex-grow">
               <div className="flex flex-shrink-0 items-center ">
                 <img
-                  width="50"
-                  height="50"
+                  className="w-16 h-12 sm:w-24 sm:h-20"
                   src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
                   alt="logo"
                 />
