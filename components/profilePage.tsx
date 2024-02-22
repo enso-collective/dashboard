@@ -65,7 +65,7 @@ export default function ProfilePage() {
         }
       }));
     };
-  }, [setConfig]);
+  }, []);
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
     null
   );
