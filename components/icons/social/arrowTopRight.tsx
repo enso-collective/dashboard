@@ -14,12 +14,9 @@ export default function ArrowUpRightIconWithGradient() {
         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">
           <stop
             offset="0%"
-            style={{ stopColor: 'hsl(238,87%,69%)', stopOpacity: '1' }}
+            style={{ stopColor: '#0B02FC', stopOpacity: '1' }}
           />
-          <stop
-            offset="100%"
-            style={{ stopColor: '#fca5a5', stopOpacity: 1 }}
-          />
+          <stop offset="70%" style={{ stopColor: '#e57373', stopOpacity: 1 }} />
         </linearGradient>
       </defs>
       <path

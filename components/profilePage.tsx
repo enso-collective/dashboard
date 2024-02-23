@@ -295,7 +295,7 @@ export default function ProfilePage() {
               }}
               linkAction={linkFarcaster}
             />
-            <MintEas disabled={!specifiedItemsConnected} />
+            {/* <MintEas disabled={!specifiedItemsConnected} /> */}
           </Card>
           <CanvasRow>
             <CanvasCard className="">
