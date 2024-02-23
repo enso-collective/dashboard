@@ -7,8 +7,8 @@ export default function ArrowUpRightIconWithGradient() {
       strokeWidth="1.5"
       aria-hidden="true"
       data-slot="icon"
-      width="18"
-      height="18"
+      width="20"
+      height="20"
     >
       <defs>
         <linearGradient id="gradient" x1="0%" y1="0%" x2="100%" y2="0%">

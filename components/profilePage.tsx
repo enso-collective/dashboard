@@ -303,7 +303,7 @@ export default function ProfilePage() {
                 <WalletIcon className="h-5 w-5 mr-2" strokeWidth={2} />
                 Wallets
               </CanvasCardHeader>
-              <div className="pb-1 text-sm text-privy-color-foreground-3">
+              <div className="pb-1 text-sm ">
                 Connect and link wallets to your account.
               </div>
               <div className="flex flex-col gap-2">
@@ -335,7 +335,7 @@ export default function ProfilePage() {
                   );
                 })}
                 <button
-                  className="button h-10 gap-x-1 px-4 text-sm"
+                  className="button h-10 gap-x-1 px-4 text-sm bg-white frosty-2"
                   onClick={() => {
                     linkWallet();
                   }}
@@ -348,8 +348,8 @@ export default function ProfilePage() {
           </CanvasRow>
 
           <CanvasRow>
-            <CanvasCard>
-              <CanvasCardHeader>
+            <CanvasCard className="social-bg">
+              {/* <CanvasCardHeader>
                 <UserCircleIcon className="h-5 w-5 mr-2" strokeWidth={2} />
                 Linked Socials
               </CanvasCardHeader>
@@ -389,7 +389,7 @@ export default function ProfilePage() {
                   }}
                   linkAction={linkGoogle}
                 />
-              </div>
+              </div> */}
             </CanvasCard>
           </CanvasRow>
         </div>
