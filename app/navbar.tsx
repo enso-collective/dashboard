@@ -70,7 +70,7 @@ export default function Navbar() {
               </div>
               <div className="flex">
                 <div
-                  style={{ marginLeft: '-2.3rem' }}
+                  style={{ marginLeft: '-1.5rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
                   {navigation.map((item) =>
@@ -95,7 +95,7 @@ export default function Navbar() {
                       </a>
                     ) : (
                       <span
-                        style={{ marginLeft: '3rem' }}
+                        style={{ marginLeft: '2.5rem' }}
                         key={item.name}
                         className={
                           'no-underline ' +
