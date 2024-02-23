@@ -147,7 +147,7 @@
   content: 'Enabled for SheFi Summit';
   position: absolute;
   top: 30%;
-  left: 65%;
+  right: 30px;
   background-image: linear-gradient(to right, hsl(238, 87%, 69%), #fca5a5);
   font-size: 8px;
   color: #fff;
@@ -157,5 +157,44 @@
   width: 135px;
   text-align: center;
   font-weight: 600;
-  /* display: none; */
+}
+.floating-callout-x2:hover::after {
+  content: 'Connect all accounts to mint';
+  position: absolute;
+  top: 25%;
+  right: 10px;
+  background-image: linear-gradient(to right, hsl(238, 87%, 69%), #fca5a5);
+  font-size: 8px;
+  color: #fff;
+  padding: 2px;
+  border-radius: 10px;
+  line-height: 1.7;
+  width: 135px;
+  text-align: center;
+  font-weight: 600;
+}
+
+.frosty {
+  background-color: rgba(255, 255, 255, 0.4);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: none;
+  border-width: 0px;
+}
+.frosty-2 {
+  background-color: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: none;
+  border-width: 0px;
+}
+
+.social-bg {
+  background-image: url(https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FSheFi%20Summit%20Logo%20Black.svg?alt=media&token=5433fdee-ff18-44bd-aca8-7be46864e341);
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+  min-height: 220px;
+  background-color: #fff;
+  background-size: 200px;
 }

@@ -3,12 +3,11 @@
 import React, { useState, useEffect } from 'react';
 import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 
-import AuthLinker, { ExternalLinker } from '../components/auth-linker';
+import AuthLinker, { ExternalLinker, MintEas } from '../components/auth-linker';
 import { formatWallet } from '../lib/utils';
 import CanvasCard from '../components/canvas-card';
 
 import {
-  EnvelopeIcon,
   PlusIcon,
   UserCircleIcon,
   WalletIcon
@@ -33,9 +32,7 @@ export default function ProfilePage() {
   const {
     authenticated,
     user,
-    linkEmail,
     linkWallet,
-    unlinkEmail,
     linkGoogle,
     unlinkGoogle,
     linkTwitter,
@@ -104,42 +101,36 @@ export default function ProfilePage() {
   const numAccounts = linkedAccounts.length || 0;
   const canRemoveAccount = numAccounts > 1;
 
-  const emailAddress = user?.email?.address;
-  const phoneNumber = user?.phone?.number;
-
   const googleSubject = user?.google?.subject;
   const googleName = user?.google?.name;
 
   const twitterSubject = user?.twitter?.subject;
   const twitterUsername = user?.twitter?.username;
 
-  const discordSubject = user?.discord?.subject;
-  const discordUsername = user?.discord?.username;
-
-  const githubSubject = user?.github?.subject;
-  const githubUsername = user?.github?.username;
-
-  const linkedinSubject = user?.linkedin?.subject;
-  const linkedinName = user?.linkedin?.name;
-
   const appleSubject = user?.apple?.subject;
   const appleEmail = user?.apple?.email;
-
-  const tiktokSubject = user?.tiktok?.subject;
-  const tiktokUsername = user?.tiktok?.username;
 
   const farcasterSubject = user?.farcaster?.fid;
   const farcasterName = user?.farcaster?.username;
 
-  // if (!ready) {
-  //   return <Loading />;
-  // }
+  const capsuleWalletAddress = wallets.find((t) =>
+    t.walletClientType?.toLowerCase().includes('capsule')
+  )?.address;
+
+  const hasCapsuleWallet = Boolean(capsuleWalletAddress);
+
+  const specifiedItemsConnected = [
+    hasCapsuleWallet,
+    Boolean(twitterSubject),
+    Boolean(farcasterSubject),
+    Boolean(activeWallet?.address)
+  ].every((t) => t === true);
 
   return (
     <div className=" bg-[#F9FAFB] bg-denver">
       <div className="p-4 md:p-10 mx-auto max-w-7xl">
         <div className="griddy">
-          <Card className="mb-5 grid-span">
+          <Card className="mb-5 grid-span frosty">
             <Title className="mb-3">Road to SheFi Summit Quest</Title>
             {activeWallet ? (
               <AuthLinker
@@ -180,7 +171,7 @@ export default function ProfilePage() {
               url="https://metamask.io/download/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={MetamaskIcon} height={18} width={18} alt='' />
+                  <Image src={MetamaskIcon} height={18} width={18} alt="" />
                 </div>
               }
               label="Install Metamask on iOS/Android"
@@ -189,7 +180,12 @@ export default function ProfilePage() {
               url="https://web3inbox.com/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={WalletConnectIcon} height={18} width={18} alt='' />
+                  <Image
+                    src={WalletConnectIcon}
+                    height={18}
+                    width={18}
+                    alt=""
+                  />
                 </div>
               }
               label="Download Web3Inbox PWA App"
@@ -198,7 +194,12 @@ export default function ProfilePage() {
               url="https://web3inbox.com/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={WalletConnectIcon} height={18} width={18} alt='' />
+                  <Image
+                    src={WalletConnectIcon}
+                    height={18}
+                    width={18}
+                    alt=""
+                  />
                 </div>
               }
               label="Subscribe to SheFi Summt in Web3Inbox"
@@ -207,7 +208,7 @@ export default function ProfilePage() {
               url="https://guild.xyz/shefisummit#!"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={GuildIcon} height={18} width={18} alt='' />
+                  <Image src={GuildIcon} height={18} width={18} alt="" />
                 </div>
               }
               label="Join the SheFi Summit Guild"
@@ -216,7 +217,7 @@ export default function ProfilePage() {
               url="https://phaver.com/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={PhaverIcon} height={18} width={18} alt='' />
+                  <Image src={PhaverIcon} height={18} width={18} alt="" />
                 </div>
               }
               label="Download the Phaver App"
@@ -225,7 +226,7 @@ export default function ProfilePage() {
               url="https://harpie.io/"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={HarpieIcon} height={18} width={18} alt=''/>
+                  <Image src={HarpieIcon} height={18} width={18} alt="" />
                 </div>
               }
               label="Create Harpie Account"
@@ -234,29 +235,41 @@ export default function ProfilePage() {
               url="https://help.venmo.com/hc/en-us/articles/360063753053-Cryptocurrency-FAQ"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={PYUSDIcon} height={18} width={18} alt='' />
+                  <Image src={PYUSDIcon} height={18} width={18} alt="" />
                 </div>
               }
               label="Convert $2 USD to PYUSD in Venmo app"
             />
+
             <ExternalLinker
               url="https://connect.usecapsule.com"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                  <Image src={CapsuleIcon} height={14} width={16} alt=''/>
+                  <Image src={CapsuleIcon} height={13} width={13} alt="" />
                 </div>
               }
               label="Create Capsule Wallet"
             />
-            <button
-               className="button h-10 gap-x-1 px-4 text-sm"
-               onClick={() => {
-                 linkWallet();
-               }}
-             >
-               <PlusIcon className="h-4 w-4" strokeWidth={2} />
-               Link Capsule Wallet via WalletConnect
-             </button>
+
+            <AuthLinker
+              className="mb-3 mt-3"
+              socialIcon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
+                  <Image src={CapsuleIcon} height={13} width={13} alt="" />
+                </div>
+              }
+              label="Link Capsule Wallet via WalletConnect"
+              linkedLabel={`${capsuleWalletAddress}`}
+              canUnlink={canRemoveAccount}
+              isLinked={!!hasCapsuleWallet}
+              unlinkAction={() => {
+                unlinkWallet(`${capsuleWalletAddress}`);
+              }}
+              linkAction={() => {
+                linkWallet();
+              }}
+            />
+
             <ExternalLinker
               url="https://warpcast.com/~/settings/verified-addresses"
               icon={
@@ -267,21 +280,22 @@ export default function ProfilePage() {
               label="Verify Farcaster Wallet to use @proofof quest bot"
             />
             <AuthLinker
-            className="mb-3"
-            socialIcon={
-              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
-                <FarcasterIcon height={18} width={18} />
-              </div>
-            }
-            label="Connect Farcaster Account"
-            linkedLabel={`${farcasterName}`}
-            canUnlink={canRemoveAccount}
-            isLinked={!!farcasterSubject}
-            unlinkAction={() => {
-              unlinkFarcaster(farcasterSubject as number);
-            }}
-            linkAction={linkFarcaster}
-          />
+              className="mt-3"
+              socialIcon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <FarcasterIcon height={18} width={18} />
+                </div>
+              }
+              label="Connect Farcaster Account"
+              linkedLabel={`${farcasterName}`}
+              canUnlink={canRemoveAccount}
+              isLinked={!!farcasterSubject}
+              unlinkAction={() => {
+                unlinkFarcaster(farcasterSubject as number);
+              }}
+              linkAction={linkFarcaster}
+            />
+            {/* <MintEas disabled={!specifiedItemsConnected} /> */}
           </Card>
           <CanvasRow>
             <CanvasCard className="">
@@ -289,7 +303,7 @@ export default function ProfilePage() {
                 <WalletIcon className="h-5 w-5 mr-2" strokeWidth={2} />
                 Wallets
               </CanvasCardHeader>
-              <div className="pb-1 text-sm text-privy-color-foreground-3">
+              <div className="pb-1 text-sm ">
                 Connect and link wallets to your account.
               </div>
               <div className="flex flex-col gap-2">
@@ -321,7 +335,7 @@ export default function ProfilePage() {
                   );
                 })}
                 <button
-                  className="button h-10 gap-x-1 px-4 text-sm"
+                  className="button h-10 gap-x-1 px-4 text-sm bg-white frosty-2"
                   onClick={() => {
                     linkWallet();
                   }}
@@ -334,8 +348,8 @@ export default function ProfilePage() {
           </CanvasRow>
 
           <CanvasRow>
-            <CanvasCard>
-              <CanvasCardHeader>
+            <CanvasCard className="social-bg">
+              {/* <CanvasCardHeader>
                 <UserCircleIcon className="h-5 w-5 mr-2" strokeWidth={2} />
                 Linked Socials
               </CanvasCardHeader>
@@ -375,7 +389,7 @@ export default function ProfilePage() {
                   }}
                   linkAction={linkGoogle}
                 />
-              </div>
+              </div> */}
             </CanvasCard>
           </CanvasRow>
         </div>

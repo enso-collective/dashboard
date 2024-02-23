@@ -160,13 +160,13 @@ export default function AuthLinker({
   return (
     <>
       <div
-        className={`group flex h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
+        className={`frosty-2 group resize-mobile flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
           isActive
             ? 'border-privy-color-accent'
             : 'border-privy-color-foreground-4'
         } ${className}`}
       >
-        <div className="flex shrink-0 grow-0 items-center gap-x-2">
+        <div className="flex shrink-1 grow-0 items-center gap-x-2">
           {socialIcon ? socialIcon : null}
           {wallet ? getWalletType(wallet).icon : null}
           {label ? <div className="w-full">{label}</div> : null}
@@ -201,13 +201,13 @@ export function ExternalLinker({
 }) {
   return (
     <div
-      className={`group mt-3 flex h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
+      className={`frosty-2 resize-mobile group mt-3 flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
         isActive
           ? 'border-privy-color-accent'
           : 'border-privy-color-foreground-4'
       } ${className}`}
     >
-      <div className="flex shrink-0 grow-0 items-center gap-x-2">
+      <div className="flex 1 grow-0 items-center gap-x-2">
         {icon ? icon : null}
         <div className="w-full">{label}</div>
       </div>
@@ -218,5 +218,19 @@ export function ExternalLinker({
         </a>
       </div>
     </div>
+  );
+}
+
+export function MintEas({ disabled }: { disabled: boolean }) {
+  return (
+    <button
+      className={`floating-callout-x2 frosty-2 cursor-pointer group resize-mobile flex min-h-10 min-w-full items-center justify-between  rounded-md border  px-3 text-sm mt-3 ${disabled ? 'bg-[#e5e7eb]' : 'bg-privy-color-background'}`}
+      disabled={disabled}
+    >
+      <div className="flex flex-row items-center">
+        <span className="mr-2 ">Mint EAS</span>
+        <ArrowUpRightIconWithGradient />
+      </div>
+    </button>
   );
 }
