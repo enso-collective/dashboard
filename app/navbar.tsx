@@ -70,7 +70,7 @@ export default function Navbar() {
               </div>
               <div className="flex">
                 <div
-                  style={{ marginLeft: '-2.6rem' }}
+                  style={{ marginLeft: '-2.3rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
                   {navigation.map((item) =>
