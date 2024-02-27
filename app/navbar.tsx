@@ -10,7 +10,8 @@ import { publicClient } from '../lib/utils';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 const navigation = [
-  { name: 'Profile', href: '/' },
+  { name: 'Intro', href: '/' },
+  { name: 'Profile', href: '/profile' },
   { name: 'Home', href: '/home' },
   { name: 'Quests', href: '/quests' }
 ];
