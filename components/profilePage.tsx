@@ -202,7 +202,7 @@ export default function ProfilePage() {
                   />
                 </div>
               }
-              label="Subscribe to SheFi Summt in Web3Inbox"
+              label="Subscribe to SheFi Summit in Web3Inbox"
             />
             <ExternalLinker
               url="https://guild.xyz/shefisummit#!"
@@ -232,7 +232,7 @@ export default function ProfilePage() {
               label="Create Harpie Account"
             />
             <ExternalLinker
-              url="https://help.venmo.com/hc/en-us/articles/360063753053-Cryptocurrency-FAQ"
+              url="https://www.paypal.com/us/digital-wallet/manage-money/crypto/pyusd"
               icon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
                   <Image src={PYUSDIcon} height={18} width={18} alt="" />
