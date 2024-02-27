@@ -304,7 +304,7 @@ export default function ProfilePage() {
                 Wallets
               </CanvasCardHeader>
               <div className="pb-1 text-sm ">
-                Connect and link wallets to your account.
+                Connect and link wallets to your Proofof account.
               </div>
               <div className="flex flex-col gap-2">
                 {wallets.map((wallet) => {
