@@ -1,13 +1,18 @@
 import { Card, Title, Subtitle, Text } from '@tremor/react';
 import { useEffect, useRef, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
+import ArrowUpRightIconWithGradient from './icons/social/arrowTopRight';
 
 function sleep(ms: number) {
   return new Promise((resolve) => setTimeout(resolve, ms));
 }
 
 const sampleData = [
-  { points: 100, ensName: 'john_doe.eth', id: 'abc123' },
+  {
+    points: 100,
+    ensName: 'john_doe.eth',
+    id: 'abc123'
+  },
   { points: 75, ensName: 'alice_smith.eth', id: 'def456' },
   { points: 120, ensName: 'crypto_wizard.eth', id: 'ghi789' },
   { points: 90, ensName: 'blockchain_guru.eth', id: 'jkl012' },
@@ -141,49 +146,30 @@ export default function HomePage() {
 
   return (
     <div className="bg-denver">
-      <div className="p-4 md:p-10 mx-auto max-w-7xl">
+      <div className="p-4 md:p-10 mx-auto max-w-4xl">
         <div className="mb-10">
           <Title>Quests</Title>
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(250px,1fr))] gap-y-4 gap-x-4 mt-2.5 grid-auto-rows-minmax">
-            {sampleQuestsData.map((t) => (
-              <Card key={t.Company} className="flex flex-col">
-                <Title>{t.Company}</Title>
-                <div className="mt-auto">
-                  <div className="mt-6 mb-3">
-                    <img
-                      src={t.Image}
-                      width={30}
-                      height={30}
-                      alt=""
-                      className="rounded-2xl"
-                    />
-                  </div>
-                  <div className="flex flex-row justify-between items-center">
-                    <Subtitle className="">
-                      {t.Description.split(' ')[0]}
-                    </Subtitle>
 
-                    <div className="flex flex-row items-center">
-                      <div className="flex flex-row mr-[-10px] items-center">
-                        <img
-                          src="https://fastly.picsum.photos/id/866/20/20.jpg?hmac=1beQxVWtDOMlb_hrFordZMrI1QQvEchw0E17oQYe8uo"
-                          alt=""
-                          className="rounded-2xl border-2 border-solid border-gray-300"
-                        />
-                        <img
-                          src="https://fastly.picsum.photos/id/641/20/20.jpg?hmac=17LTfp-U5z9I2-TfIodgbaxAwi2gzzqu3MVSlsyKvqE"
-                          alt=""
-                          className="rounded-2xl border-2 border-solid border-gray-300 transform translate-x-[-30%]"
-                        />
-                        <img
-                          src="https://fastly.picsum.photos/id/953/20/20.jpg?hmac=g-Y39CdULsUGhNRnl9xEyME7R_P_jk6B5xQbE5bIw9Y"
-                          alt=""
-                          className="rounded-2xl border-2 border-solid border-gray-300 transform translate-x-[-60%]"
-                        />
-                      </div>
-                      <Text>+{new Intl.NumberFormat().format(t.Points)}</Text>
-                    </div>
-                  </div>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
+            {sampleQuestsData.map((t) => (
+              <Card
+                key={t.Company}
+                className="flex flex-col quest-card bg-white justify-between"
+              >
+                <div className="mt-1 mb-5 flex items-center flex-row">
+                  <img
+                    src={t.Image}
+                    width={20}
+                    height={20}
+                    alt=""
+                    className="rounded-2xl mr-2"
+                  />
+                  <p className="">{t.Company}</p>
+                </div>
+                <Subtitle className="mb-5">{t.Description}</Subtitle>
+                <div className="flex flex-row justify-between items-center">
+                  <p>+5 points</p>
+                  <ArrowUpRightIconWithGradient />
                 </div>
               </Card>
             ))}
@@ -196,15 +182,19 @@ export default function HomePage() {
             <div className="list-fix" key={t.id}>
               <div className="number-col">#{index + 1}</div>
               <div className="list-body pl-4 pr-4">
-                <div style={{ fontWeight: '600' }} className="list-wrap">
-                  {t.ensName}
+                <div className="flex flex-row items-center">
+                  <img
+                    className="rounded-full mr-2 grayscale"
+                    width="30"
+                    height="30"
+                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293"
+                    alt="logo"
+                  />
+                  <div className="list-wrap">{t.ensName}</div>
                 </div>
 
-                <p>
-                  <span style={{ fontWeight: '600' }}>
-                    {new Intl.NumberFormat().format(t.points)}
-                  </span>{' '}
-                  points
+                <p className="basis-24 flex-shrink-0 text-right">
+                  <span>{new Intl.NumberFormat().format(t.points)}</span> points
                 </p>
               </div>
             </div>
