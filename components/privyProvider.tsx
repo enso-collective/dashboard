@@ -11,15 +11,7 @@ const defaultConfig = {
     inParentNodeId: null
   },
   loginMethods: [
-    'wallet',
-    'email',
-    'google',
-    'twitter',
-    'discord',
-    'farcaster',
-    'github',
-    'linkedin',
-    'apple'
+    'wallet'
   ]
 };
 interface PrivyConfigObject {

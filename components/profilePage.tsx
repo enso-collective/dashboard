@@ -251,6 +251,16 @@ export default function ProfilePage() {
               label="Create Capsule Wallet"
             />
 
+            <ExternalLinker
+              url="http://demo.usecapsule.com/"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={CapsuleIcon} height={13} width={13} alt="" />
+                </div>
+              }
+              label="Mint Capsule NFT"
+            />
+
             <AuthLinker
               className="mb-3 mt-3"
               socialIcon={
