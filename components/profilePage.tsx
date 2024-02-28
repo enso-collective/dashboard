@@ -205,7 +205,7 @@ export default function ProfilePage() {
               label="Mint your newly permissionless Lens Profile!"
             />
             <AuthLinker
-              className="mb-3"
+              className="mb-3 mt-3"
               socialIcon={
                 <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 mr-1.5">
                   <TwitterXIcon height={18} width={18} />
