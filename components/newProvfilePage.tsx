@@ -2,10 +2,9 @@ import { Card, Title, Subtitle, Text } from '@tremor/react';
 import { useEffect, useRef, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 import ArrowUpRightIconWithGradient from './icons/social/arrowTopRight';
-
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
+import { db } from '../lib/firebase';
+import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
+import { usePrivyContext } from './privyProvider';
 
 const sampleQuestsData = [
   {
@@ -67,6 +66,43 @@ const sampleQuestsData = [
 ];
 export default function NewProfilePage() {
   const loaderRef = useRef(null);
+  const { authenticated, user } = usePrivy();
+  const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
+    null
+  );
+  const [attestations, setAttestations] = useState([]);
+
+  const { wallets: connectedWallets } = useWallets();
+  const linkedAccounts = user?.linkedAccounts || [];
+  const wallets = linkedAccounts.filter(
+    (a) => a.type === 'wallet'
+  ) as WalletWithMetadata[];
+
+  const linkedAndConnectedWallets = wallets
+    .filter((w) => connectedWallets.some((cw) => cw.address === w.address))
+    .sort((a, b) =>
+      b.verifiedAt.toLocaleString().localeCompare(a.verifiedAt.toLocaleString())
+    );
+  useEffect(() => {
+    // if no active wallet is set, set it to the first one if available
+    if (!activeWallet && linkedAndConnectedWallets.length > 0) {
+      setActiveWallet(linkedAndConnectedWallets[0]!);
+    }
+    // if an active wallet was removed from wallets, clear it out
+    if (
+      !linkedAndConnectedWallets.some(
+        (w) => w.address === activeWallet?.address
+      )
+    ) {
+      setActiveWallet(
+        linkedAndConnectedWallets.length > 0
+          ? linkedAndConnectedWallets[0]!
+          : null
+      );
+    }
+  }, [activeWallet, linkedAndConnectedWallets]);
+
+  useEffect(() => {}, [activeWallet]);
 
   return (
     <div className="bg-denver">
