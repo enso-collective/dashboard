@@ -21,6 +21,7 @@ import FarcasterIcon from '../components/icons/social/farcaster';
 import CapsuleIcon from '../public/wallet-icons/capsule.svg';
 import GuildIcon from '../public/social-icons/guild.jpeg';
 import PYUSDIcon from '../public/social-icons/pyusd.png';
+import LensIcon from '../public/social-icons/lens.png';
 import MetamaskIcon from '../public/wallet-icons/metamask.svg';
 import HarpieIcon from '../public/social-icons/harpie.svg';
 import PhaverIcon from '../public/social-icons/phaver.jpg';
@@ -194,6 +195,15 @@ export default function ProfilePage() {
                 connectAction={connectWallet}
               />
             ) : null}
+            <ExternalLinker
+              url="https://www.lens.xyz"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={LensIcon} height={18} width={18} alt="" />
+                </div>
+              }
+              label="Mint your newly permissionless Lens Profile!"
+            />
             <AuthLinker
               className="mb-3"
               socialIcon={
