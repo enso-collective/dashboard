@@ -2,7 +2,7 @@ import { initializeApp } from 'firebase/app';
 import { getFirestore } from 'firebase/firestore/lite';
 
 const firebaseConfig = {
-  apiKey: 'AIzaSyDBn0iaQvIhMLPX79eVnRL_fN_EL3j4hhc',
+  apiKey: process.env.FIREBASE_API_KEY,
   authDomain: 'enso-collective.firebaseapp.com',
   databaseURL: 'https://enso-collective-default-rtdb.firebaseio.com',
   projectId: 'enso-collective',
