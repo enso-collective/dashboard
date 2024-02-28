@@ -11,6 +11,7 @@ import {
 } from 'firebase/firestore/lite';
 import { db } from '../lib/firebase';
 import { publicClient } from '../lib/utils';
+import { usePrivy } from '@privy-io/react-auth';
 
 interface MerchItem {
   description: string;
@@ -41,6 +42,7 @@ export default function HomePage() {
   const [quests, setQuests] = useState<MerchItem[]>([]);
   const [loadingQuests, setLoadingQuests] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
+  const { authenticated } = usePrivy();
 
   useEffect(() => {
     getDocs(query(usersRef.current, orderBy('points', 'desc'), limit(100)))
@@ -206,6 +208,7 @@ export default function HomePage() {
           </div>
         </div>
       </div>
+      <div style={authenticated ? { display: 'none' } : {}} id="render-privy" />
     </div>
   );
 }

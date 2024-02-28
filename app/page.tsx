@@ -1,9 +1,9 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
 import { usePrivy } from '@privy-io/react-auth';
-import ProfilePage from '../components/profilePage';
 import Empty from '../components/empty';
 import { usePrivyContext } from '../components/privyProvider';
+import HomePage from '../components/homePage';
 
 export default function IndexPage() {
   const { ready, authenticated, login } = usePrivy();
@@ -29,7 +29,7 @@ export default function IndexPage() {
 
   if (ready && authenticated) {
     cachedCountRef.current = 0;
-    return <ProfilePage />;
+    return <HomePage />;
   }
   return <Empty />;
 }
