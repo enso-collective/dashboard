@@ -2,6 +2,7 @@ import { Card, Title, Subtitle, Text } from '@tremor/react';
 import { useEffect, useRef, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 import ArrowUpRightIconWithGradient from './icons/social/arrowTopRight';
+import Link from 'next/link'; 
 import {
   collection,
   getDocs,
@@ -156,7 +157,13 @@ export default function HomePage() {
                 </Subtitle>
                 <div className="flex flex-row justify-between items-center">
                   <p>+{t.points} points</p>
+                  {t.link.startsWith('/') ? (
                   <ArrowUpRightIconWithGradient />
+                ) : (
+                  <a href={t.link} target="_blank" rel="noopener noreferrer">
+                    <ArrowUpRightIconWithGradient />
+                  </a>
+                )}
                 </div>
               </Card>
             ))}
