@@ -12,10 +12,6 @@ import {
 import { db } from '../lib/firebase';
 import { publicClient } from '../lib/utils';
 
-function sleep(ms: number) {
-  return new Promise((resolve) => setTimeout(resolve, ms));
-}
-
 interface MerchItem {
   description: string;
   image: string;
@@ -32,6 +28,7 @@ interface User {
   points: number;
   image: string;
   ensName: string;
+  userWallet: string;
 }
 
 export default function HomePage() {
@@ -104,7 +101,7 @@ export default function HomePage() {
         [...users.slice(page * 10 - 10, page * 10)].map(async (t) => {
           const tempObj = { ...t };
           const ensName = await publicClient.getEnsName({
-            address: `${t.attestWallet}` as any
+            address: `${t.userWallet}` as any
           });
           if (ensName) {
             const ensAvatar = await publicClient.getEnsAvatar({
@@ -167,7 +164,7 @@ export default function HomePage() {
           <Title className="mb-3">Leaderboard</Title>
 
           {items.map((t, index) => (
-            <div className="list-fix" key={t.attestWallet}>
+            <div className="list-fix" key={t.userWallet}>
               <div className="number-col">#{index + 1}</div>
               <div className="list-body pl-4 pr-4">
                 <div className="flex flex-row items-center">
@@ -189,7 +186,7 @@ export default function HomePage() {
                     />
                   )}
 
-                  <div className="list-wrap">{t.ensName || t.attestWallet}</div>
+                  <div className="list-wrap">{t.ensName || t.userWallet}</div>
                 </div>
 
                 <p className="basis-24 flex-shrink-0 text-right">
