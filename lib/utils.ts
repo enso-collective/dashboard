@@ -2,7 +2,6 @@ import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 import { db } from './firebase'; // Import your Firestore instance
 
-
 export const getHumanReadableWalletType = (
   walletType:
     | 'metamask'
@@ -51,14 +50,14 @@ export const publicClient = createPublicClient({
   transport: http()
 });
 
-export const addTwitterAccountToWallet = (userWallet: string, twitterUsername: string): Promise<void> => {
-  return db.collection('users').where('wallet', '==', userWallet).get().then((querySnapshot) => {
-    const updates = querySnapshot.docs.map((doc) => {
-      return doc.ref.set({
-        twitterUsername: twitterUsername
-      }, { merge: true });
-    });
+// export const addTwitterAccountToWallet = (userWallet: string, twitterUsername: string): Promise<void> => {
+//   return db.collection('users').where('wallet', '==', userWallet).get().then((querySnapshot) => {
+//     const updates = querySnapshot.docs.map((doc) => {
+//       return doc.ref.set({
+//         twitterUsername: twitterUsername
+//       }, { merge: true });
+//     });
 
-    return Promise.all(updates);
-  });
-};
+//     return Promise.all(updates);
+//   });
+// };
