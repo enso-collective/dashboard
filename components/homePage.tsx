@@ -157,14 +157,20 @@ export default function HomePage() {
                 </Subtitle>
                 <div className="flex flex-row justify-between items-center">
                   <p>+{t.points} points</p>
-                  {t.link.startsWith('/') ? (
-                  <ArrowUpRightIconWithGradient />
-                ) : (
-                  <a href={t.link} target="_blank" rel="noopener noreferrer">
+                  {t.link && t.link.startsWith('/') ? (
+                    // Uncomment the following lines when you want to make the links starting with '/' clickable
+                    // <Link href={t.link}>
+                    //   <a>
+                    //     <ArrowUpRightIconWithGradient />
+                    //   </a>
+                    // </Link>
                     <ArrowUpRightIconWithGradient />
-                  </a>
-                )}
-                </div>
+                  ) : (
+                    <a href={t.link} target="_blank" rel="noopener noreferrer">
+                      <ArrowUpRightIconWithGradient />
+                    </a>
+                  )}
+              </div>
               </Card>
             ))}
           </div>
