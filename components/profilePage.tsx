@@ -130,7 +130,8 @@ export default function ProfilePage() {
         or(
           where('userWallet', '==', addressTrimmedToLowerCase),
           where('userWalletToLowerCase', '==', addressTrimmedToLowerCase),
-          where('attestWallet', '==', addressTrimmedToLowerCase)
+          where('attestWallet', '==', addressTrimmedToLowerCase),
+          where('userWalletLower', '==', addressTrimmedToLowerCase)
         ),
         limit(1)
       );
