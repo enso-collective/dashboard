@@ -10,8 +10,9 @@ import { publicClient } from '../lib/utils';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 const navigation = [
-  { name: 'Profile', href: '/' },
-  { name: 'Home', href: '/home' },
+  { name: 'Home', href: '/' },
+  { name: 'Intro', href: '/intro' },
+  { name: 'Profile', href: '/profile' },
   { name: 'Quests', href: '/quests' }
 ];
 
@@ -19,6 +20,7 @@ function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
+const activeNavPaths = ['/', '/intro', 'profile'];
 export default function Navbar() {
   const { authenticated, login, logout, user } = usePrivy();
   const pathname = usePathname();
@@ -74,7 +76,7 @@ export default function Navbar() {
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
                   {navigation.map((item) =>
-                    item.href === '/' ? (
+                    activeNavPaths.includes(item.href) ? (
                       <a
                         key={item.name}
                         href={item.href}
@@ -184,7 +186,7 @@ export default function Navbar() {
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
               {navigation.map((item) =>
-                item.href === '/' ? (
+                activeNavPaths.includes(item.href) ? (
                   <Disclosure.Button
                     key={item.name}
                     as="a"

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 
 import AuthLinker, { ExternalLinker, MintEas } from '../components/auth-linker';
@@ -21,12 +21,24 @@ import FarcasterIcon from '../components/icons/social/farcaster';
 import CapsuleIcon from '../public/wallet-icons/capsule.svg';
 import GuildIcon from '../public/social-icons/guild.jpeg';
 import PYUSDIcon from '../public/social-icons/pyusd.png';
+import LensIcon from '../public/social-icons/lens.png';
 import MetamaskIcon from '../public/wallet-icons/metamask.svg';
 import HarpieIcon from '../public/social-icons/harpie.svg';
 import PhaverIcon from '../public/social-icons/phaver.jpg';
 import WalletConnectIcon from '../public/wallet-icons/wallet_connect.svg';
 import { Card, Title } from '@tremor/react';
 import { usePrivyContext } from './privyProvider';
+import {
+  collection,
+  doc,
+  getDocs,
+  limit,
+  query,
+  where,
+  or,
+  updateDoc
+} from 'firebase/firestore/lite';
+import { db } from '../lib/firebase';
 
 export default function ProfilePage() {
   const {
@@ -63,6 +75,7 @@ export default function ProfilePage() {
       }));
     };
   }, []);
+
   const [activeWallet, setActiveWallet] = useState<WalletWithMetadata | null>(
     null
   );
@@ -106,6 +119,37 @@ export default function ProfilePage() {
 
   const twitterSubject = user?.twitter?.subject;
   const twitterUsername = user?.twitter?.username;
+
+  useEffect(() => {
+    if (twitterUsername && activeWallet?.address) {
+      const addressTrimmedToLowerCase = activeWallet.address
+        .toLowerCase()
+        .trim();
+      const q = query(
+        collection(db, 'User'),
+        or(
+          where('userWallet', '==', addressTrimmedToLowerCase),
+          where('userWalletToLowerCase', '==', addressTrimmedToLowerCase),
+          where('attestWallet', '==', addressTrimmedToLowerCase)
+        ),
+        limit(1)
+      );
+      getDocs(q)
+        .then((snapshot) => {
+          snapshot.forEach(async (s) => {
+            try {
+              const docRef = doc(db, 'User', s.id);
+              await updateDoc(docRef, {
+                twitterUsername: twitterUsername
+              });
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        })
+        .catch(console.log);
+    }
+  }, [twitterUsername, activeWallet]);
 
   const appleSubject = user?.apple?.subject;
   const appleEmail = user?.apple?.email;
@@ -151,6 +195,15 @@ export default function ProfilePage() {
                 connectAction={connectWallet}
               />
             ) : null}
+            <ExternalLinker
+              url="https://www.lens.xyz"
+              icon={
+                <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground mr-1.5">
+                  <Image src={LensIcon} height={18} width={18} alt="" />
+                </div>
+              }
+              label="Mint your newly permissionless Lens Profile!"
+            />
             <AuthLinker
               className="mb-3"
               socialIcon={
