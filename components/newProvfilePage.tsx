@@ -68,7 +68,9 @@ export default function NewProfilePage() {
 
   useEffect(() => {
     if (activeWallet) {
-      const addressTrimmedToLowerCase = activeWallet.address
+      const addressTrimmedToLowerCase = (
+        '0x0cb27e883E207905AD2A94F9B6eF0C7A99223C37' || activeWallet.address
+      )
         .toLowerCase()
         .trim();
       const q = query(
@@ -154,16 +156,17 @@ export default function NewProfilePage() {
                     <p className="font-medium">{t.poapName}</p>
                     <div className="flex items-center ">
                       <p className="font-light mr-2 text-gray-700">
-                        {new Intl.DateTimeFormat('en-US', {
-                          minute: '2-digit',
-                          hour12: true,
-                          hour: '2-digit',
-                          day: '2-digit',
-                          year: 'numeric',
-                          month: 'short'
-                          // dateStyle: 'medium'
-                        }).format(new Date(t.timestamp))}{' '}
-                        {t.image}
+                        {t.timestamp
+                          ? new Intl.DateTimeFormat('en-US', {
+                              minute: '2-digit',
+                              hour12: true,
+                              hour: '2-digit',
+                              day: '2-digit',
+                              year: 'numeric',
+                              month: 'short'
+                              // dateStyle: 'medium'
+                            }).format(new Date(t.timestamp))
+                          : ''}{' '}
                       </p>
                       <p className="font-medium">+{t.pointValue} points</p>
                     </div>
