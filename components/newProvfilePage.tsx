@@ -68,9 +68,7 @@ export default function NewProfilePage() {
 
   useEffect(() => {
     if (activeWallet) {
-      const addressTrimmedToLowerCase = (
-        '0x0cb27e883E207905AD2A94F9B6eF0C7A99223C37' || activeWallet.address
-      )
+      const addressTrimmedToLowerCase = activeWallet.address
         .toLowerCase()
         .trim();
       const q = query(

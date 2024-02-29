@@ -1,12 +1,17 @@
 'use client';
 import React, { useEffect, useRef } from 'react';
-import { usePrivy } from '@privy-io/react-auth';
+import { usePrivy, useLogin } from '@privy-io/react-auth';
 import Empty from '../components/empty';
 import { usePrivyContext } from '../components/privyProvider';
 import HomePage from '../components/homePage';
 
 export default function IndexPage() {
-  const { ready, authenticated, login } = usePrivy();
+  const { ready, authenticated } = usePrivy();
+  const { login } = useLogin({
+    onComplete: (user) => {
+      console.log(user);
+    }
+  });
   const cachedCountRef = useRef(0);
   const { setConfig } = usePrivyContext();
   useEffect(() => {
