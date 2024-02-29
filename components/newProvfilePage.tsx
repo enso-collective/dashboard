@@ -68,9 +68,10 @@ export default function NewProfilePage() {
 
   useEffect(() => {
     if (activeWallet) {
-      const addressTrimmedToLowerCase = activeWallet.address
+      const addressTrimmedToLowerCase = (activeWallet?.address)
         .toLowerCase()
         .trim();
+      console.log({ addressTrimmedToLowerCase });
       const q = query(
         collection(db, 'Proof'),
         or(
@@ -109,11 +110,17 @@ export default function NewProfilePage() {
               {gallery.map((t) => (
                 <div
                   key={t.timestamp}
-                  className="p-0 overflow-hidden"
+                  className="p-0 overflow-hidden card-flip"
                   style={{ borderWidth: 0, borderRadius: '0px' }}
                 >
                   <div className="card-inner flex flex-col grid-card cursor-pointer justify-end ">
-                    <img src={t.ipfsImageURL} alt="" className="front-image" />
+                    <div className="card-front">
+                      <img
+                        src={t.ipfsImageURL}
+                        alt=""
+                        className="front-image"
+                      />
+                    </div>
                     <div className="card-back bg-white p-2 flex flex-col space-between">
                       <div className="mt-1 mb-1 flex items-center flex-row">
                         <img
