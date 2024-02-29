@@ -46,7 +46,7 @@ export default function NewProfilePage() {
     .sort((a, b) =>
       b.verifiedAt.toLocaleString().localeCompare(a.verifiedAt.toLocaleString())
     );
-  console.log(attestations[0]);
+
   useEffect(() => {
     // if no active wallet is set, set it to the first one if available
     if (!activeWallet && linkedAndConnectedWallets.length > 0) {
