@@ -13,6 +13,7 @@ import {
 import { db } from '../lib/firebase';
 import { publicClient } from '../lib/utils';
 import { usePrivy } from '@privy-io/react-auth';
+import GiganticLoader from './giganticLoader';
 
 interface MerchItem {
   description: string;
@@ -135,7 +136,7 @@ export default function HomePage() {
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
         <div className="mb-10">
           <Title>Quests</Title>
-
+          {loadingQuests ? <GiganticLoader /> : null}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
             {quests.map((t) => (
               <Card
@@ -177,7 +178,6 @@ export default function HomePage() {
         </div>
         <div className="leaderboard">
           <Title className="mb-3">Leaderboard</Title>
-
           {items.map((t, index) => (
             <div className="list-fix" key={t.userWallet}>
               <div className="number-col">#{index + 1}</div>
