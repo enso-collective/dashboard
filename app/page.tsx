@@ -4,13 +4,12 @@ import { usePrivy, useLogin } from '@privy-io/react-auth';
 import Empty from '../components/empty';
 import { usePrivyContext } from '../components/privyProvider';
 import HomePage from '../components/homePage';
+import { prviyLoginCallback } from '../lib/handleLogin';
 
 export default function IndexPage() {
   const { ready, authenticated } = usePrivy();
   const { login } = useLogin({
-    onComplete: (user) => {
-      console.log(user);
-    }
+    onComplete: prviyLoginCallback
   });
   const cachedCountRef = useRef(0);
   const { setConfig } = usePrivyContext();

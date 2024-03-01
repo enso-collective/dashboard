@@ -36,7 +36,8 @@ export async function prviyLoginCallback(user: any) {
       .then(async (snapshot) => {
         const payload = {
           privyId: user.id,
-          mainWallet: addressTrimmedToLowerCase
+          mainWallet: addressTrimmedToLowerCase,
+          userWalletToLowerCase: addressTrimmedToLowerCase
         } as any;
         if (user?.twitter?.username) {
           payload.twitterUsername = user?.twitter?.username;
