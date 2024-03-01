@@ -67,10 +67,16 @@ export default function NewProfilePage() {
   }, [activeWallet, linkedAndConnectedWallets]);
 
   useEffect(() => {
-    if (activeWallet) {
-      const addressTrimmedToLowerCase = (activeWallet?.address)
-        .toLowerCase()
-        .trim();
+    const linkedAccounts = user?.linkedAccounts || [];
+
+    const wallets: WalletWithMetadata[] = Object.assign(
+      [],
+      linkedAccounts.filter((a: any) => a.type === 'wallet')
+    ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
+      a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
+    ) as WalletWithMetadata[];
+    if (wallets.length > 0) {
+      const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
       console.log({ addressTrimmedToLowerCase });
       const q = query(
         collection(db, 'Proof'),
@@ -96,7 +102,7 @@ export default function NewProfilePage() {
         })
         .catch(console.log);
     }
-  }, [activeWallet]);
+  }, [user?.linkedAccounts]);
 
   return (
     <div className="bg-denver min-h-screen">
