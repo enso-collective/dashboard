@@ -86,7 +86,7 @@
 
 .list-fix {
   display: grid;
-  grid-template-columns: 80px auto;
+  grid-template-columns: 60px auto;
   margin-bottom: 1rem;
 }
 
@@ -95,7 +95,7 @@
   align-items: center;
   justify-content: center;
   font-weight: 800;
-  font-size: 1.25rem;
+  font-size: 1.15rem;
   background-color: #eee;
   border-top-left-radius: 10px;
   border-bottom-left-radius: 10px;
@@ -215,6 +215,7 @@
   height: 250px;
   transform-style: preserve-3d;
   transition: transform 0.6s;
+  transform: translateZ(0);
 }
 .card-flip:hover .grid-card {
   transform: rotateY(180deg);
@@ -232,7 +233,7 @@
   bottom: 0;
   left: 0;
   right: 0;
-  z-index: 3;
+  overflow-y: scroll;
 }
 .card-front {
   position: absolute;
@@ -242,6 +243,7 @@
   right: 0;
   backface-visibility: hidden;
   position: absolute;
+  z-index: 3;
 }
 
 .front-image {
