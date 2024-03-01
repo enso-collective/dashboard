@@ -179,7 +179,7 @@ export default function HomePage() {
         <div className="leaderboard">
           <Title className="mb-3">Leaderboard</Title>
           {items.map((t, index) => (
-            <div className="list-fix" key={t.userWallet + index}>
+            <div className="list-fix" key={t.userWallet}>
               <div className="number-col">#{index + 1}</div>
               <div className="list-body pl-4 pr-4">
                 <div className="flex flex-row items-center">

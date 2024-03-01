@@ -13,8 +13,8 @@ import { db } from './firebase';
 import { WalletWithMetadata } from '@privy-io/react-auth';
 
 export async function prviyLoginCallback(user: any) {
-  if (user?.wallet?.address) {
-    const linkedAccounts = user?.linkedAccounts || [];
+  if (user?.linkedAccounts && Array.isArray(user?.linkedAccounts)) {
+    const linkedAccounts = user?.linkedAccounts;
     const wallets: WalletWithMetadata[] = Object.assign(
       [],
       linkedAccounts.filter((a: any) => a.type === 'wallet')
@@ -22,6 +22,7 @@ export async function prviyLoginCallback(user: any) {
       a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
     ) as WalletWithMetadata[];
     const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
+    console.log({ addressTrimmedToLowerCase });
     const q = query(
       collection(db, 'User'),
       or(
@@ -35,8 +36,7 @@ export async function prviyLoginCallback(user: any) {
       .then(async (snapshot) => {
         const payload = {
           privyId: user.id,
-          mainWallet: addressTrimmedToLowerCase,
-          attestWallet: addressTrimmedToLowerCase
+          mainWallet: addressTrimmedToLowerCase
         } as any;
         if (user?.twitter?.username) {
           payload.twitterUsername = user?.twitter?.username;
