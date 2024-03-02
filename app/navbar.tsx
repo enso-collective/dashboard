@@ -13,14 +13,13 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Intro', href: '/intro' },
   { name: 'Profile', href: '/profile' },
-  { name: 'Quests', href: '/quests' }
+  { name: 'Gallery', href: '/gallery' }
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const activeNavPaths = ['/', '/intro', 'profile'];
 export default function Navbar() {
   const { login } = useLogin({
     onComplete: prviyLoginCallback
@@ -78,42 +77,24 @@ export default function Navbar() {
                   style={{ marginLeft: '-1.5rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
-                  {navigation.map((item) =>
-                    activeNavPaths.includes(item.href) ? (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={
-                          'no-underline ' +
-                          classNames(
-                            pathname === item.href
-                              ? 'border-slate-500 text-gray-900'
-                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                          )
-                        }
-                        aria-current={
-                          pathname === item.href ? 'page' : undefined
-                        }
-                      >
-                        {item.name}
-                      </a>
-                    ) : (
-                      <span
-                        style={{ marginLeft: '2.5rem' }}
-                        key={item.name}
-                        className={
-                          'no-underline ' +
-                          classNames(
-                            'border-transparent text-gray-300 ',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer floating-callout'
-                          )
-                        }
-                      >
-                        {item.name}
-                      </span>
-                    )
-                  )}
+                  {navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={
+                        'no-underline ' +
+                        classNames(
+                          pathname === item.href
+                            ? 'border-slate-500 text-gray-900'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                        )
+                      }
+                      aria-current={pathname === item.href ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </a>
+                  ))}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -188,35 +169,22 @@ export default function Navbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {navigation.map((item) =>
-                activeNavPaths.includes(item.href) ? (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className={classNames(
-                      pathname === item.href
-                        ? 'bg-slate-50 border-slate-500 text-slate-700'
-                        : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
-                    )}
-                    aria-current={pathname === item.href ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ) : (
-                  <span
-                    key={item.name}
-                    className={classNames(
-                      'border-transparent text-gray-300 ',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium floating-callout-x'
-                    )}
-                    aria-current={pathname === item.href ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </span>
-                )
-              )}
+              {navigation.map((item) => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    pathname === item.href
+                      ? 'bg-slate-50 border-slate-500 text-slate-700'
+                      : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                    'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                  )}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
               {authenticated ? (
