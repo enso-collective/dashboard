@@ -127,30 +127,39 @@ export default function NewProfilePage() {
                         className="front-image"
                       />
                     </div>
-                    <button className="card-back bg-white p-2 flex flex-col space-between">
-                      <div className="mt-1 mb-1 flex items-center flex-row">
-                        <img
-                          src={t.ipfsImageURL}
-                          width={20}
-                          height={20}
-                          alt=""
-                          className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
-                        />
-                        <p className="uppercase">{t.questId}</p>
-                      </div>
-                      <p className="mb-1 text-gray-700 font-light mt-2">
-                        {t.postContent}
-                      </p>
-                      <div className="flex flex-row justify-between items-center mt-auto">
-                        <p>+{t.pointValue} points</p>
-                        <a
-                          href={`https://www.onceupon.gg/${t.transaction}`}
-                          target="_blank"
+                    <div className="card-back bg-white p-2 flex flex-col space-between">
+                      <button className="flex-1 flex flex-col justify-start">
+                        <div className="mt-1 mb-1 flex items-center flex-row">
+                          <img
+                            src={t.ipfsImageURL}
+                            width={20}
+                            height={20}
+                            alt=""
+                            className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
+                          />
+                          <p className="uppercase">{t.questId}</p>
+                        </div>
+                        <p className="mb-1 text-gray-700 font-light mt-2">
+                          {t.postContent}
+                        </p>
+                      </button>
+                      <div className="flex flex-row justify-between items-center ">
+                        <button className="flex-1">
+                          <p>+{t.pointValue} points</p>
+                        </button>
+                        <span
+                          className="cursor-pointer pl-5"
+                          onClick={(e) => {
+                            e.preventDefault();
+                            window.open(
+                              `https://www.onceupon.gg/${t.transaction}`
+                            );
+                          }}
                         >
                           <ArrowUpRightIconWithGradient />
-                        </a>
+                        </span>
                       </div>
-                    </button>
+                    </div>
                   </div>
                 </button>
               ))}
