@@ -9,7 +9,9 @@ import {
   orderBy,
   query,
   limit,
-  startAfter
+  startAfter,
+  where,
+  or
 } from 'firebase/firestore/lite';
 import { db } from './../../lib/firebase';
 import { publicClient } from './../../lib/utils';
@@ -99,23 +101,23 @@ export default function Proofs() {
             console.log(error);
           }
         });
-        // setItems((t) => [...t, ...tempArray]);
-        const items = await Promise.allSettled(
-          [...tempArray].map(async (t) => {
-            const tempObj = { ...t };
-            const ensName = await publicClient.getEnsName({
-              address: `${t.userWallet}` as any
-            });
-            if (ensName) {
-              return { ...tempObj, ensName };
-            }
-            return tempObj;
-          })
-        );
-        const filteredItems = items.filter(
-          (d) => d.status === 'fulfilled'
-        ) as any;
-        setItems((t) => [...t, ...filteredItems.map((d: any) => d.value)]);
+        setItems((t) => [...t, ...tempArray]);
+        // const items = await Promise.allSettled(
+        //   [...tempArray].map(async (t) => {
+        //     const tempObj = { ...t };
+        //     const ensName = await publicClient.getEnsName({
+        //       address: `${t.userWallet}` as any
+        //     });
+        //     if (ensName) {
+        //       return { ...tempObj, ensName };
+        //     }
+        //     return tempObj;
+        //   })
+        // );
+        // const filteredItems = items.filter(
+        //   (d) => d.status === 'fulfilled'
+        // ) as any;
+        // setItems((t) => [...t, ...filteredItems.map((d: any) => d.value)]);
       });
     };
     resolveEnsAvatars()
@@ -129,42 +131,51 @@ export default function Proofs() {
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
         <div className="leaderboard">
           <Title className="mb-3">Proofs</Title>
-          {items.map((t, index) => (
-            <div className="list-fix" key={t.userWallet}>
-              <div className="number-col">#{index + 1}</div>
-              <div className="list-body pl-4 pr-4">
-                <div className="flex flex-row items-center">
-                  <div className="list-wrap">
-                    {t.postContent || t.poapName || t.quest}
-                    <p className="font-light mr-2 text-gray-700 text-xs">
-                      {t.ensName || t.userWallet}
-                    </p>
-                    <p className="font-light mr-2 text-gray-700 text-sm">
-                      {t.timestamp
-                        ? new Intl.DateTimeFormat('en-US', {
-                            minute: '2-digit',
-                            hour12: true,
-                            hour: '2-digit',
-                            day: '2-digit',
-                            year: 'numeric',
-                            month: 'short'
-                            // dateStyle: 'medium'
-                          }).format(new Date(t.timestamp))
-                        : ''}{' '}
-                    </p>
+          <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
+            {items
+              .filter((t) => t.image)
+              .map((t) => (
+                <div
+                  key={t.timestamp}
+                  className="p-0 overflow-hidden card-flip"
+                  style={{ borderWidth: 0, borderRadius: '0px' }}
+                >
+                  <div className="card-inner flex flex-col grid-card cursor-pointer justify-end ">
+                    <div className="card-front">
+                      <img
+                        src={t.ipfsImageURL}
+                        alt=""
+                        className="front-image"
+                      />
+                    </div>
+                    <div className="card-back bg-white p-2 flex flex-col space-between">
+                      <div className="mt-1 mb-1 flex items-center flex-row">
+                        <img
+                          src={t.ipfsImageURL}
+                          width={20}
+                          height={20}
+                          alt=""
+                          className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
+                        />
+                        <p className="uppercase">{t.questId}</p>
+                      </div>
+                      <p className="mb-1 text-gray-700 font-light mt-2">
+                        {t.postContent}
+                      </p>
+                      <div className="flex flex-row justify-between items-center mt-auto">
+                        <p>+{t.pointValue} points</p>
+                        <a
+                          href={`https://www.onceupon.gg/${t.transaction}`}
+                          target="_blank"
+                        >
+                          <ArrowUpRightIconWithGradient />
+                        </a>
+                      </div>
+                    </div>
                   </div>
                 </div>
-
-                <a
-                  className="flex-shrink-0 text-right"
-                  href={`https://basescan.org/tx/${t.transaction}`}
-                  target="_blank"
-                >
-                  <ArrowUpRightIconWithGradient />
-                </a>
-              </div>
-            </div>
-          ))}
+              ))}
+          </div>
 
           <div
             ref={loaderRef}

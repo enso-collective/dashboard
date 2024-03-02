@@ -144,7 +144,7 @@ export default function NewProfilePage() {
                       <div className="flex flex-row justify-between items-center mt-auto">
                         <p>+{t.pointValue} points</p>
                         <a
-                          href={`https://basescan.org/tx/${t.transaction}`}
+                          href={`https://www.onceupon.gg/${t.transaction}`}
                           target="_blank"
                         >
                           <ArrowUpRightIconWithGradient />
@@ -186,7 +186,7 @@ export default function NewProfilePage() {
 
                 <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
                   <a
-                    href={`https://basescan.org/tx/${t.transaction}`}
+                    href={`https://www.onceupon.gg/${t.transaction}`}
                     target="_blank"
                   >
                     <ArrowUpRightIconWithGradient />
