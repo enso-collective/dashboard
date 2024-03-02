@@ -79,11 +79,12 @@ export default function Proofs() {
 
       const queryParams = [
         proofsRef.current,
-        orderBy('timestamp', 'desc')
+        where('ipfsImageURL', '!=', ''),
+        orderBy('ipfsImageURL', 'desc')
       ] as any[];
 
       if (page > 1) {
-        queryParams.push(startAfter(items.slice(-1)[0].timestamp));
+        queryParams.push(startAfter(items.slice(-1)[0].ipfsImageURL));
         queryParams.push(limit(10));
       } else {
         queryParams.push(limit(10));
@@ -132,8 +133,8 @@ export default function Proofs() {
         <div className="leaderboard">
           <Title className="mb-3">Proofs</Title>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
-            {items
-              .filter((t) => t.image)
+            {[...items]
+              .sort((a, b) => b.timestamp - a.timestamp)
               .map((t) => (
                 <div
                   key={t.timestamp}
