@@ -6,6 +6,7 @@ import GiganticLoader from '../../../components/giganticLoader';
 import { db } from '../../../lib/firebase';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 import { useParams } from 'next/navigation';
+import GallryImageCard from '../../../components/galleryImageCard';
 
 interface Attestation {
   poapId: string;
@@ -66,54 +67,7 @@ export default function ShefiPage() {
             </Title>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
               {gallery.map((t) => (
-                <button
-                  key={t.timestamp}
-                  className="p-0 overflow-hidden card-flip"
-                  style={{ borderWidth: 0, borderRadius: '0px' }}
-                >
-                  <div className="card-inner flex flex-col grid-card cursor-pointer justify-end ">
-                    <div className="card-front">
-                      <img
-                        src={t.ipfsImageURL}
-                        alt=""
-                        className="front-image"
-                      />
-                    </div>
-                    <div className="card-back bg-white p-2 flex flex-col space-between">
-                      <button className="flex-1 flex flex-col justify-start">
-                        <div className="mt-1 mb-1 flex items-center flex-row">
-                          <img
-                            src={t.ipfsImageURL}
-                            width={20}
-                            height={20}
-                            alt=""
-                            className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
-                          />
-                          <p className="uppercase">{t.questId}</p>
-                        </div>
-                        <p className="mb-1 text-gray-700 font-light mt-2">
-                          {t.postContent}
-                        </p>
-                      </button>
-                      <div className="flex flex-row justify-between items-center ">
-                        <button className="flex-1">
-                          <p>+{t.pointValue} points</p>
-                        </button>
-                        <span
-                          className="cursor-pointer pl-5"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            window.open(
-                              `https://www.onceupon.gg/${t.transaction}`
-                            );
-                          }}
-                        >
-                          <ArrowUpRightIconWithGradient />
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                </button>
+                <GallryImageCard t={t} key={t.timestamp} />
               ))}
             </div>
           </div>
