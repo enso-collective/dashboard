@@ -4,25 +4,27 @@ import { Fragment, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
+import { usePrivy, WalletWithMetadata, useLogin } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
-
+import { prviyLoginCallback } from './../lib/handleLogin';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Intro', href: '/intro' },
   { name: 'Profile', href: '/profile' },
-  { name: 'Quests', href: '/quests' }
+  { name: 'Gallery', href: '/gallery' }
 ];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
 }
 
-const activeNavPaths = ['/', '/intro', 'profile'];
 export default function Navbar() {
-  const { authenticated, login, logout, user } = usePrivy();
+  const { login } = useLogin({
+    onComplete: prviyLoginCallback
+  });
+  const { authenticated, logout, user } = usePrivy();
   const pathname = usePathname();
 
   const [avatar, setAvatar] = useState(defaultAvatarUrl);
@@ -63,54 +65,36 @@ export default function Navbar() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between flex-grow">
               <div className="flex flex-shrink-0 items-center ">
-                <img
+                {/* <img
                   width="100"
                   height="75"
                   src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
                   alt="logo"
-                />
+                /> */}
               </div>
               <div className="flex">
                 <div
                   style={{ marginLeft: '-1.5rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
-                  {navigation.map((item) =>
-                    activeNavPaths.includes(item.href) ? (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className={
-                          'no-underline ' +
-                          classNames(
-                            pathname === item.href
-                              ? 'border-slate-500 text-gray-900'
-                              : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                          )
-                        }
-                        aria-current={
-                          pathname === item.href ? 'page' : undefined
-                        }
-                      >
-                        {item.name}
-                      </a>
-                    ) : (
-                      <span
-                        style={{ marginLeft: '2.5rem' }}
-                        key={item.name}
-                        className={
-                          'no-underline ' +
-                          classNames(
-                            'border-transparent text-gray-300 ',
-                            'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium cursor-pointer floating-callout'
-                          )
-                        }
-                      >
-                        {item.name}
-                      </span>
-                    )
-                  )}
+                  {navigation.map((item) => (
+                    <a
+                      key={item.name}
+                      href={item.href}
+                      className={
+                        'no-underline ' +
+                        classNames(
+                          pathname === item.href
+                            ? 'border-slate-500 text-gray-900'
+                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                        )
+                      }
+                      aria-current={pathname === item.href ? 'page' : undefined}
+                    >
+                      {item.name}
+                    </a>
+                  ))}
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -185,35 +169,22 @@ export default function Navbar() {
 
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {navigation.map((item) =>
-                activeNavPaths.includes(item.href) ? (
-                  <Disclosure.Button
-                    key={item.name}
-                    as="a"
-                    href={item.href}
-                    className={classNames(
-                      pathname === item.href
-                        ? 'bg-slate-50 border-slate-500 text-slate-700'
-                        : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
-                    )}
-                    aria-current={pathname === item.href ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </Disclosure.Button>
-                ) : (
-                  <span
-                    key={item.name}
-                    className={classNames(
-                      'border-transparent text-gray-300 ',
-                      'block pl-3 pr-4 py-2 border-l-4 text-base font-medium floating-callout-x'
-                    )}
-                    aria-current={pathname === item.href ? 'page' : undefined}
-                  >
-                    {item.name}
-                  </span>
-                )
-              )}
+              {navigation.map((item) => (
+                <Disclosure.Button
+                  key={item.name}
+                  as="a"
+                  href={item.href}
+                  className={classNames(
+                    pathname === item.href
+                      ? 'bg-slate-50 border-slate-500 text-slate-700'
+                      : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                    'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                  )}
+                  aria-current={pathname === item.href ? 'page' : undefined}
+                >
+                  {item.name}
+                </Disclosure.Button>
+              ))}
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
               {authenticated ? (

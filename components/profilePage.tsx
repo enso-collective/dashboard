@@ -28,17 +28,6 @@ import PhaverIcon from '../public/social-icons/phaver.jpg';
 import WalletConnectIcon from '../public/wallet-icons/wallet_connect.svg';
 import { Card, Title } from '@tremor/react';
 import { usePrivyContext } from './privyProvider';
-import {
-  collection,
-  doc,
-  getDocs,
-  limit,
-  query,
-  where,
-  or,
-  updateDoc
-} from 'firebase/firestore/lite';
-import { db } from '../lib/firebase';
 
 export default function ProfilePage() {
   const {
@@ -119,37 +108,6 @@ export default function ProfilePage() {
 
   const twitterSubject = user?.twitter?.subject;
   const twitterUsername = user?.twitter?.username;
-
-  useEffect(() => {
-    if (twitterUsername && activeWallet?.address) {
-      const addressTrimmedToLowerCase = activeWallet.address
-        .toLowerCase()
-        .trim();
-      const q = query(
-        collection(db, 'User'),
-        or(
-          where('userWallet', '==', addressTrimmedToLowerCase),
-          where('userWalletToLowerCase', '==', addressTrimmedToLowerCase),
-          where('userWalletLower', '==', addressTrimmedToLowerCase)
-        ),
-        limit(1)
-      );
-      getDocs(q)
-        .then((snapshot) => {
-          snapshot.forEach(async (s) => {
-            try {
-              const docRef = doc(db, 'User', s.id);
-              await updateDoc(docRef, {
-                twitterUsername: twitterUsername
-              });
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        })
-        .catch(console.log);
-    }
-  }, [twitterUsername, activeWallet]);
 
   const appleSubject = user?.apple?.subject;
   const appleEmail = user?.apple?.email;
