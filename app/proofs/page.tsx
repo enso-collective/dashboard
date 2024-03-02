@@ -79,12 +79,14 @@ export default function Proofs() {
 
       const queryParams = [
         proofsRef.current,
-        where('ipfsImageURL', '!=', ''),
-        orderBy('ipfsImageURL', 'desc')
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
       ] as any[];
 
       if (page > 1) {
-        queryParams.push(startAfter(items.slice(-1)[0].ipfsImageURL));
+        queryParams.push(startAfter(items.slice(-1)[0].timestamp));
         queryParams.push(limit(10));
       } else {
         queryParams.push(limit(10));
@@ -125,7 +127,7 @@ export default function Proofs() {
       .finally(() => {
         setLoading(false);
       })
-      .catch(console.error);
+      .catch(console.timeLog);
   }, [page]);
   return (
     <div className="bg-denver min-h-screen">
@@ -136,7 +138,7 @@ export default function Proofs() {
             {[...items]
               .sort((a, b) => b.timestamp - a.timestamp)
               .map((t) => (
-                <div
+                <button
                   key={t.timestamp}
                   className="p-0 overflow-hidden card-flip"
                   style={{ borderWidth: 0, borderRadius: '0px' }}
@@ -149,7 +151,7 @@ export default function Proofs() {
                         className="front-image"
                       />
                     </div>
-                    <div className="card-back bg-white p-2 flex flex-col space-between">
+                    <button className="card-back bg-white p-2 flex flex-col space-between">
                       <div className="mt-1 mb-1 flex items-center flex-row">
                         <img
                           src={t.ipfsImageURL}
@@ -172,9 +174,9 @@ export default function Proofs() {
                           <ArrowUpRightIconWithGradient />
                         </a>
                       </div>
-                    </div>
+                    </button>
                   </div>
-                </div>
+                </button>
               ))}
           </div>
 

@@ -207,6 +207,7 @@
 
 .card-flip {
   perspective: 1000px;
+  display: block;
 }
 .grid-card {
   border-radius: 0px;
@@ -217,7 +218,8 @@
   transition: transform 0.6s;
   transform: translateZ(0);
 }
-.card-flip:hover .grid-card {
+
+.card-flip:focus .grid-card {
   transform: rotateY(180deg);
 }
 .card-back {
@@ -234,6 +236,17 @@
   left: 0;
   right: 0;
   overflow-y: scroll;
+}
+.card-back img {
+  min-width: 20px;
+  min-height: 20px;
+}
+.card-back p {
+  width: 100%;
+  text-align: left;
+}
+.card-back div {
+  width: 100%;
 }
 .card-front {
   position: absolute;

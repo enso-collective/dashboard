@@ -66,7 +66,7 @@ export default function ShefiPage() {
             </Title>
             <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
               {gallery.map((t) => (
-                <div
+                <button
                   key={t.timestamp}
                   className="p-0 overflow-hidden card-flip"
                   style={{ borderWidth: 0, borderRadius: '0px' }}
@@ -79,7 +79,7 @@ export default function ShefiPage() {
                         className="front-image"
                       />
                     </div>
-                    <div className="card-back bg-white p-2 flex flex-col space-between">
+                    <button className="card-back bg-white p-2 flex flex-col space-between">
                       <div className="mt-1 mb-1 flex items-center flex-row">
                         <img
                           src={t.ipfsImageURL}
@@ -102,9 +102,9 @@ export default function ShefiPage() {
                           <ArrowUpRightIconWithGradient />
                         </a>
                       </div>
-                    </div>
+                    </button>
                   </div>
-                </div>
+                </button>
               ))}
             </div>
           </div>
