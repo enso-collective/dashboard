@@ -135,49 +135,43 @@ export default function Proofs() {
         <div className="leaderboard">
           <Title className="mb-3">Proofs</Title>
           <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
-            {[...items]
-              .sort((a, b) => b.timestamp - a.timestamp)
-              .map((t) => (
-                <button
-                  key={t.timestamp}
-                  className="p-0 overflow-hidden card-flip"
-                  style={{ borderWidth: 0, borderRadius: '0px' }}
-                >
-                  <div className="card-inner flex flex-col grid-card cursor-pointer justify-end ">
-                    <div className="card-front">
+            {items.map((t) => (
+              <button
+                key={t.timestamp}
+                className="p-0 overflow-hidden card-flip"
+                style={{ borderWidth: 0, borderRadius: '0px' }}
+              >
+                <div className="card-inner flex flex-col grid-card cursor-pointer justify-end ">
+                  <div className="card-front">
+                    <img src={t.ipfsImageURL} alt="" className="front-image" />
+                  </div>
+                  <button className="card-back bg-white p-2 flex flex-col space-between">
+                    <div className="mt-1 mb-1 flex items-center flex-row">
                       <img
                         src={t.ipfsImageURL}
+                        width={20}
+                        height={20}
                         alt=""
-                        className="front-image"
+                        className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
                       />
+                      <p className="uppercase">{t.questId}</p>
                     </div>
-                    <button className="card-back bg-white p-2 flex flex-col space-between">
-                      <div className="mt-1 mb-1 flex items-center flex-row">
-                        <img
-                          src={t.ipfsImageURL}
-                          width={20}
-                          height={20}
-                          alt=""
-                          className="rounded-full mr-2 object-cover w-[20px] h-[20px]"
-                        />
-                        <p className="uppercase">{t.questId}</p>
-                      </div>
-                      <p className="mb-1 text-gray-700 font-light mt-2">
-                        {t.postContent}
-                      </p>
-                      <div className="flex flex-row justify-between items-center mt-auto">
-                        <p>+{t.pointValue} points</p>
-                        <a
-                          href={`https://www.onceupon.gg/${t.transaction}`}
-                          target="_blank"
-                        >
-                          <ArrowUpRightIconWithGradient />
-                        </a>
-                      </div>
-                    </button>
-                  </div>
-                </button>
-              ))}
+                    <p className="mb-1 text-gray-700 font-light mt-2">
+                      {t.postContent}
+                    </p>
+                    <div className="flex flex-row justify-between items-center mt-auto">
+                      <p>+{t.pointValue} points</p>
+                      <a
+                        href={`https://www.onceupon.gg/${t.transaction}`}
+                        target="_blank"
+                      >
+                        <ArrowUpRightIconWithGradient />
+                      </a>
+                    </div>
+                  </button>
+                </div>
+              </button>
+            ))}
           </div>
 
           <div
