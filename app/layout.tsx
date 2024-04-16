@@ -7,9 +7,9 @@ import { Suspense } from 'react';
 import PrivyProviderWrapper from '../components/privyProvider';
 
 export const metadata = {
-  title: 'SheFi Summit Quests',
+  title: 'The proof:of AI Attestor',
   description:
-    'A dashboard to track your Quests at SheFi Summit. Quests are completed through the @proofof bot on Farcaster and Lens, or @0xproofof bot on Twitter.'
+    'A dashboard to track your attestation Proofs and to interact wit AI Attestors on Warpcast, Lens, and Twitter'
 };
 
 export default function RootLayout({
