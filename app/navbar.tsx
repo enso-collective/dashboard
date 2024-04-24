@@ -7,14 +7,9 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { usePrivy, WalletWithMetadata, useLogin } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
 import { prviyLoginCallback } from './../lib/handleLogin';
+import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import Link from 'next/link';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
-
-const navigation = [
-  { name: 'Home', href: '/' },
-  { name: 'Intro', href: '/intro' },
-  { name: 'Profile', href: '/profile' },
-  { name: 'Gallery', href: '/gallery' }
-];
 
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(' ');
@@ -64,37 +59,292 @@ export default function Navbar() {
         <>
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between flex-grow">
-              <div className="flex flex-shrink-0 items-center ">
+              <div className="flex flex-shrink-0 ">
                 {/* <img
                   width="100"
                   height="75"
                   src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
                   alt="logo"
                 /> */}
+                <div className="hidden sm:-my-px  sm:flex sm:space-x-8">
+                  <a
+                    href={'/docs'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/docs'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={pathname === '/docs' ? 'page' : undefined}
+                  >
+                    Docs
+                  </a>
+
+                  <DropdownHOC>
+                    {(showChildren: boolean, setShowChildren: Function) => {
+                      return (
+                        <div
+                          className="inline-flex items-center relative z-10"
+                          data-item="company"
+                        >
+                          <div
+                            data-item="company"
+                            onClick={() => {
+                              setShowChildren((t: boolean) => !t);
+                              const handleClickOutside = (e: any) => {
+                                const dataEvent =
+                                  e.target.getAttribute('data-item');
+                                if (dataEvent !== 'company') {
+                                  setShowChildren(false);
+                                  document.removeEventListener(
+                                    'click',
+                                    handleClickOutside
+                                  );
+                                }
+                              };
+
+                              document.addEventListener(
+                                'click',
+                                handleClickOutside
+                              );
+                            }}
+                            className={
+                              'no-underline ' +
+                              classNames(
+                                pathname === '/company'
+                                  ? 'border-slate-500 text-gray-900'
+                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                ' px-1 pt-1 text-sm font-medium cursor-pointer flex'
+                              )
+                            }
+                          >
+                            <span data-item="company">Company</span>
+                            <ChevronDownIcon
+                              data-item="company"
+                              className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          {showChildren ? (
+                            <div
+                              className="absolute min-w-[100px] top-[55px] z-10"
+                              data-item="company"
+                            >
+                              <div
+                                className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
+                                data-item="company"
+                              >
+                                <Link
+                                  href="/"
+                                  className="block mb-3 text-gray-500 hover:text-gray-700"
+                                  data-item="company"
+                                >
+                                  About
+                                </Link>
+                                <Link
+                                  href="/"
+                                  className="block mb-3 text-gray-500 hover:text-gray-700"
+                                  data-item="company"
+                                >
+                                  Blog
+                                </Link>
+                              </div>
+                            </div>
+                          ) : null}
+                        </div>
+                      );
+                    }}
+                  </DropdownHOC>
+                </div>
               </div>
+              {/* DESKTOP */}
               <div className="flex">
                 <div
                   style={{ marginLeft: '-1.5rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
-                  {navigation.map((item) => (
-                    <a
-                      key={item.name}
-                      href={item.href}
-                      className={
-                        'no-underline ' +
-                        classNames(
-                          pathname === item.href
-                            ? 'border-slate-500 text-gray-900'
-                            : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                          'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                        )
-                      }
-                      aria-current={pathname === item.href ? 'page' : undefined}
-                    >
-                      {item.name}
-                    </a>
-                  ))}
+                  <a
+                    href={'/'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={pathname === '/' ? 'page' : undefined}
+                  >
+                    Home
+                  </a>
+                  <DropdownHOC>
+                    {(showChildren: boolean, setShowChildren: Function) => {
+                      return (
+                        <div
+                          className="inline-flex items-center relative"
+                          data-item="event"
+                        >
+                          <div
+                            data-item="event"
+                            onClick={() => {
+                              setShowChildren((t: boolean) => !t);
+                              const handleClickOutside = (e: any) => {
+                                const dataEvent =
+                                  e.target.getAttribute('data-item');
+                                if (dataEvent !== 'event') {
+                                  setShowChildren(false);
+                                  document.removeEventListener(
+                                    'click',
+                                    handleClickOutside
+                                  );
+                                }
+                              };
+
+                              document.addEventListener(
+                                'click',
+                                handleClickOutside
+                              );
+                            }}
+                            className={
+                              'no-underline ' +
+                              classNames(
+                                pathname === '/company'
+                                  ? 'border-slate-500 text-gray-900'
+                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                                ' px-1 pt-1 text-sm font-medium cursor-pointer flex'
+                              )
+                            }
+                          >
+                            <span data-item="event">Events</span>
+                            <ChevronDownIcon
+                              data-item="event"
+                              className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                              aria-hidden="true"
+                            />
+                          </div>
+                          {showChildren ? (
+                            <>
+                              <div
+                                className="absolute min-w-[220px] top-[55px] z-10 "
+                                data-item="event"
+                              >
+                                <div
+                                  className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
+                                  data-item="event"
+                                >
+                                  <Link
+                                    href="/"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    Berlin Blockchain
+                                  </Link>
+                                  <DropdownHOC>
+                                    {(
+                                      showShefiLinks: boolean,
+                                      setShowShefiLinks: Function
+                                    ) => {
+                                      return (
+                                        <>
+                                          <div
+                                            className="justify-between flex cursor-pointer text-gray-500 hover:text-gray-700"
+                                            data-item="event"
+                                            onClick={() => {
+                                              setShowShefiLinks(
+                                                (t: boolean) => !t
+                                              );
+                                            }}
+                                          >
+                                            <span data-item="event">
+                                              Shefi Summit Denver
+                                            </span>
+                                            <ChevronDownIcon
+                                              className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                                              aria-hidden="true"
+                                            />
+                                          </div>
+                                          {showShefiLinks ? (
+                                            <div
+                                              className="ml-4 mt-3"
+                                              data-item="event"
+                                            >
+                                              <Link
+                                                href="/"
+                                                className="block mb-3 text-gray-500 hover:text-gray-700"
+                                                data-item="event"
+                                              >
+                                                Quests
+                                              </Link>
+                                              <Link
+                                                href="/"
+                                                className="block mb-3 text-gray-500 hover:text-gray-700"
+                                                data-item="event"
+                                              >
+                                                Proofs
+                                              </Link>
+                                            </div>
+                                          ) : null}
+                                        </>
+                                      );
+                                    }}
+                                  </DropdownHOC>
+                                </div>
+                              </div>
+                            </>
+                          ) : null}
+                        </div>
+                      );
+                    }}
+                  </DropdownHOC>
+                  {/* <a
+                    href={'/intro'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/intro'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={pathname === '/intro' ? 'page' : undefined}
+                  >
+                    Intro
+                  </a> */}
+                  <a
+                    href={'/profile'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/profile'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={pathname === '/profile' ? 'page' : undefined}
+                  >
+                    Profile
+                  </a>
+                  <a
+                    href={'/gallery'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/gallery'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={pathname === '/gallery' ? 'page' : undefined}
+                  >
+                    Gallery
+                  </a>
                 </div>
               </div>
               <div className="hidden sm:ml-6 sm:flex sm:items-center">
@@ -167,24 +417,156 @@ export default function Navbar() {
             </div>
           </div>
 
+          {/* mobile */}
+
           <Disclosure.Panel className="sm:hidden">
             <div className="space-y-1 pt-2 pb-3">
-              {navigation.map((item) => (
-                <Disclosure.Button
-                  key={item.name}
-                  as="a"
-                  href={item.href}
-                  className={classNames(
-                    pathname === item.href
-                      ? 'bg-slate-50 border-slate-500 text-slate-700'
-                      : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
-                    'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
-                  )}
-                  aria-current={pathname === item.href ? 'page' : undefined}
-                >
-                  {item.name}
-                </Disclosure.Button>
-              ))}
+              <Disclosure.Button
+                as="a"
+                href={'/'}
+                className={classNames(
+                  pathname === '/'
+                    ? 'bg-slate-50 border-slate-500 text-slate-700'
+                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                )}
+                aria-current={pathname === '/' ? 'page' : undefined}
+              >
+                Home
+              </Disclosure.Button>
+              <Disclosure.Button
+                as="a"
+                href={'/profile'}
+                className={classNames(
+                  pathname === '/profile'
+                    ? 'bg-slate-50 border-slate-500 text-slate-700'
+                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                )}
+                aria-current={pathname === '/profile' ? 'page' : undefined}
+              >
+                Profile
+              </Disclosure.Button>
+
+              <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
+                <DropdownHOC>
+                  {(showChildren: boolean, setShowChildren: Function) => {
+                    return (
+                      <>
+                        <div
+                          className="justify-between flex"
+                          onClick={(e) => {
+                            setShowChildren((t: boolean) => !t);
+                          }}
+                        >
+                          <span>Events</span>
+                          <ChevronDownIcon
+                            className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        {showChildren ? (
+                          <div className="ml-4 mt-3">
+                            <Link href="/" className="block mb-3">
+                              Berlin Blockchain
+                            </Link>
+                            <DropdownHOC>
+                              {(
+                                showShefiLinks: boolean,
+                                setShowShefiLinks: Function
+                              ) => {
+                                return (
+                                  <>
+                                    <div
+                                      className="justify-between flex"
+                                      onClick={() => {
+                                        setShowShefiLinks((t: boolean) => !t);
+                                      }}
+                                    >
+                                      <span>Shefi Summit Denver</span>
+                                      <ChevronDownIcon
+                                        className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                                        aria-hidden="true"
+                                      />
+                                    </div>
+                                    {showShefiLinks ? (
+                                      <div className="ml-4 mt-3">
+                                        <Link href="/" className="block mb-3">
+                                          Quests
+                                        </Link>
+                                        <Link href="/" className="block mb-3">
+                                          Proofs
+                                        </Link>
+                                      </div>
+                                    ) : null}
+                                  </>
+                                );
+                              }}
+                            </DropdownHOC>
+                          </div>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                </DropdownHOC>
+              </div>
+
+              <Disclosure.Button
+                as="a"
+                href={'/gallery'}
+                className={classNames(
+                  pathname === '/gallery'
+                    ? 'bg-slate-50 border-slate-500 text-slate-700'
+                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                )}
+                aria-current={pathname === '/gallery' ? 'page' : undefined}
+              >
+                Gallery
+              </Disclosure.Button>
+              <Disclosure.Button
+                as="a"
+                href={'/docs'}
+                className={classNames(
+                  pathname === '/docs'
+                    ? 'bg-slate-50 border-slate-500 text-slate-700'
+                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                )}
+                aria-current={pathname === '/docs' ? 'page' : undefined}
+              >
+                Docs
+              </Disclosure.Button>
+              <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
+                <DropdownHOC>
+                  {(showChildren: boolean, setShowChildren: Function) => {
+                    return (
+                      <>
+                        <div
+                          className="justify-between flex"
+                          onClick={() => {
+                            setShowChildren((t: boolean) => !t);
+                          }}
+                        >
+                          <span>Company</span>
+                          <ChevronDownIcon
+                            className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                            aria-hidden="true"
+                          />
+                        </div>
+                        {showChildren ? (
+                          <div className="ml-4 mt-3">
+                            <Link href="/" className="block mb-3">
+                              About
+                            </Link>
+                            <Link href="/">Blog</Link>
+                          </div>
+                        ) : null}
+                      </>
+                    );
+                  }}
+                </DropdownHOC>
+              </div>
             </div>
             <div className="border-t border-gray-200 pt-4 pb-3">
               {authenticated ? (
@@ -226,3 +608,8 @@ export default function Navbar() {
     </Disclosure>
   );
 }
+
+const DropdownHOC = ({ children }: any) => {
+  const [showChildren, setShowChildren] = useState(false);
+  return <>{children(showChildren, setShowChildren)}</>;
+};
