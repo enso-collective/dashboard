@@ -370,6 +370,7 @@ export default function ProfilePage() {
 
           <CanvasRow>
             <CanvasCard className="social-bg">
+              <></>
               {/* <CanvasCardHeader>
                 <UserCircleIcon className="h-5 w-5 mr-2" strokeWidth={2} />
                 Linked Socials

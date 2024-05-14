@@ -61,3 +61,13 @@ export const publicClient = createPublicClient({
 //     return Promise.all(updates);
 //   });
 // };
+
+export function* chunker(vals: Array<any>, chunk: number) {
+  for (let x = 0; x < vals.length; x += chunk) {
+    yield vals.slice(x, x + chunk);
+  }
+}
+
+export function sleep(ms: number) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}

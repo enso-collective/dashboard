@@ -163,7 +163,7 @@ export default function Navbar() {
               {/* DESKTOP */}
               <div className="flex">
                 <div
-                  style={{ marginLeft: '-1.5rem' }}
+                  style={{ marginLeft: '-4rem' }}
                   className="hidden sm:-my-px  sm:flex sm:space-x-8"
                 >
                   <a
@@ -272,20 +272,20 @@ export default function Navbar() {
                                               className="ml-4 mt-3"
                                               data-item="event"
                                             >
-                                              <Link
-                                                href="/"
+                                              <a
+                                                href="/events/shefi"
                                                 className="block mb-3 text-gray-500 hover:text-gray-700"
                                                 data-item="event"
                                               >
                                                 Quests
-                                              </Link>
-                                              <Link
-                                                href="/"
+                                              </a>
+                                              <a
+                                                href="/events/shefi"
                                                 className="block mb-3 text-gray-500 hover:text-gray-700"
                                                 data-item="event"
                                               >
                                                 Proofs
-                                              </Link>
+                                              </a>
                                             </div>
                                           ) : null}
                                         </>
@@ -491,12 +491,18 @@ export default function Navbar() {
                                     </div>
                                     {showShefiLinks ? (
                                       <div className="ml-4 mt-3">
-                                        <Link href="/" className="block mb-3">
+                                        <a
+                                          href="/events/shefi"
+                                          className="block mb-3"
+                                        >
                                           Quests
-                                        </Link>
-                                        <Link href="/" className="block mb-3">
+                                        </a>
+                                        <a
+                                          href="/events/shefi"
+                                          className="block mb-3"
+                                        >
                                           Proofs
-                                        </Link>
+                                        </a>
                                       </div>
                                     ) : null}
                                   </>

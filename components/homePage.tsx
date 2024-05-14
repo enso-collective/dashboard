@@ -2,7 +2,7 @@ import { Card, Title, Subtitle, Text } from '@tremor/react';
 import { useEffect, useRef, useState } from 'react';
 import { MoonLoader } from 'react-spinners';
 import ArrowUpRightIconWithGradient from './icons/social/arrowTopRight';
-import Link from 'next/link'; 
+import Link from 'next/link';
 import {
   collection,
   getDocs,
@@ -134,6 +134,53 @@ export default function HomePage() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto mb-10">
+          <Card className="flex flex-col  bg-white justify-between p-2 text-center ">
+            <p className="font-medium text-center">Warpcast</p>
+            <div className="flex justify-center pb-2">
+              <button className="button mr-5 p-2 basis-[80px]">
+                <span className="text-[#000] text-base">Connect</span>
+              </button>
+              <a
+                href="https://warpcast.com/"
+                target="_blank"
+                className="button p-2 basis-[80px]"
+              >
+                <span className="text-[#000] text-base">Join </span>
+              </a>
+            </div>
+          </Card>
+          <Card className="flex flex-col  bg-white justify-between p-2 text-center ">
+            <p className="font-medium text-center ">X</p>
+            <div className="flex justify-center pb-2">
+              <button className="button mr-5 p-2 basis-[80px]">
+                <span className="text-[#000] text-base">Connect</span>
+              </button>
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                className="button p-2 basis-[80px]"
+              >
+                <span className="text-[#000] text-base">Join </span>
+              </a>
+            </div>
+          </Card>
+          <Card className="flex flex-col  bg-white justify-between p-2 text-center">
+            <p className="font-medium text-center">Lens</p>
+            <div className="flex justify-center pb-2">
+              <button className="button mr-5 p-2 basis-[80px]">
+                <span className="text-[#000] text-base">Connect</span>
+              </button>
+              <a
+                href="https://www.lens.xyz/"
+                target="_blank"
+                className="button p-2 basis-[80px]"
+              >
+                <span className="text-[#000] text-base">Join </span>
+              </a>
+            </div>
+          </Card>
+        </div>
         <div className="mb-10">
           <Title>Quests</Title>
           {loadingQuests ? <GiganticLoader /> : null}
@@ -171,12 +218,12 @@ export default function HomePage() {
                       <ArrowUpRightIconWithGradient />
                     </a>
                   )}
-              </div>
+                </div>
               </Card>
             ))}
           </div>
         </div>
-        <div className="leaderboard">
+        {/* <div className="leaderboard">
           <Title className="mb-3">Leaderboard</Title>
           {items.map((t, index) => (
             <div className="list-fix" key={t.userWallet}>
@@ -219,7 +266,7 @@ export default function HomePage() {
               <MoonLoader size={40} color="rgba(255,255,255,.9)" />
             ) : null}
           </div>
-        </div>
+        </div> */}
       </div>
       <div style={authenticated ? { display: 'none' } : {}} id="render-privy" />
     </div>
