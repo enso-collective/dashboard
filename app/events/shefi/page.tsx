@@ -64,8 +64,8 @@ interface Attestation {
 
 export default function ShefiEvent() {
   const [expandQuests, setExpandQuests] = useState(true);
-  const [expandLeaderboard, setExpandLeaderboard] = useState(false);
-  const [expandGallery, setExpandGallery] = useState(false);
+  const [expandLeaderboard, setExpandLeaderboard] = useState(true);
+  const [expandGallery, setExpandGallery] = useState(true);
   const [items, setItems] = useState<User[]>([]);
   const [page, setPage] = useState(0);
   const loaderRef = useRef(null);

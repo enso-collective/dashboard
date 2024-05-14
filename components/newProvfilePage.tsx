@@ -8,6 +8,7 @@ import { usePrivyContext } from './privyProvider';
 import { query, or, where, getDocs, collection } from 'firebase/firestore/lite';
 import GiganticLoader from './giganticLoader';
 import GallryImageCard from './galleryImageCard';
+import ProfilePage from './profilePage';
 
 interface Attestation {
   poapId: string;
@@ -111,8 +112,12 @@ export default function NewProfilePage() {
         <GiganticLoader />
       ) : (
         <div className="p-4 md:p-10 mx-auto max-w-4xl">
+          <ProfilePage />
           <div className="mb-10">
-            <Title className="mb-3">Attestations</Title>
+            <button className=" frosty p-2 rounded-sm flex justify-between items-center w-[100%] mt-10">
+              <Title className="">Attestations</Title>
+            </button>
+
             <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
               {gallery.map((t) => (
                 <GallryImageCard t={t} key={t.timestamp} />

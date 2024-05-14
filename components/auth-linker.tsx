@@ -49,8 +49,8 @@ export default function AuthLinker({
         address: formatWallet(wallet.address),
         icon: (
           <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 overflow-hidden rounded-[0.25rem]">
-            <Image
-              src="/logos/privy-logomark.png"
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fprivy-logomark.png?alt=media&token=ff2cf972-f109-4f9a-a237-8d492d0bb5c7"
               height={20}
               width={20}
               className="h-full w-full object-cover"

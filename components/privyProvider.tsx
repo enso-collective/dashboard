@@ -1,8 +1,26 @@
 'use client';
 import { PrivyProvider } from '@privy-io/react-auth';
 import { createContext, useContext, useState, ReactNode } from 'react';
+import {
+  base,
+  baseGoerli,
+  mainnet,
+  sepolia,
+  polygon,
+  polygonMumbai,
+  lukso
+} from 'viem/chains';
 
 const defaultConfig = {
+  supportedChains: [
+    mainnet,
+    sepolia,
+    base,
+    baseGoerli,
+    polygon,
+    polygonMumbai,
+    lukso
+  ],
   appearance: {
     showWalletLoginFirst: true
   },
@@ -10,10 +28,7 @@ const defaultConfig = {
     inDialog: true,
     inParentNodeId: null
   },
-  loginMethods: [
-    'wallet',
-    'email',
-  ]
+  loginMethods: ['wallet', 'email']
 };
 interface PrivyConfigObject {
   appearance: {
