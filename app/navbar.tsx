@@ -60,13 +60,15 @@ export default function Navbar() {
           <div className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
             <div className="flex h-16 justify-between flex-grow">
               <div className="flex flex-shrink-0 ">
-                {/* <img
-                  width="100"
-                  height="75"
-                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLogo%20embellished%20black%20tm.png?alt=media&token=caa74f70-8cb8-4de6-a045-b6be9a78d45f"
-                  alt="logo"
-                /> */}
-                <div className="hidden sm:-my-px  sm:flex sm:space-x-8">
+                <Link href={'/'} className="flex flex-col justify-center mr-8">
+                  <img
+                    width="100"
+                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fwordmark%20blue.svg?alt=media&token=d7632ac6-2901-4590-8ebe-93c3edc5fceb"
+                    alt="logo"
+                  />
+                </Link>
+
+                <div className="hidden sm:-my-px  lg:flex sm:space-x-8">
                   <a
                     href={'/docs'}
                     className={
@@ -163,8 +165,8 @@ export default function Navbar() {
               {/* DESKTOP */}
               <div className="flex">
                 <div
-                  style={{ marginLeft: '-4rem' }}
-                  className="hidden sm:-my-px  sm:flex sm:space-x-8"
+                  style={{ marginLeft: '-12rem' }}
+                  className="hidden sm:-my-px  lg:flex sm:space-x-8"
                 >
                   <a
                     href={'/'}
@@ -236,13 +238,13 @@ export default function Navbar() {
                                   className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
                                   data-item="event"
                                 >
-                                  <Link
-                                    href="/"
+                                  <a
+                                    href="/events/lukso"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
                                     data-item="event"
                                   >
-                                    Berlin Blockchain
-                                  </Link>
+                                    LUKSO Berlin
+                                  </a>
                                   <DropdownHOC>
                                     {(
                                       showShefiLinks: boolean,
@@ -300,21 +302,7 @@ export default function Navbar() {
                       );
                     }}
                   </DropdownHOC>
-                  {/* <a
-                    href={'/intro'}
-                    className={
-                      'no-underline ' +
-                      classNames(
-                        pathname === '/intro'
-                          ? 'border-slate-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
-                      )
-                    }
-                    aria-current={pathname === '/intro' ? 'page' : undefined}
-                  >
-                    Intro
-                  </a> */}
+
                   <a
                     href={'/profile'}
                     className={
@@ -347,7 +335,7 @@ export default function Navbar() {
                   </a>
                 </div>
               </div>
-              <div className="hidden sm:ml-6 sm:flex sm:items-center">
+              <div className="hidden sm:ml-6 lg:flex sm:items-center">
                 <Menu as="div" className="relative ml-3">
                   <div>
                     <Menu.Button className="flex rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
@@ -404,7 +392,7 @@ export default function Navbar() {
                   </Transition>
                 </Menu>
               </div>
-              <div className="-mr-2 flex items-center sm:hidden">
+              <div className="-mr-2 flex items-center lg:hidden">
                 <Disclosure.Button className="inline-flex items-center justify-center rounded-md bg-white p-2 text-gray-400 hover:bg-gray-100 hover:text-gray-500 focus:outline-none focus:ring-2 focus:ring-slate-500 focus:ring-offset-2">
                   <span className="sr-only">Open main menu</span>
                   {open ? (
@@ -419,7 +407,7 @@ export default function Navbar() {
 
           {/* mobile */}
 
-          <Disclosure.Panel className="sm:hidden">
+          <Disclosure.Panel className="lg:hidden">
             <div className="space-y-1 pt-2 pb-3">
               <Disclosure.Button
                 as="a"
@@ -467,9 +455,9 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
-                            <Link href="/" className="block mb-3">
-                              Berlin Blockchain
-                            </Link>
+                            <a href="/events/lukso" className="block mb-3">
+                              LUKSO Berlin
+                            </a>
                             <DropdownHOC>
                               {(
                                 showShefiLinks: boolean,
