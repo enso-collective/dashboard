@@ -9,6 +9,7 @@ import { publicClient } from '../lib/utils';
 import { prviyLoginCallback } from './../lib/handleLogin';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
+import { usePrivyContext } from '../components/privyProvider';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 function classNames(...classes: string[]) {
@@ -16,8 +17,13 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
+  const { setIsOpen } = usePrivyContext();
   const { login } = useLogin({
-    onComplete: prviyLoginCallback
+    onComplete: (user) => {
+      prviyLoginCallback(user, () => {
+        setIsOpen(true);
+      });
+    }
   });
   const { authenticated, logout, user } = usePrivy();
   const pathname = usePathname();
@@ -70,17 +76,15 @@ export default function Navbar() {
 
                 <div className="hidden sm:-my-px  lg:flex sm:space-x-8">
                   <a
-                    href={'/docs'}
+                    target="_blank"
+                    href="https://docs.proofof.bot/"
                     className={
                       'no-underline ' +
                       classNames(
-                        pathname === '/docs'
-                          ? 'border-slate-500 text-gray-900'
-                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
                         'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
                       )
                     }
-                    aria-current={pathname === '/docs' ? 'page' : undefined}
                   >
                     Docs
                   </a>
@@ -146,13 +150,14 @@ export default function Navbar() {
                                 >
                                   About
                                 </Link>
-                                <Link
-                                  href="/"
+                                <a
+                                  href="https://paragraph.xyz/@ensocollective.eth"
+                                  target="_blank"
                                   className="block mb-3 text-gray-500 hover:text-gray-700"
                                   data-item="company"
                                 >
                                   Blog
-                                </Link>
+                                </a>
                               </div>
                             </div>
                           ) : null}
@@ -381,7 +386,10 @@ export default function Navbar() {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => login()}
+                              onClick={() => {
+                                localStorage.setItem('fromLogin', 'true');
+                                login();
+                              }}
                             >
                               Sign in
                             </button>
@@ -518,19 +526,17 @@ export default function Navbar() {
               >
                 Gallery
               </Disclosure.Button>
-              <Disclosure.Button
-                as="a"
-                href={'/docs'}
+              <p
+                onClick={() => {
+                  window.open('https://docs.proofof.bot/');
+                }}
                 className={classNames(
-                  pathname === '/docs'
-                    ? 'bg-slate-50 border-slate-500 text-slate-700'
-                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
                   'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
                 )}
-                aria-current={pathname === '/docs' ? 'page' : undefined}
               >
                 Docs
-              </Disclosure.Button>
+              </p>
               <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
                 <DropdownHOC>
                   {(showChildren: boolean, setShowChildren: Function) => {
@@ -553,7 +559,12 @@ export default function Navbar() {
                             <Link href="/" className="block mb-3">
                               About
                             </Link>
-                            <Link href="/">Blog</Link>
+                            <a
+                              href="https://paragraph.xyz/@ensocollective.eth"
+                              target="_blank"
+                            >
+                              Blog
+                            </a>
                           </div>
                         ) : null}
                       </>
@@ -588,7 +599,10 @@ export default function Navbar() {
               ) : (
                 <div className="mt-3 space-y-1">
                   <button
-                    onClick={() => login()}
+                    onClick={() => {
+                      localStorage.setItem('fromLogin', 'true');
+                      login();
+                    }}
                     className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                   >
                     Sign in

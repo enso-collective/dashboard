@@ -221,6 +221,41 @@ export function ExternalLinker({
   );
 }
 
+export function ExternalLinkerWithIcon({
+  icon,
+  url,
+  isActive,
+  className,
+  label
+}: {
+  icon?: JSX.Element;
+  url: string;
+  isActive?: boolean;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <div
+      className={`frosty-2 resize-mobile group mt-3 flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
+        isActive
+          ? 'border-privy-color-accent'
+          : 'border-privy-color-foreground-4'
+      } ${className}`}
+    >
+      <div className="flex 1 grow-0 items-center gap-x-2">
+        {icon ? icon : null}
+        <div className="w-full">{label}</div>
+      </div>
+
+      <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
+        <a href={url} target="_blank" className="button button-primary h-5 w-5">
+          <PlusSmallIcon className="h-4 w-4" strokeWidth={2} />
+        </a>
+      </div>
+    </div>
+  );
+}
+
 export function MintEas({ disabled }: { disabled: boolean }) {
   return (
     <button

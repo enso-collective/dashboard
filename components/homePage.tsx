@@ -14,6 +14,15 @@ import { db } from '../lib/firebase';
 import { publicClient } from '../lib/utils';
 import { usePrivy } from '@privy-io/react-auth';
 import GiganticLoader from './giganticLoader';
+import AuthLinker, {
+  ExternalLinker,
+  ExternalLinkerWithIcon
+} from './auth-linker';
+import FarcasterIcon from './icons/social/farcaster';
+import TwitterXIcon from './icons/social/twitter-x';
+import LensIcon from './icons/solid/lens';
+import { PlusSmallIcon } from '@heroicons/react/20/solid';
+import { usePrivyContext } from './privyProvider';
 
 interface MerchItem {
   description: string;
@@ -44,7 +53,40 @@ export default function HomePage() {
   const [quests, setQuests] = useState<MerchItem[]>([]);
   const [loadingQuests, setLoadingQuests] = useState(true);
   const [users, setUsers] = useState<User[]>([]);
-  const { authenticated } = usePrivy();
+  const {
+    authenticated,
+    unlinkFarcaster,
+    linkFarcaster,
+    user,
+    linkTwitter,
+    unlinkTwitter
+  } = usePrivy();
+
+  const farcasterSubject = user?.farcaster?.fid;
+  const farcasterName = user?.farcaster?.username;
+
+  const twitterSubject = user?.twitter?.subject;
+  const twitterUsername = user?.twitter?.username;
+
+  const { setConfig } = usePrivyContext();
+  useEffect(() => {
+    setConfig((c: any) => ({
+      ...c,
+      _render: {
+        inDialog: true,
+        inParentNodeId: null
+      }
+    }));
+    return () => {
+      setConfig((c: any) => ({
+        ...c,
+        _render: {
+          inDialog: false,
+          inParentNodeId: 'render-privy'
+        }
+      }));
+    };
+  }, []);
 
   useEffect(() => {
     getDocs(query(usersRef.current, orderBy('points', 'desc'), limit(100)))
@@ -134,49 +176,91 @@ export default function HomePage() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto mb-10">
-          <Card className="flex flex-col  bg-white justify-between p-2 text-center ">
-            <p className="font-medium text-center">Warpcast</p>
-            <div className="flex justify-center pb-2">
-              <button className="button mr-5 p-2 basis-[80px]">
-                <span className="text-[#000] text-base">Connect</span>
-              </button>
-              <a
-                href="https://warpcast.com/"
-                target="_blank"
-                className="button p-2 basis-[80px]"
-              >
-                <span className="text-[#000] text-base">Join </span>
-              </a>
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5  mr-auto ml-auto mb-10">
+          <Card className="  bg-white  p-4 ">
+            <div className="flex shrink-1 grow-0 items-center gap-x-2">
+              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
+                <TwitterXIcon height={18} width={18} />
+              </div>
+              <div className="w-full">Twitter</div>
             </div>
-          </Card>
-          <Card className="flex flex-col  bg-white justify-between p-2 text-center ">
-            <p className="font-medium text-center ">X</p>
-            <div className="flex justify-center pb-2">
-              <button className="button mr-5 p-2 basis-[80px]">
-                <span className="text-[#000] text-base">Connect</span>
-              </button>
+
+            <div className="pb-2 mt-5">
+              <AuthLinker
+                className="frosty"
+                label="Connect"
+                linkedLabel={`${twitterUsername}`}
+                canUnlink={false}
+                isLinked={!!twitterSubject}
+                unlinkAction={() => {
+                  unlinkTwitter(twitterSubject as string);
+                }}
+                linkAction={linkTwitter}
+              />
+
               <a
                 href="https://twitter.com/"
                 target="_blank"
-                className="button p-2 basis-[80px]"
+                className="button p-2 basis-[80px] mt-3 justify-between"
               >
-                <span className="text-[#000] text-base">Join </span>
+                <span className="text-[#000] text-sm mr-2">Post </span>
+                <ArrowUpRightIconWithGradient />
               </a>
             </div>
           </Card>
-          <Card className="flex flex-col  bg-white justify-between p-2 text-center">
-            <p className="font-medium text-center">Lens</p>
-            <div className="flex justify-center pb-2">
-              <button className="button mr-5 p-2 basis-[80px]">
-                <span className="text-[#000] text-base">Connect</span>
-              </button>
+          <Card className="  bg-white  p-4 ">
+            <div className="flex shrink-1 grow-0 items-center gap-x-2">
+              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
+                <FarcasterIcon height={18} width={18} />
+              </div>
+              <div className="w-full">Farcaster</div>
+            </div>
+
+            <div className="pb-2 mt-5">
+              <AuthLinker
+                className="frosty"
+                label="Connect"
+                linkedLabel={`${farcasterName}`}
+                canUnlink={false}
+                isLinked={!!farcasterSubject}
+                unlinkAction={() => {
+                  unlinkFarcaster(farcasterSubject as number);
+                }}
+                linkAction={linkFarcaster}
+              />
+
+              <a
+                href="https://warpcast.com/"
+                target="_blank"
+                className="button p-2 basis-[80px] mt-3 justify-between"
+              >
+                <span className="text-[#000] text-sm mr-2">Cast </span>
+                <ArrowUpRightIconWithGradient />
+              </a>
+            </div>
+          </Card>
+          <Card className="  bg-white  p-4 ">
+            <div className="flex shrink-1 grow-0 items-center gap-x-2">
+              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
+                <LensIcon height={18} width={18} />
+              </div>
+              <div className="w-full">Lens</div>
+            </div>
+
+            <div className="pb-2 mt-5">
+              <ExternalLinkerWithIcon
+                url="https://www.lens.xyz/"
+                label="Join"
+                className="frosty"
+              />
+
               <a
                 href="https://www.lens.xyz/"
                 target="_blank"
-                className="button p-2 basis-[80px]"
+                className="button p-2 basis-[80px] mt-3 justify-between"
               >
-                <span className="text-[#000] text-base">Join </span>
+                <span className="text-[#000] text-sm mr-2">Post </span>
+                <ArrowUpRightIconWithGradient />
               </a>
             </div>
           </Card>
