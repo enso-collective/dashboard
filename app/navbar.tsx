@@ -4,12 +4,10 @@ import { Fragment, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePrivy, WalletWithMetadata, useLogin } from '@privy-io/react-auth';
+import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
-import { prviyLoginCallback } from './../lib/handleLogin';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
-import { usePrivyContext } from '../components/privyProvider';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
 function classNames(...classes: string[]) {
@@ -17,10 +15,6 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  const { setIsOpen } = usePrivyContext();
-  const { login } = useLogin({
-    onComplete: prviyLoginCallback
-  });
   const { authenticated, logout, user } = usePrivy();
   const pathname = usePathname();
 
@@ -377,18 +371,17 @@ export default function Navbar() {
                       ) : (
                         <Menu.Item>
                           {({ active }) => (
-                            <button
+                            <Link
+                              href={'/'}
+                              replace
                               className={classNames(
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => {
-                                localStorage.setItem('fromLogin', 'true');
-                                login();
-                              }}
+                              onClick={() => {}}
                             >
                               Sign in
-                            </button>
+                            </Link>
                           )}
                         </Menu.Item>
                       )}
@@ -594,15 +587,13 @@ export default function Navbar() {
                 </>
               ) : (
                 <div className="mt-3 space-y-1">
-                  <button
-                    onClick={() => {
-                      localStorage.setItem('fromLogin', 'true');
-                      login();
-                    }}
+                  <Link
+                    href={'/'}
+                    replace
                     className="flex w-full px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                   >
                     Sign in
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>

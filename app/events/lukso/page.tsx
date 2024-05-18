@@ -3,11 +3,20 @@
 import { useState, useRef, useEffect } from 'react';
 import { Card, Subtitle, Title } from '@tremor/react';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
+import { redirect } from 'next/navigation';
 
 export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
+  const { authenticated, ready, user } = usePrivy();
+
+  useEffect(() => {
+    if (!authenticated && ready) {
+      redirect('/');
+    }
+  }, [ready, authenticated]);
 
   return (
     <div className="bg-denver min-h-screen">
