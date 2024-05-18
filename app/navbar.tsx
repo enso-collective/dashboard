@@ -19,11 +19,7 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const { setIsOpen } = usePrivyContext();
   const { login } = useLogin({
-    onComplete: (user) => {
-      prviyLoginCallback(user, () => {
-        setIsOpen(true);
-      });
-    }
+    onComplete: prviyLoginCallback
   });
   const { authenticated, logout, user } = usePrivy();
   const pathname = usePathname();

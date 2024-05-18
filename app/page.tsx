@@ -12,11 +12,7 @@ export default function IndexPage() {
   const cachedCountRef = useRef(0);
   const { setConfig, setIsOpen } = usePrivyContext();
   const { login } = useLogin({
-    onComplete: (user) => {
-      prviyLoginCallback(user, () => {
-        setIsOpen(true);
-      });
-    }
+    onComplete: prviyLoginCallback
   });
   useEffect(() => {
     setConfig((c: any) => ({
@@ -39,6 +35,10 @@ export default function IndexPage() {
 
   if (ready && authenticated) {
     cachedCountRef.current = 0;
+    if (localStorage.getItem('fromLogin')) {
+      localStorage.removeItem('fromLogin');
+      setIsOpen(true);
+    }
     return <HomePage />;
   }
   return <Empty />;

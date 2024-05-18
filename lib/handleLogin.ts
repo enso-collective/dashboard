@@ -12,11 +12,7 @@ import {
 import { db } from './firebase';
 import { WalletWithMetadata } from '@privy-io/react-auth';
 
-export async function prviyLoginCallback(user: any, nextAction?: Function) {
-  if (localStorage.getItem('fromLogin') && nextAction) {
-    localStorage.removeItem('fromLogin');
-    nextAction();
-  }
+export async function prviyLoginCallback(user: any) {
   if (user?.linkedAccounts && Array.isArray(user?.linkedAccounts)) {
     const linkedAccounts = user?.linkedAccounts;
     const wallets: WalletWithMetadata[] = Object.assign(
