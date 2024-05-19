@@ -13,9 +13,14 @@ export default function Lukso() {
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
   const { authenticated, ready, user } = usePrivy();
-  const [luksoAddress, setLuksoAddress] = useState(() =>
-    localStorage.getItem('luksoAddress')
-  );
+  const [luksoAddress, setLuksoAddress] = useState(() => {
+    try {
+      return localStorage.getItem('luksoAddress');
+    } catch (error) {
+      return null;
+    }
+  });
+
   // const [luksoProfile, setLuksoProfile] = useState<any>();
 
   // useEffect(() => {
