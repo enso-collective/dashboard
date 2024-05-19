@@ -7,6 +7,17 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
 import { LuksoConnector } from '../../../components/auth-linker';
+import {
+  query,
+  or,
+  where,
+  getDocs,
+  collection,
+  limit,
+  updateDoc,
+  doc
+} from 'firebase/firestore/lite';
+import { db } from '../../../lib/firebase';
 
 export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
@@ -20,6 +31,54 @@ export default function Lukso() {
       return null;
     }
   });
+  const [primaryWallet, setPrimaryWallet] = useState<string | null>();
+  useEffect(() => {
+    const linkedAccounts = user?.linkedAccounts || [];
+
+    const wallets: WalletWithMetadata[] = Object.assign(
+      [],
+      linkedAccounts.filter((a: any) => a.type === 'wallet')
+    ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
+      a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
+    ) as WalletWithMetadata[];
+    if (wallets.length > 0) {
+      const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
+      setPrimaryWallet(addressTrimmedToLowerCase);
+    }
+  }, [user?.linkedAccounts]);
+
+  useEffect(() => {
+    if (primaryWallet && luksoAddress) {
+      const q = query(
+        collection(db, 'User'),
+        or(
+          where('userWallet', '==', primaryWallet),
+          where('userWalletToLowerCase', '==', primaryWallet),
+          where('userWalletLower', '==', primaryWallet)
+        ),
+        limit(1)
+      );
+      const payload = {
+        luksoAddress: luksoAddress.toLowerCase().trim()
+      } as any;
+      getDocs(q)
+        .then(async (snapshot) => {
+          if (snapshot.empty) {
+            return;
+          }
+          snapshot.forEach(async (s) => {
+            try {
+              const docRef = doc(db, 'User', s.id);
+              await updateDoc(docRef, { ...payload });
+              console.log('Lusko profile updated!');
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        })
+        .catch(console.log);
+    }
+  }, [primaryWallet, luksoAddress]);
 
   // const [luksoProfile, setLuksoProfile] = useState<any>();
 
