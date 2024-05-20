@@ -103,11 +103,11 @@ function Guide({
             >
               <Dialog.Panel className="w-full max-w-sm rounded-xl bg-white p-6 backdrop-blur-2xl">
                 <img
-                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FSheFi%20Summit%20Logo%20Black.svg?alt=media&token=5433fdee-ff18-44bd-aca8-7be46864e341"
+                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fwordmark%20blue.svg?alt=media&token=3e7a9eb9-26c2-4aa3-82a0-c25a175d6167"
                   alt=""
-                  style={{ width: '100%' }}
-                  width={'348'}
+                  style={{ width: '100%', objectFit: 'contain' }}
                   height={'200'}
+                  className="mt-10"
                 />
                 <div className="mt-10 flex justify-center items-center ">
                   <button

@@ -7,6 +7,7 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
+import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
@@ -17,7 +18,7 @@ function classNames(...classes: string[]) {
 export default function Navbar() {
   const { authenticated, logout, user } = usePrivy();
   const pathname = usePathname();
-
+  const router = useRouter();
   const [avatar, setAvatar] = useState(defaultAvatarUrl);
   const linkedAccounts = user?.linkedAccounts || [];
   const wallets: WalletWithMetadata[] = Object.assign(
@@ -313,7 +314,10 @@ export default function Navbar() {
                                 active ? 'bg-gray-100' : '',
                                 'flex w-full px-4 py-2 text-sm text-gray-700'
                               )}
-                              onClick={() => logout()}
+                              onClick={() => {
+                                logout();
+                                window.location.href = '/';
+                              }}
                             >
                               Sign out
                             </button>
@@ -490,7 +494,10 @@ export default function Navbar() {
                   </div>
                   <div className="mt-3 space-y-1">
                     <button
-                      onClick={() => logout()}
+                      onClick={() => {
+                        logout();
+                        window.location.href = '/';
+                      }}
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                     >
                       Sign out
