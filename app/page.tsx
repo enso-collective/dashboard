@@ -8,11 +8,12 @@ import { prviyLoginCallback } from '../lib/handleLogin';
 
 export default function IndexPage() {
   const { ready, authenticated } = usePrivy();
+
+  const cachedCountRef = useRef(0);
+  const { setConfig, setIsOpen } = usePrivyContext();
   const { login } = useLogin({
     onComplete: prviyLoginCallback
   });
-  const cachedCountRef = useRef(0);
-  const { setConfig } = usePrivyContext();
   useEffect(() => {
     setConfig((c: any) => ({
       ...c,
@@ -26,6 +27,7 @@ export default function IndexPage() {
     if (!authenticated && ready) {
       if (cachedCountRef.current < 1) {
         cachedCountRef.current = cachedCountRef.current + 1;
+        localStorage.setItem('fromLogin', 'true');
         login();
       }
     }
@@ -33,6 +35,10 @@ export default function IndexPage() {
 
   if (ready && authenticated) {
     cachedCountRef.current = 0;
+    if (localStorage.getItem('fromLogin')) {
+      localStorage.removeItem('fromLogin');
+      setIsOpen(true);
+    }
     return <HomePage />;
   }
   return <Empty />;

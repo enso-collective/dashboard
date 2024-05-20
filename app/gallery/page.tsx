@@ -81,6 +81,7 @@ export default function Proofs() {
         proofsRef.current,
         orderBy('timestamp', 'desc'),
         where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
         where('image', '==', true)
         // orderBy('ipfsImageURL', 'desc'),
       ] as any[];

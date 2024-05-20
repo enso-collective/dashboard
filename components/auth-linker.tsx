@@ -49,8 +49,8 @@ export default function AuthLinker({
         address: formatWallet(wallet.address),
         icon: (
           <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 overflow-hidden rounded-[0.25rem]">
-            <Image
-              src="/logos/privy-logomark.png"
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fprivy-logomark.png?alt=media&token=ff2cf972-f109-4f9a-a237-8d492d0bb5c7"
               height={20}
               width={20}
               className="h-full w-full object-cover"
@@ -215,6 +215,89 @@ export function ExternalLinker({
       <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
         <a href={url} target="_blank">
           <ArrowUpRightIconWithGradient />
+        </a>
+      </div>
+    </div>
+  );
+}
+export function LuksoConnector({
+  icon,
+  isActive,
+  className,
+  label,
+  action,
+  linkedLabel
+}: {
+  icon?: JSX.Element;
+  isActive?: boolean;
+  className?: string;
+  label?: string;
+  action: any;
+  linkedLabel?: string;
+}) {
+  return (
+    <div
+      className={`frosty resize-mobile group mt-3 flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm `}
+    >
+      <div className="flex 1 grow-0 items-center gap-x-2">
+        {icon ? icon : null}
+        <div className="w-full">{label}</div>
+      </div>
+
+      {isActive && linkedLabel ? (
+        <div className="w-full justify-end truncate text-right text-privy-color-foreground-3">
+          {linkedLabel}
+        </div>
+      ) : null}
+
+      <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
+        {isActive ? (
+          <button
+            onClick={action}
+            className="button text-privy-color-foreground-2"
+            style={{ borderColor: `#ccc` }}
+          >
+            <MinusSmallIcon className="h-4 w-4" strokeWidth={2} />
+          </button>
+        ) : (
+          <button className="button button-primary h-5 w-5" onClick={action}>
+            <PlusSmallIcon className="h-4 w-4" strokeWidth={2} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export function ExternalLinkerWithIcon({
+  icon,
+  url,
+  isActive,
+  className,
+  label
+}: {
+  icon?: JSX.Element;
+  url: string;
+  isActive?: boolean;
+  className?: string;
+  label?: string;
+}) {
+  return (
+    <div
+      className={`frosty-2 resize-mobile group mt-3 flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm ${
+        isActive
+          ? 'border-privy-color-accent'
+          : 'border-privy-color-foreground-4'
+      } ${className}`}
+    >
+      <div className="flex 1 grow-0 items-center gap-x-2">
+        {icon ? icon : null}
+        <div className="w-full">{label}</div>
+      </div>
+
+      <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
+        <a href={url} target="_blank" className="button button-primary h-5 w-5">
+          <PlusSmallIcon className="h-4 w-4" strokeWidth={2} />
         </a>
       </div>
     </div>
