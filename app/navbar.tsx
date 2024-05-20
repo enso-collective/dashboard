@@ -133,13 +133,6 @@ export default function Navbar() {
                                 className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
                                 data-item="company"
                               >
-                                <Link
-                                  href="/"
-                                  className="block mb-3 text-gray-500 hover:text-gray-700"
-                                  data-item="company"
-                                >
-                                  About
-                                </Link>
                                 <a
                                   href="https://paragraph.xyz/@ensocollective.eth"
                                   target="_blank"
@@ -240,55 +233,13 @@ export default function Navbar() {
                                   >
                                     LUKSO Berlin
                                   </a>
-                                  <DropdownHOC>
-                                    {(
-                                      showShefiLinks: boolean,
-                                      setShowShefiLinks: Function
-                                    ) => {
-                                      return (
-                                        <>
-                                          <div
-                                            className="justify-between flex cursor-pointer text-gray-500 hover:text-gray-700"
-                                            data-item="event"
-                                            onClick={() => {
-                                              setShowShefiLinks(
-                                                (t: boolean) => !t
-                                              );
-                                            }}
-                                          >
-                                            <span data-item="event">
-                                              Shefi Summit Denver
-                                            </span>
-                                            <ChevronDownIcon
-                                              className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
-                                              aria-hidden="true"
-                                            />
-                                          </div>
-                                          {showShefiLinks ? (
-                                            <div
-                                              className="ml-4 mt-3"
-                                              data-item="event"
-                                            >
-                                              <a
-                                                href="/events/shefi"
-                                                className="block mb-3 text-gray-500 hover:text-gray-700"
-                                                data-item="event"
-                                              >
-                                                Quests
-                                              </a>
-                                              <a
-                                                href="/events/shefi"
-                                                className="block mb-3 text-gray-500 hover:text-gray-700"
-                                                data-item="event"
-                                              >
-                                                Proofs
-                                              </a>
-                                            </div>
-                                          ) : null}
-                                        </>
-                                      );
-                                    }}
-                                  </DropdownHOC>
+                                  <a
+                                    href="/events/shefi"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    Shefi Summit Denver
+                                  </a>
                                 </div>
                               </div>
                             </>
@@ -455,45 +406,9 @@ export default function Navbar() {
                             <a href="/events/lukso" className="block mb-3">
                               LUKSO Berlin
                             </a>
-                            <DropdownHOC>
-                              {(
-                                showShefiLinks: boolean,
-                                setShowShefiLinks: Function
-                              ) => {
-                                return (
-                                  <>
-                                    <div
-                                      className="justify-between flex"
-                                      onClick={() => {
-                                        setShowShefiLinks((t: boolean) => !t);
-                                      }}
-                                    >
-                                      <span>Shefi Summit Denver</span>
-                                      <ChevronDownIcon
-                                        className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
-                                        aria-hidden="true"
-                                      />
-                                    </div>
-                                    {showShefiLinks ? (
-                                      <div className="ml-4 mt-3">
-                                        <a
-                                          href="/events/shefi"
-                                          className="block mb-3"
-                                        >
-                                          Quests
-                                        </a>
-                                        <a
-                                          href="/events/shefi"
-                                          className="block mb-3"
-                                        >
-                                          Proofs
-                                        </a>
-                                      </div>
-                                    ) : null}
-                                  </>
-                                );
-                              }}
-                            </DropdownHOC>
+                            <a href="/events/shefi" className="block mb-3">
+                              Shefi Summit Denver
+                            </a>
                           </div>
                         ) : null}
                       </>
@@ -545,9 +460,6 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
-                            <Link href="/" className="block mb-3">
-                              About
-                            </Link>
                             <a
                               href="https://paragraph.xyz/@ensocollective.eth"
                               target="_blank"
