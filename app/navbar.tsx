@@ -4,7 +4,7 @@ import { Fragment, useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
-import { usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
+import { useLogout, usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { useRouter } from 'next/navigation';
@@ -16,7 +16,12 @@ function classNames(...classes: string[]) {
 }
 
 export default function Navbar() {
-  const { authenticated, logout, user } = usePrivy();
+  const { authenticated, user } = usePrivy();
+  const { logout } = useLogout({
+    onSuccess: () => {
+      window.location.href = '/';
+    }
+  });
   const pathname = usePathname();
   const router = useRouter();
   const [avatar, setAvatar] = useState(defaultAvatarUrl);
@@ -316,7 +321,6 @@ export default function Navbar() {
                               )}
                               onClick={() => {
                                 logout();
-                                window.location.href = '/';
                               }}
                             >
                               Sign out
@@ -496,7 +500,6 @@ export default function Navbar() {
                     <button
                       onClick={() => {
                         logout();
-                        window.location.href = '/';
                       }}
                       className="block px-4 py-2 text-base font-medium text-gray-500 hover:bg-gray-100 hover:text-gray-800"
                     >
