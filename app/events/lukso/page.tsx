@@ -6,7 +6,11 @@ import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
-import { LuksoConnector } from '../../../components/auth-linker';
+import {
+  LuksoConnector,
+  LuksoConnectorMod,
+  LuksoConnectorMod2
+} from '../../../components/auth-linker';
 import {
   query,
   or,
@@ -98,7 +102,7 @@ export default function Lukso() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
-        <LuksoConnector
+        <LuksoConnectorMod2
           icon={
             <img
               src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flukso.png?alt=media&token=c455efa6-2865-4ec6-b1d5-0492b9e4a66d"
