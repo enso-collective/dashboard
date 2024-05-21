@@ -8,21 +8,28 @@ import {
   getDocs,
   orderBy,
   query,
-  limit
+  limit,
+  updateDoc,
+  doc,
+  or,
+  where
 } from 'firebase/firestore/lite';
 import { db } from '../lib/firebase';
 import { publicClient } from '../lib/utils';
-import { usePrivy } from '@privy-io/react-auth';
+import { WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import GiganticLoader from './giganticLoader';
 import AuthLinker, {
   ExternalLinker,
-  ExternalLinkerWithIcon
+  ExternalLinkerWithIcon,
+  LuksoConnector,
+  LuksoConnectorMod
 } from './auth-linker';
 import FarcasterIcon from './icons/social/farcaster';
 import TwitterXIcon from './icons/social/twitter-x';
 import LensIcon from './icons/solid/lens';
 import { PlusSmallIcon } from '@heroicons/react/20/solid';
 import { usePrivyContext } from './privyProvider';
+import { connectLukso } from '../lib/lukso';
 
 interface MerchItem {
   description: string;
@@ -173,10 +180,66 @@ export default function HomePage() {
       .catch(console.error);
   }, [page, users]);
 
+  const [luksoAddress, setLuksoAddress] = useState(() => {
+    try {
+      return localStorage.getItem('luksoAddress');
+    } catch (error) {
+      return null;
+    }
+  });
+  const [primaryWallet, setPrimaryWallet] = useState<string | null>();
+  useEffect(() => {
+    const linkedAccounts = user?.linkedAccounts || [];
+
+    const wallets: WalletWithMetadata[] = Object.assign(
+      [],
+      linkedAccounts.filter((a: any) => a.type === 'wallet')
+    ).sort((a: WalletWithMetadata, b: WalletWithMetadata) =>
+      a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
+    ) as WalletWithMetadata[];
+    if (wallets.length > 0) {
+      const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
+      setPrimaryWallet(addressTrimmedToLowerCase);
+    }
+  }, [user?.linkedAccounts]);
+
+  useEffect(() => {
+    if (primaryWallet && luksoAddress) {
+      const q = query(
+        collection(db, 'User'),
+        or(
+          where('userWallet', '==', primaryWallet),
+          where('userWalletToLowerCase', '==', primaryWallet),
+          where('userWalletLower', '==', primaryWallet)
+        ),
+        limit(1)
+      );
+      const payload = {
+        luksoAddress: luksoAddress.toLowerCase().trim()
+      } as any;
+      getDocs(q)
+        .then(async (snapshot) => {
+          if (snapshot.empty) {
+            return;
+          }
+          snapshot.forEach(async (s) => {
+            try {
+              const docRef = doc(db, 'User', s.id);
+              await updateDoc(docRef, { ...payload });
+              console.log('Lusko profile updated!');
+            } catch (error) {
+              console.log(error);
+            }
+          });
+        })
+        .catch(console.log);
+    }
+  }, [primaryWallet, luksoAddress]);
+
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
-        <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5  mr-auto ml-auto mb-10">
+        <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-y-2 gap-x-2 mt-2.5  mr-auto ml-auto mb-10">
           <Card className="  bg-white  p-4 ">
             <div className="flex shrink-1 grow-0 items-center gap-x-2">
               <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
@@ -204,6 +267,53 @@ export default function HomePage() {
                 className="button p-2 basis-[80px] mt-3 justify-between"
               >
                 <span className="text-[#000] text-sm mr-2">Post </span>
+                <ArrowUpRightIconWithGradient />
+              </a>
+            </div>
+          </Card>
+          <Card className="  bg-white  p-4 ">
+            <div className="flex shrink-1 grow-0 items-center gap-x-2">
+              <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
+                <img
+                  src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flukso.png?alt=media&token=c455efa6-2865-4ec6-b1d5-0492b9e4a66d"
+                  height={18}
+                  width={18}
+                />
+              </div>
+              <div className="w-full">LUKSO Universal Profile</div>
+            </div>
+
+            <div className="pb-2 mt-5">
+              <LuksoConnectorMod
+                isActive={Boolean(luksoAddress)}
+                label={luksoAddress ? 'Connected' : 'Connect UP'}
+                action={async () => {
+                  if (luksoAddress) {
+                    localStorage.removeItem('luksoAddress');
+                    return setLuksoAddress(null);
+                  }
+                  try {
+                    const { account } = await connectLukso();
+                    localStorage.setItem('luksoAddress', account);
+                    setLuksoAddress(account);
+                  } catch (error) {
+                    console.error(error);
+                  }
+                }}
+                linkedLabel={
+                  luksoAddress
+                    ? luksoAddress.slice(0, 5) + '...' + luksoAddress.slice(-5)
+                    : undefined
+                }
+              />
+
+              <a
+                href="/events/lukso"
+                className="button p-2 basis-[80px] mt-3 justify-between"
+              >
+                <span className="text-[#000] text-sm mr-2">
+                  LUKSO Berlin Event{' '}
+                </span>
                 <ArrowUpRightIconWithGradient />
               </a>
             </div>
