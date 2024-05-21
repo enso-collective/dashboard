@@ -7,7 +7,6 @@ import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useLogout, usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
 import { publicClient } from '../lib/utils';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
-import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
 
@@ -23,7 +22,6 @@ export default function Navbar() {
     }
   });
   const pathname = usePathname();
-  const router = useRouter();
   const [avatar, setAvatar] = useState(defaultAvatarUrl);
   const linkedAccounts = user?.linkedAccounts || [];
   const wallets: WalletWithMetadata[] = Object.assign(
@@ -403,9 +401,9 @@ export default function Navbar() {
                             setShowChildren((t: boolean) => !t);
                           }}
                         >
-                          <span>Events</span>
+                          <span className="text-base">Events</span>
                           <ChevronDownIcon
-                            className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                            className="-mr-1 ml-2 h-8 w-8 text-black"
                             aria-hidden="true"
                           />
                         </div>
@@ -460,9 +458,9 @@ export default function Navbar() {
                             setShowChildren((t: boolean) => !t);
                           }}
                         >
-                          <span>Company</span>
+                          <span className="text-base">Company</span>
                           <ChevronDownIcon
-                            className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
+                            className="-mr-1 ml-2 h-8 w-8 text-black"
                             aria-hidden="true"
                           />
                         </div>
