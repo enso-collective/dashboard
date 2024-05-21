@@ -13,6 +13,9 @@ import {
 import { Dialog, Transition } from '@headlessui/react';
 
 const defaultConfig = {
+  embeddedWallets: {
+    createOnLogin: 'users-without-wallets'
+  },
   supportedChains: [
     mainnet,
     sepolia,
@@ -29,7 +32,7 @@ const defaultConfig = {
     inDialog: true,
     inParentNodeId: null
   },
-  loginMethods: ['google', 'twitter', 'farcaster', 'wallet']
+  loginMethods: ['twitter', 'wallet']
 };
 interface PrivyConfigObject {
   appearance: {
