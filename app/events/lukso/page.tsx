@@ -22,7 +22,100 @@ import {
 } from 'firebase/firestore/lite';
 import { db } from '../../../lib/firebase';
 import TwitterXIcon from '../../../components/icons/social/twitter-x';
+import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 
+const events = [
+  {
+    title: 'Tweet from SafeCON',
+    subtitle:
+      'Share your unique insights or a key takeaway from SafeCON in a tweet. Did you meet the LUKSO team? Did you learn about Universal Profiles or LSPs? #ProofOfLUKSO'
+  },
+  {
+    title: "Insights from Hugo's Workshop @ SafeCON (5:35 PM - 5:55 PM)",
+    subtitle:
+      'Attend Hugo\'s workshop on "From Key Management to Custom Metadata and Relayed Calls" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO'
+  },
+  {
+    title: "Learnings from Jean's Workshop @ SafeCON (6:00 PM - 6:20 PM)",
+    subtitle:
+      'Attend Jean\'s workshop on "An In-depth View into Universal Profiles and Their Capabilities" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO'
+  },
+  {
+    title:
+      'Attend Fabian\'s Panel Talk on "Smart Account Use Cases" (6:00 PM - 6:20 PM)',
+    subtitle:
+      'Tweet your top takeaway or photo of the panel talk in action! #ProofOfLUKSO'
+  },
+  {
+    title: 'Capture the LUKSO Blockhaus Afterparty Vibe',
+    subtitle:
+      'Tweet about your experience at the LUKSO Blockhaus Afterparty. How many pink clouds can you spot? #ProofOfLUKSO'
+  },
+  {
+    title: 'Show Off Your LUKSO Merch',
+    subtitle:
+      'Post a photo of your new LUKSO merch. Be creative with your pose or setting. #ProofOfLUKSO'
+  },
+  {
+    title: 'Polaroid Moments at LUKSO Blockhaus Afterparty',
+    subtitle:
+      'Post a photo of your Polaroid picture taken at the LUKSO Blockhaus Afterparty. #ProofOfLUKSO'
+  },
+  {
+    title: 'Reflect Your Style in the #ProofOfLUKSO Mirror',
+    subtitle:
+      'Post a photo of yourself in the #ProofOfLUKSO mirror at the LUKSO Blockhaus Afterparty'
+  }
+];
+interface ProofOfLUKSOEvent {
+  title: string;
+  subtitle: string;
+  showModal: boolean;
+  setShowModal: Function;
+}
+function LuksoQuest({
+  title,
+  subtitle,
+  showModal,
+  setShowModal
+}: ProofOfLUKSOEvent) {
+  const [showFull, setShowFull] = useState(false);
+  const subtitleArray = subtitle.split(' ');
+  const trim =
+    subtitleArray.length > 15
+      ? subtitleArray.slice(0, 15).join(' ') + '...'
+      : subtitleArray.join(' ');
+  const firstTrim = subtitleArray.slice(0, 15).join(' ');
+  return (
+    <Card className="flex flex-col quest-card bg-white ">
+      <div className="mt-1 mb-5 flex items-center flex-row">
+        <p className="font-medium">{title}</p>
+      </div>
+      <div className="mb-5  text-sm  text-gray-600">
+        <span>{showFull ? subtitle : trim}</span> {showFull ? <br /> : null}
+        {firstTrim.length !== subtitle.length ? (
+          <span
+            style={{ color: 'var(--privy-color-accent)' }}
+            className="cursor-pointer"
+            onClick={() => {
+              setShowFull((t) => !t);
+            }}
+          >
+            {showFull ? ' show less' : 'show more'}
+          </span>
+        ) : (
+          <></>
+        )}
+      </div>
+      <div className="flex flex-row justify-between items-center mt-[auto]">
+        <p>+5 points</p>
+        <a href={''} target="_blank" rel="noopener noreferrer">
+          <ArrowUpRightIconWithGradient />
+        </a>
+      </div>
+    </Card>
+  );
+}
 export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
@@ -130,6 +223,23 @@ export default function Lukso() {
             aria-hidden="true"
           />
         </button>
+
+        {expandQuests ? (
+          <div className="mb-10">
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
+              {events.map((t) => (
+                <LuksoQuest
+                  key={t.title}
+                  {...t}
+                  showModal={true}
+                  setShowModal={() => {}}
+                />
+              ))}
+            </div>
+          </div>
+        ) : (
+          <></>
+        )}
 
         <LuksoConnectorMod2
           icon={
