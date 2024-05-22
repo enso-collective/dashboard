@@ -131,34 +131,6 @@ export default function Lukso() {
           />
         </button>
 
-        <button
-          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
-          onClick={() => {
-            setExpandLeaderboard((t) => !t);
-          }}
-        >
-          <Title>Leaderboard</Title>
-
-          <ChevronDownIcon
-            className="-mr-1 ml-2 h-10 w-10 text-black"
-            aria-hidden="true"
-          />
-        </button>
-
-        <button
-          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
-          onClick={() => {
-            setExpandGallery((t) => !t);
-          }}
-        >
-          <Title>Gallery</Title>
-
-          <ChevronDownIcon
-            className="-mr-1 ml-2 h-10 w-10 text-black"
-            aria-hidden="true"
-          />
-        </button>
-
         <LuksoConnectorMod2
           icon={
             <img
@@ -188,6 +160,34 @@ export default function Lukso() {
               : undefined
           }
         />
+
+        <button
+          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%] mt-5"
+          onClick={() => {
+            setExpandLeaderboard((t) => !t);
+          }}
+        >
+          <Title>Leaderboard</Title>
+
+          <ChevronDownIcon
+            className="-mr-1 ml-2 h-10 w-10 text-black"
+            aria-hidden="true"
+          />
+        </button>
+
+        <button
+          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
+          onClick={() => {
+            setExpandGallery((t) => !t);
+          }}
+        >
+          <Title>Gallery</Title>
+
+          <ChevronDownIcon
+            className="-mr-1 ml-2 h-10 w-10 text-black"
+            aria-hidden="true"
+          />
+        </button>
       </div>
     </div>
   );
