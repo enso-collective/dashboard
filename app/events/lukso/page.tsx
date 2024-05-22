@@ -7,9 +7,8 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
 import {
-  LuksoConnector,
-  LuksoConnectorMod,
-  LuksoConnectorMod2
+  LuksoConnectorMod2,
+  TwitterConnectorMod2
 } from '../../../components/auth-linker';
 import {
   query,
@@ -22,12 +21,13 @@ import {
   doc
 } from 'firebase/firestore/lite';
 import { db } from '../../../lib/firebase';
+import TwitterXIcon from '../../../components/icons/social/twitter-x';
 
 export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
-  const { authenticated, ready, user } = usePrivy();
+  const { authenticated, ready, user, linkTwitter, unlinkTwitter } = usePrivy();
   const [luksoAddress, setLuksoAddress] = useState(() => {
     try {
       return localStorage.getItem('luksoAddress');
@@ -84,6 +84,9 @@ export default function Lukso() {
     }
   }, [primaryWallet, luksoAddress]);
 
+  const twitterSubject = user?.twitter?.subject;
+  const twitterUsername = user?.twitter?.username;
+
   // const [luksoProfile, setLuksoProfile] = useState<any>();
 
   // useEffect(() => {
@@ -102,36 +105,18 @@ export default function Lukso() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
-        <LuksoConnectorMod2
-          icon={
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flukso.png?alt=media&token=c455efa6-2865-4ec6-b1d5-0492b9e4a66d"
-              height={18}
-              width={18}
-            />
-          }
-          isActive={Boolean(luksoAddress)}
-          label={luksoAddress ? 'Connected' : 'Connect'}
+        <TwitterConnectorMod2
+          isActive={Boolean(twitterUsername)}
+          label={luksoAddress ? 'Connected' : 'Connect Twitter'}
+          linkedLabel={twitterUsername ? twitterUsername : undefined}
           action={async () => {
-            if (luksoAddress) {
-              localStorage.removeItem('luksoAddress');
-              return setLuksoAddress(null);
+            if (twitterUsername) {
+              return unlinkTwitter(twitterSubject!);
             }
-            try {
-              const { account } = await connectLukso();
-              localStorage.setItem('luksoAddress', account);
-              setLuksoAddress(account);
-            } catch (error) {
-              console.error(error);
-            }
+            linkTwitter();
           }}
-          linkedLabel={
-            luksoAddress
-              ? luksoAddress.slice(0, 5) + '...' + luksoAddress.slice(-5)
-              : undefined
-          }
+          icon={<TwitterXIcon height={18} width={18} />}
         />
-
         <button
           className="mb-5 mt-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
           onClick={() => {
@@ -173,6 +158,36 @@ export default function Lukso() {
             aria-hidden="true"
           />
         </button>
+
+        <LuksoConnectorMod2
+          icon={
+            <img
+              src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flukso.png?alt=media&token=c455efa6-2865-4ec6-b1d5-0492b9e4a66d"
+              height={18}
+              width={18}
+            />
+          }
+          isActive={Boolean(luksoAddress)}
+          label={luksoAddress ? 'Connected' : 'Connect'}
+          action={async () => {
+            if (luksoAddress) {
+              localStorage.removeItem('luksoAddress');
+              return setLuksoAddress(null);
+            }
+            try {
+              const { account } = await connectLukso();
+              localStorage.setItem('luksoAddress', account);
+              setLuksoAddress(account);
+            } catch (error) {
+              console.error(error);
+            }
+          }}
+          linkedLabel={
+            luksoAddress
+              ? luksoAddress.slice(0, 5) + '...' + luksoAddress.slice(-5)
+              : undefined
+          }
+        />
       </div>
     </div>
   );
