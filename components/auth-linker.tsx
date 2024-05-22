@@ -394,6 +394,69 @@ export function LuksoConnectorMod2({
     </div>
   );
 }
+export function TwitterConnectorMod2({
+  icon,
+  isActive,
+  className,
+  label,
+  action,
+  linkedLabel
+}: {
+  icon?: JSX.Element;
+  isActive: boolean;
+  className?: string;
+  label?: string;
+  action: any;
+  linkedLabel?: string;
+}) {
+  return (
+    <div
+      className={`frosty resize-mobile group mt-3 flex min-h-10 min-w-full items-center justify-between gap-x-3 rounded-md border bg-privy-color-background px-3 text-sm `}
+    >
+      <div className="flex 1 grow-0 items-center gap-x-2">
+        {icon ? icon : null}
+        <div className="w-full">
+          {isActive ? (
+            'Connected'
+          ) : (
+            <p>
+              Connect{' '}
+              <a
+                href="https://twitter.com/"
+                target="_blank"
+                style={{ color: 'var(--privy-color-accent)' }}
+              >
+                Twitter
+              </a>
+            </p>
+          )}
+        </div>
+      </div>
+
+      {isActive && linkedLabel ? (
+        <div className="w-full justify-end truncate text-right text-privy-color-foreground-3">
+          {linkedLabel}
+        </div>
+      ) : null}
+
+      <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1">
+        {isActive ? (
+          <button
+            onClick={action}
+            className="button text-privy-color-foreground-2"
+            style={{ borderColor: `#ccc` }}
+          >
+            <MinusSmallIcon className="h-4 w-4" strokeWidth={2} />
+          </button>
+        ) : (
+          <button className="button button-primary h-5 w-5" onClick={action}>
+            <PlusSmallIcon className="h-4 w-4" strokeWidth={2} />
+          </button>
+        )}
+      </div>
+    </div>
+  );
+}
 
 export function ExternalLinkerWithIcon({
   icon,

@@ -7,9 +7,8 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
 import {
-  LuksoConnector,
-  LuksoConnectorMod,
-  LuksoConnectorMod2
+  LuksoConnectorMod2,
+  TwitterConnectorMod2
 } from '../../../components/auth-linker';
 import {
   query,
@@ -22,12 +21,13 @@ import {
   doc
 } from 'firebase/firestore/lite';
 import { db } from '../../../lib/firebase';
+import TwitterXIcon from '../../../components/icons/social/twitter-x';
 
 export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
-  const { authenticated, ready, user } = usePrivy();
+  const { authenticated, ready, user, linkTwitter, unlinkTwitter } = usePrivy();
   const [luksoAddress, setLuksoAddress] = useState(() => {
     try {
       return localStorage.getItem('luksoAddress');
@@ -84,6 +84,9 @@ export default function Lukso() {
     }
   }, [primaryWallet, luksoAddress]);
 
+  const twitterSubject = user?.twitter?.subject;
+  const twitterUsername = user?.twitter?.username;
+
   // const [luksoProfile, setLuksoProfile] = useState<any>();
 
   // useEffect(() => {
@@ -102,6 +105,32 @@ export default function Lukso() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
+        <TwitterConnectorMod2
+          isActive={Boolean(twitterUsername)}
+          label={luksoAddress ? 'Connected' : 'Connect Twitter'}
+          linkedLabel={twitterUsername ? twitterUsername : undefined}
+          action={async () => {
+            if (twitterUsername) {
+              return unlinkTwitter(twitterSubject!);
+            }
+            linkTwitter();
+          }}
+          icon={<TwitterXIcon height={18} width={18} />}
+        />
+        <button
+          className="mb-5 mt-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
+          onClick={() => {
+            setExpandQuests((t) => !t);
+          }}
+        >
+          <Title>Quests</Title>
+
+          <ChevronDownIcon
+            className="-mr-1 ml-2 h-10 w-10 text-black"
+            aria-hidden="true"
+          />
+        </button>
+
         <LuksoConnectorMod2
           icon={
             <img
@@ -133,21 +162,7 @@ export default function Lukso() {
         />
 
         <button
-          className="mb-5 mt-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
-          onClick={() => {
-            setExpandQuests((t) => !t);
-          }}
-        >
-          <Title>Quests</Title>
-
-          <ChevronDownIcon
-            className="-mr-1 ml-2 h-10 w-10 text-black"
-            aria-hidden="true"
-          />
-        </button>
-
-        <button
-          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
+          className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%] mt-5"
           onClick={() => {
             setExpandLeaderboard((t) => !t);
           }}
