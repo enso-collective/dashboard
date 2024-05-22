@@ -375,7 +375,7 @@ export default function HomePage() {
             </div>
           </Card>
         </div>
-        <div className="mb-10">
+        {/* <div className="mb-10">
           <Title>Quests</Title>
           {loadingQuests ? <GiganticLoader /> : null}
           <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-2 gap-x-2 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
@@ -416,7 +416,7 @@ export default function HomePage() {
               </Card>
             ))}
           </div>
-        </div>
+        </div> */}
         {/* <div className="leaderboard">
           <Title className="mb-3">Leaderboard</Title>
           {items.map((t, index) => (
