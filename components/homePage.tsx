@@ -253,7 +253,7 @@ export default function HomePage() {
                 className="frosty"
                 label="Connect"
                 linkedLabel={`${twitterUsername}`}
-                canUnlink={false}
+                canUnlink={true}
                 isLinked={!!twitterSubject}
                 unlinkAction={() => {
                   unlinkTwitter(twitterSubject as string);
