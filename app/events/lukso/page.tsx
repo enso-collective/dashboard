@@ -119,7 +119,7 @@ function LuksoQuest({
         )}
       </div>
       <div className="flex flex-row justify-between items-center mt-[auto]">
-        <p>+5 points</p>
+        <p>+100 points</p>
         <Tooltip id="lukso-tooltip" />
         {link.length > 0 ? (
           <a href={link} target="_blank" rel="noopener noreferrer">
