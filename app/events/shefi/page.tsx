@@ -227,7 +227,7 @@ export default function ShefiEvent() {
                 {quests.map((t) => (
                   <Card
                     key={t.name}
-                    className="flex flex-col quest-card bg-white justify-between"
+                    className="flex flex-col quest-card bg-white"
                   >
                     <div className="mt-1 mb-5 flex items-center flex-row">
                       <img
@@ -239,10 +239,11 @@ export default function ShefiEvent() {
                       />
                       <p className="font-medium">{t.name}</p>
                     </div>
-                    <Subtitle className="mb-5 uppercase text-sm">
+                    <p className="mb-5 capitalize text-sm text-gray-600">
                       {t.description}
-                    </Subtitle>
-                    <div className="flex flex-row justify-between items-center">
+                    </p>
+
+                    <div className="flex flex-row justify-between items-center mt-[auto]">
                       <p>+{t.points} points</p>
                       {t.link && t.link.startsWith('/') ? (
                         // Uncomment the following lines when you want to make the links starting with '/' clickable
