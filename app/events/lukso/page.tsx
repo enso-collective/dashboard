@@ -28,43 +28,51 @@ const events = [
   {
     title: 'Tweet from SafeCON',
     subtitle:
-      'Share your unique insights or a key takeaway from SafeCON in a tweet. Did you meet the LUKSO team? Did you learn about Universal Profiles or LSPs? #ProofOfLUKSO'
+      'Share your unique insights or a key takeaway from SafeCON in a tweet. Did you meet the LUKSO team? Did you learn about Universal Profiles or LSPs? #ProofOfLUKSO',
+    link: 'https://twitter.com/intent/tweet?text=Had+an+amazing+time+at+SafeCON!+Met+the+LUKSO+team+and+learned+so+much+about+Universal+Profiles+and+LSPs.+%23ProofOfLUKSO'
   },
   {
     title: "Insights from Hugo's Workshop @ SafeCON (5:35 PM - 5:55 PM)",
     subtitle:
-      'Attend Hugo\'s workshop on "From Key Management to Custom Metadata and Relayed Calls" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO'
+      'Attend Hugo\'s workshop on "From Key Management to Custom Metadata and Relayed Calls" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO',
+    link: 'https://twitter.com/intent/tweet?text=Attended+Hugo%E2%80%99s+workshop+on+%E2%80%9CFrom+Key+Management+to+Custom+Metadata+and+Relayed+Calls%E2%80%9D+at+SafeCON.+Top+takeaway%3A+[insert+your+insight]!+%23ProofOfLUKSO'
   },
   {
     title: "Learnings from Jean's Workshop @ SafeCON (6:00 PM - 6:20 PM)",
     subtitle:
-      'Attend Jean\'s workshop on "An In-depth View into Universal Profiles and Their Capabilities" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO'
+      'Attend Jean\'s workshop on "An In-depth View into Universal Profiles and Their Capabilities" Tweet your top takeaway or photo of the workshop in action! #ProofOfLUKSO',
+    link: 'https://twitter.com/intent/tweet?text=Jean%E2%80%99s+workshop+on+%E2%80%9CAn+In-depth+View+into+Universal+Profiles+and+Their+Capabilities%E2%80%9D+was+so+insightful!+Top+takeaway%3A+[insert+your+insight]+%23ProofOfLUKSO'
   },
   {
     title:
       'Attend Fabian\'s Panel Talk on "Smart Account Use Cases" (6:00 PM - 6:20 PM)',
     subtitle:
-      'Tweet your top takeaway or photo of the panel talk in action! #ProofOfLUKSO'
+      'Tweet your top takeaway or photo of the panel talk in action! #ProofOfLUKSO',
+    link: 'https://twitter.com/intent/tweet?text=Fabian%E2%80%99s+panel+on+%E2%80%9CSmart+Account+Use+Cases%E2%80%9D+was+super+informative!+Top+takeaway%3A+[insert+your+insight]+%23ProofOfLUKSO'
   },
   {
     title: 'Capture the LUKSO Blockhaus Afterparty Vibe',
     subtitle:
-      'Tweet about your experience at the LUKSO Blockhaus Afterparty. How many pink clouds can you spot? #ProofOfLUKSO'
+      'Tweet about your experience at the LUKSO Blockhaus Afterparty. How many pink clouds can you spot? #ProofOfLUKSO',
+    link: ''
   },
   {
     title: 'Show Off Your LUKSO Merch',
     subtitle:
-      'Post a photo of your new LUKSO merch. Be creative with your pose or setting. #ProofOfLUKSO'
+      'Post a photo of your new LUKSO merch. Be creative with your pose or setting. #ProofOfLUKSO',
+    link: ''
   },
   {
     title: 'Polaroid Moments at LUKSO Blockhaus Afterparty',
     subtitle:
-      'Post a photo of your Polaroid picture taken at the LUKSO Blockhaus Afterparty. #ProofOfLUKSO'
+      'Post a photo of your Polaroid picture taken at the LUKSO Blockhaus Afterparty. #ProofOfLUKSO',
+    link: ''
   },
   {
     title: 'Reflect Your Style in the #ProofOfLUKSO Mirror',
     subtitle:
-      'Post a photo of yourself in the #ProofOfLUKSO mirror at the LUKSO Blockhaus Afterparty'
+      'Post a photo of yourself in the #ProofOfLUKSO mirror at the LUKSO Blockhaus Afterparty',
+    link: ''
   }
 ];
 interface ProofOfLUKSOEvent {
@@ -72,10 +80,12 @@ interface ProofOfLUKSOEvent {
   subtitle: string;
   showModal: boolean;
   setShowModal: Function;
+  link: string;
 }
 function LuksoQuest({
   title,
   subtitle,
+  link,
   showModal,
   setShowModal
 }: ProofOfLUKSOEvent) {
@@ -109,7 +119,7 @@ function LuksoQuest({
       </div>
       <div className="flex flex-row justify-between items-center mt-[auto]">
         <p>+5 points</p>
-        <a href={''} target="_blank" rel="noopener noreferrer">
+        <a href={link} target="_blank" rel="noopener noreferrer">
           <ArrowUpRightIconWithGradient />
         </a>
       </div>
@@ -233,6 +243,7 @@ export default function Lukso() {
                   {...t}
                   showModal={true}
                   setShowModal={() => {}}
+                  link={t.link}
                 />
               ))}
             </div>
