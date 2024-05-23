@@ -23,6 +23,7 @@ import {
 import { db } from '../../../lib/firebase';
 import TwitterXIcon from '../../../components/icons/social/twitter-x';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
+import { Tooltip } from 'react-tooltip';
 
 const events = [
   {
@@ -119,9 +120,20 @@ function LuksoQuest({
       </div>
       <div className="flex flex-row justify-between items-center mt-[auto]">
         <p>+5 points</p>
-        <a href={link} target="_blank" rel="noopener noreferrer">
-          <ArrowUpRightIconWithGradient />
-        </a>
+        <Tooltip id="lukso-tooltip" />
+        {link.length > 0 ? (
+          <a href={link} target="_blank" rel="noopener noreferrer">
+            <ArrowUpRightIconWithGradient />
+          </a>
+        ) : (
+          <a
+            data-tooltip-id="lukso-tooltip"
+            data-tooltip-content="Enabled at the Afterparty"
+            data-tooltip-place="top"
+          >
+            <ArrowUpRightIconWithGradient />
+          </a>
+        )}
       </div>
     </Card>
   );
