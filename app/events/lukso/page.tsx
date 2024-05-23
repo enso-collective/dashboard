@@ -18,12 +18,15 @@ import {
   collection,
   limit,
   updateDoc,
-  doc
+  doc,
+  orderBy
 } from 'firebase/firestore/lite';
 import { db } from '../../../lib/firebase';
 import TwitterXIcon from '../../../components/icons/social/twitter-x';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 import { Tooltip } from 'react-tooltip';
+import { Attestation, User } from '../shefi/page';
+import GallryImageCard from '../../../components/galleryImageCard';
 
 const events = [
   {
@@ -151,6 +154,7 @@ export default function Lukso() {
     }
   });
   const [primaryWallet, setPrimaryWallet] = useState<string | null>();
+  const proofsRef = useRef(collection(db, 'Proof'));
   useEffect(() => {
     const linkedAccounts = user?.linkedAccounts || [];
 
@@ -165,6 +169,24 @@ export default function Lukso() {
       setPrimaryWallet(addressTrimmedToLowerCase);
     }
   }, [user?.linkedAccounts]);
+  const usersRef = useRef(collection(db, 'User'));
+  const [users, setUsers] = useState<User[]>([]);
+  useEffect(() => {
+    getDocs(
+      query(
+        usersRef.current,
+        // orderBy('pointValueLukso', 'desc'),
+        where('luksoAddress', '>', ''),
+        limit(100)
+      )
+    )
+      .then((snapshot) => {
+        const tempArr: any[] = [];
+        snapshot.forEach((d) => tempArr.push(d.data() as any));
+        setUsers(tempArr);
+      })
+      .catch(console.log);
+  }, [setUsers]);
 
   useEffect(() => {
     if (primaryWallet && luksoAddress) {
@@ -202,6 +224,8 @@ export default function Lukso() {
   const twitterSubject = user?.twitter?.subject;
   const twitterUsername = user?.twitter?.username;
 
+  const [attestations, setAttestations] = useState<Attestation[]>([]);
+
   // const [luksoProfile, setLuksoProfile] = useState<any>();
 
   // useEffect(() => {
@@ -210,6 +234,34 @@ export default function Lukso() {
   //     readLuksoProfile(luksoAddress).then(setLuksoProfile);
   //   }
   // }, [luksoAddress, setLuksoProfile]);
+
+  useEffect(() => {
+    const resolveEnsAvatars = async () => {
+      const queryParams = [
+        proofsRef.current,
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
+      ] as any[];
+      //  @ts-ignore
+      const q = query(...queryParams);
+      const tempArray: Attestation[] = [];
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((s) => {
+        const tempData = s.data() as Attestation;
+
+        if (tempData.questId?.toLowerCase()?.trim() === 'lukso') {
+          tempArray.push(tempData);
+        }
+      });
+      setAttestations((t) => [...t, ...tempArray]);
+    };
+
+    resolveEnsAvatars().catch(console.log);
+  }, []);
 
   useEffect(() => {
     if (!authenticated && ready) {
@@ -307,6 +359,45 @@ export default function Lukso() {
             aria-hidden="true"
           />
         </button>
+        {expandLeaderboard ? (
+          <>
+            <div className="leaderboard">
+              {users.map((t, index) => (
+                <div className="list-fix" key={t.id}>
+                  <div className="number-col">#{index + 1}</div>
+                  <div className="list-body pl-4 pr-4">
+                    <div className="flex flex-row items-center">
+                      {/* {t.image ? (
+                        <img
+                          className="rounded-full mr-2"
+                          width="30"
+                          height="30"
+                          src={t.image}
+                          alt="logo"
+                        />
+                      ) : (
+                        <img
+                          className="rounded-full mr-2 grayscale"
+                          width="30"
+                          height="30"
+                          src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293"
+                          alt="logo"
+                        />
+                      )} */}
+
+                      <div className="list-wrap">{t.luksoAddress}</div>
+                    </div>
+
+                    <p className="basis-24 flex-shrink-0 text-right">
+                      <span>{new Intl.NumberFormat().format(t.points)}</span>{' '}
+                      points
+                    </p>
+                  </div>
+                </div>
+              ))}
+            </div>
+          </>
+        ) : null}
 
         <button
           className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
@@ -321,6 +412,15 @@ export default function Lukso() {
             aria-hidden="true"
           />
         </button>
+        {expandGallery ? (
+          <>
+            <div className="grid grid-cols-[repeat(auto-fill,minmax(236px,1fr))] gap-y-1 gap-x-1 mt-2.5 grid-auto-rows-minmax mr-auto ml-auto">
+              {attestations.map((t) => (
+                <GallryImageCard t={t} key={t.ipfsImageURL} />
+              ))}
+            </div>
+          </>
+        ) : null}
       </div>
     </div>
   );
