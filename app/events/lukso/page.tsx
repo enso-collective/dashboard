@@ -384,8 +384,13 @@ export default function Lukso() {
                           alt="logo"
                         />
                       )} */}
-
-                      <div className="list-wrap">{t.luksoAddress}</div>
+                      <a
+                        className="list-wrap"
+                        href={`https://universalprofile.cloud/${t.luksoAddress}`}
+                        target="_blank"
+                      >
+                        {t.luksoAddress}
+                      </a>
                     </div>
 
                     <p className="basis-24 flex-shrink-0 text-right">
