@@ -23,7 +23,7 @@ import GiganticLoader from '../../../components/giganticLoader';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 import GallryImageCard from '../../../components/galleryImageCard';
 
-interface User {
+export interface User {
   poapId: string[];
   attestationUID: string[];
   proofs: string[];
@@ -32,9 +32,12 @@ interface User {
   image: string;
   ensName: string;
   userWallet: string;
+  luksoAddress: string;
+  pointValueLukso: number;
+  id: string;
 }
 
-interface MerchItem {
+export interface MerchItem {
   description: string;
   image: string;
   link: string;
@@ -42,7 +45,7 @@ interface MerchItem {
   points: string;
 }
 
-interface Attestation {
+export interface Attestation {
   poapId: string;
   image: boolean;
   pointValue: number;
@@ -158,49 +161,30 @@ export default function ShefiEvent() {
 
   useEffect(() => {
     const resolveEnsAvatars = async () => {
-      setLoadingGallery(true);
-      let lastTimestamp: any;
+      const queryParams = [
+        proofsRef.current,
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
+      ] as any[];
+      //  @ts-ignore
+      const q = query(...queryParams);
+      const tempArray: Attestation[] = [];
+      const snapshot = await getDocs(q);
 
-      while (true) {
-        const queryParams = [
-          proofsRef.current,
-          orderBy('timestamp', 'desc'),
-          where('timestamp', '!=', 0),
-          where('ipfsImageURL', '>', ''),
-          where('image', '==', true)
-          // orderBy('ipfsImageURL', 'desc'),
-        ] as any[];
+      snapshot.forEach((s) => {
+        const tempData = s.data() as Attestation;
 
-        if (lastTimestamp) {
-          queryParams.push(startAfter(lastTimestamp));
-          queryParams.push(limit(20));
-        } else {
-          queryParams.push(limit(20));
-        }
-        //  @ts-ignore
-        const q = query(...queryParams);
-        const tempArray: Attestation[] = [];
-        const snapshot = await getDocs(q);
-
-        snapshot.forEach((s) => {
-          const tempData = s.data() as Attestation;
+        if (tempData.questId?.toLowerCase()?.trim() === 'shefi') {
           tempArray.push(tempData);
-        });
-        lastTimestamp = tempArray.slice(-1)[0].timestamp;
-
-        setAttestations((t) => [...t, ...tempArray]);
-        if (tempArray.length < 20) {
-          break;
         }
-        await sleep(5000);
-      }
+      });
+      setAttestations((t) => [...t, ...tempArray]);
     };
 
-    resolveEnsAvatars()
-      .finally(() => {
-        setLoadingGallery(false);
-      })
-      .catch(console.log);
+    resolveEnsAvatars().catch(console.log);
   }, []);
 
   if (ready && authenticated) {
@@ -351,15 +335,6 @@ export default function ShefiEvent() {
                 {attestations.map((t) => (
                   <GallryImageCard t={t} key={t.timestamp} />
                 ))}
-              </div>
-
-              <div
-                ref={loaderRef}
-                className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"
-              >
-                {loadingGallery ? (
-                  <MoonLoader size={100} color="rgba(255,255,255,.9)" />
-                ) : null}
               </div>
             </>
           ) : null}

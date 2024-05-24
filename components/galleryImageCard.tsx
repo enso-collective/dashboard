@@ -31,15 +31,17 @@ export default function GallryImageCard({ t }: { t: any }) {
             <div tabIndex={3} className="flex-1">
               <p>+{t.pointValue} points</p>
             </div>
-            <span
-              className="cursor-pointer pl-5"
-              onClick={(e) => {
-                e.preventDefault();
-                window.open(`https://www.onceupon.gg/${t.transaction}`);
-              }}
-            >
-              <ArrowUpRightIconWithGradient />
-            </span>
+            {!t?.transaction ? null : (
+              <span
+                className="cursor-pointer pl-5"
+                onClick={(e) => {
+                  e.preventDefault();
+                  window.open(`https://www.onceupon.gg/${t.transaction}`);
+                }}
+              >
+                <ArrowUpRightIconWithGradient />
+              </span>
+            )}
           </div>
         </div>
       </div>
