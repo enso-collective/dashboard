@@ -175,7 +175,7 @@ export default function Lukso() {
     getDocs(
       query(
         usersRef.current,
-        // orderBy('pointValueLukso', 'desc'),
+        orderBy('pointValueLukso', 'desc'),
         where('luksoAddress', '>', ''),
         limit(100)
       )
