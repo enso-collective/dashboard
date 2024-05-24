@@ -389,7 +389,9 @@ export default function Lukso() {
                     </div>
 
                     <p className="basis-24 flex-shrink-0 text-right">
-                      <span>{new Intl.NumberFormat().format(t.points)}</span>{' '}
+                      <span>
+                        {new Intl.NumberFormat().format(t.pointValueLukso)}
+                      </span>{' '}
                       points
                     </p>
                   </div>
