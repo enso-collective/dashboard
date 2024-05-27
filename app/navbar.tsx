@@ -223,13 +223,20 @@ export default function Navbar() {
                           {showChildren ? (
                             <>
                               <div
-                                className="absolute min-w-[220px] top-[55px] z-10 "
+                                className="absolute min-w-[270px] top-[55px] z-10 "
                                 data-item="event"
                               >
                                 <div
                                   className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
                                   data-item="event"
                                 >
+                                  <a
+                                    href="/events/builders"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    TheBuildersDAO x NoX Gallery
+                                  </a>
                                   <a
                                     href="/events/lukso"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
@@ -409,6 +416,9 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
+                            <a href="/events/builders" className="block mb-3">
+                              TheBuildersDAO x NoX Gallery
+                            </a>
                             <a href="/events/lukso" className="block mb-3">
                               LUKSO Berlin
                             </a>

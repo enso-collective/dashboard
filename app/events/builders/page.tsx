@@ -28,39 +28,7 @@ import { Tooltip } from 'react-tooltip';
 import { Attestation, User } from '../shefi/page';
 import GallryImageCard from '../../../components/galleryImageCard';
 
-const events = [
-  {
-    title: 'Tweet from SafeCON',
-    subtitle:
-      'Share your unique insights or a key takeaway from SafeCON in a tweet. Did you meet the LUKSO team? Did you learn about Universal Profiles or LSPs? #ProofOfLUKSO',
-    link: 'https://twitter.com/intent/tweet?text=Had+an+amazing+time+at+SafeCON!+Met+the+LUKSO+team+and+learned+so+much+about+Universal+Profiles+and+LSPs.+%23ProofOfLUKSO'
-  },
-
-  {
-    title: 'Capture the LUKSO Blockhaus Afterparty Vibe',
-    subtitle:
-      'Tweet about your experience at the LUKSO Blockhaus Afterparty. How many pink clouds can you spot? #ProofOfLUKSO',
-    link: ''
-  },
-  {
-    title: 'Show Off Your LUKSO Merch',
-    subtitle:
-      'Post a photo of your new LUKSO merch. Be creative with your pose or setting. #ProofOfLUKSO',
-    link: ''
-  },
-  {
-    title: 'Polaroid Moments at LUKSO Blockhaus Afterparty',
-    subtitle:
-      'Post a photo of your Polaroid picture taken at the LUKSO Blockhaus Afterparty. #ProofOfLUKSO',
-    link: ''
-  },
-  {
-    title: 'Reflect Your Style in the #ProofOfLUKSO Mirror',
-    subtitle:
-      'Post a photo of yourself in the #ProofOfLUKSO mirror at the LUKSO Blockhaus Afterparty',
-    link: ''
-  }
-];
+const events: { title: string; subtitle: string; link: string }[] = [];
 interface ProofOfLUKSOEvent {
   title: string;
   subtitle: string;
@@ -128,13 +96,6 @@ export default function Lukso() {
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
   const { authenticated, ready, user, linkTwitter, unlinkTwitter } = usePrivy();
-  const [luksoAddress, setLuksoAddress] = useState(() => {
-    try {
-      return localStorage.getItem('luksoAddress');
-    } catch (error) {
-      return null;
-    }
-  });
   const [primaryWallet, setPrimaryWallet] = useState<string | null>();
   const proofsRef = useRef(collection(db, 'Proof'));
   useEffect(() => {
@@ -153,97 +114,55 @@ export default function Lukso() {
   }, [user?.linkedAccounts]);
   const usersRef = useRef(collection(db, 'User'));
   const [users, setUsers] = useState<User[]>([]);
-  useEffect(() => {
-    getDocs(
-      query(
-        usersRef.current,
-        orderBy('pointValueLukso', 'desc'),
-        where('luksoAddress', '>', ''),
-        limit(100)
-      )
-    )
-      .then((snapshot) => {
-        const tempArr: any[] = [];
-        snapshot.forEach((d) => tempArr.push(d.data() as any));
-        setUsers(tempArr);
-      })
-      .catch(console.log);
-  }, [setUsers]);
-
-  useEffect(() => {
-    if (primaryWallet && luksoAddress) {
-      const q = query(
-        collection(db, 'User'),
-        or(
-          where('userWallet', '==', primaryWallet),
-          where('userWalletToLowerCase', '==', primaryWallet),
-          where('userWalletLower', '==', primaryWallet)
-        ),
-        limit(1)
-      );
-      const payload = {
-        luksoAddress: luksoAddress.toLowerCase().trim()
-      } as any;
-      getDocs(q)
-        .then(async (snapshot) => {
-          if (snapshot.empty) {
-            return;
-          }
-          snapshot.forEach(async (s) => {
-            try {
-              const docRef = doc(db, 'User', s.id);
-              await updateDoc(docRef, { ...payload });
-              console.log('Lusko profile updated!');
-            } catch (error) {
-              console.log(error);
-            }
-          });
-        })
-        .catch(console.log);
-    }
-  }, [primaryWallet, luksoAddress]);
+  //   useEffect(() => {
+  //     getDocs(
+  //       query(
+  //         usersRef.current,
+  //         orderBy('pointValueLukso', 'desc'),
+  //         where('luksoAddress', '>', ''),
+  //         limit(100)
+  //       )
+  //     )
+  //       .then((snapshot) => {
+  //         const tempArr: any[] = [];
+  //         snapshot.forEach((d) => tempArr.push(d.data() as any));
+  //         setUsers(tempArr);
+  //       })
+  //       .catch(console.log);
+  //   }, [setUsers]);
 
   const twitterSubject = user?.twitter?.subject;
   const twitterUsername = user?.twitter?.username;
 
   const [attestations, setAttestations] = useState<Attestation[]>([]);
 
-  // const [luksoProfile, setLuksoProfile] = useState<any>();
+  //   useEffect(() => {
+  //     const resolveEnsAvatars = async () => {
+  //       const queryParams = [
+  //         proofsRef.current,
+  //         orderBy('timestamp', 'desc'),
+  //         where('timestamp', '!=', 0),
+  //         where('ipfsImageURL', '>', ''),
+  //         where('image', '==', true)
+  //         // orderBy('ipfsImageURL', 'desc'),
+  //       ] as any[];
+  //       //  @ts-ignore
+  //       const q = query(...queryParams);
+  //       const tempArray: Attestation[] = [];
+  //       const snapshot = await getDocs(q);
 
-  // useEffect(() => {
-  //   if (luksoAddress) {
+  //       snapshot.forEach((s) => {
+  //         const tempData = s.data() as Attestation;
 
-  //     readLuksoProfile(luksoAddress).then(setLuksoProfile);
-  //   }
-  // }, [luksoAddress, setLuksoProfile]);
+  //         if (tempData.questId?.toLowerCase()?.trim() === 'lukso') {
+  //           tempArray.push(tempData);
+  //         }
+  //       });
+  //       setAttestations((t) => [...t, ...tempArray]);
+  //     };
 
-  useEffect(() => {
-    const resolveEnsAvatars = async () => {
-      const queryParams = [
-        proofsRef.current,
-        orderBy('timestamp', 'desc'),
-        where('timestamp', '!=', 0),
-        where('ipfsImageURL', '>', ''),
-        where('image', '==', true)
-        // orderBy('ipfsImageURL', 'desc'),
-      ] as any[];
-      //  @ts-ignore
-      const q = query(...queryParams);
-      const tempArray: Attestation[] = [];
-      const snapshot = await getDocs(q);
-
-      snapshot.forEach((s) => {
-        const tempData = s.data() as Attestation;
-
-        if (tempData.questId?.toLowerCase()?.trim() === 'lukso') {
-          tempArray.push(tempData);
-        }
-      });
-      setAttestations((t) => [...t, ...tempArray]);
-    };
-
-    resolveEnsAvatars().catch(console.log);
-  }, []);
+  //     resolveEnsAvatars().catch(console.log);
+  //   }, []);
 
   useEffect(() => {
     if (!authenticated && ready) {
@@ -297,36 +216,6 @@ export default function Lukso() {
         ) : (
           <></>
         )}
-
-        <LuksoConnectorMod2
-          icon={
-            <img
-              src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flukso.png?alt=media&token=c455efa6-2865-4ec6-b1d5-0492b9e4a66d"
-              height={18}
-              width={18}
-            />
-          }
-          isActive={Boolean(luksoAddress)}
-          label={luksoAddress ? 'Connected' : 'Connect'}
-          action={async () => {
-            if (luksoAddress) {
-              localStorage.removeItem('luksoAddress');
-              return setLuksoAddress(null);
-            }
-            try {
-              const { account } = await connectLukso();
-              localStorage.setItem('luksoAddress', account);
-              setLuksoAddress(account);
-            } catch (error) {
-              console.error(error);
-            }
-          }}
-          linkedLabel={
-            luksoAddress
-              ? luksoAddress.slice(0, 5) + '...' + luksoAddress.slice(-5)
-              : undefined
-          }
-        />
 
         <button
           className="mb-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%] mt-5"
