@@ -235,7 +235,7 @@ export default function Navbar() {
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
                                     data-item="event"
                                   >
-                                    TheBuildersDAO x NoX Gallery
+                                    ◤ ANIMALS ◢
                                   </a>
                                   <a
                                     href="/events/lukso"
@@ -417,7 +417,7 @@ export default function Navbar() {
                         {showChildren ? (
                           <div className="ml-4 mt-3">
                             <a href="/events/builders" className="block mb-3">
-                              TheBuildersDAO x NoX Gallery
+                              ◤ ANIMALS ◢
                             </a>
                             <a href="/events/lukso" className="block mb-3">
                               LUKSO Berlin

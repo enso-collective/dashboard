@@ -33,7 +33,7 @@ const defaultConfig = {
     inDialog: true,
     inParentNodeId: null
   },
-  loginMethods: ['twitter', 'wallet']
+  loginMethods: ['farcaster', 'wallet']
 };
 interface PrivyConfigObject {
   appearance: {

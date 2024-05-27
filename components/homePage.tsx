@@ -240,7 +240,7 @@ export default function HomePage() {
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-y-2 gap-x-2 mt-2.5  mr-auto ml-auto mb-10">
-          <Card className="  bg-white  p-4 ">
+          {/* <Card className="  bg-white  p-4 ">
             <div className="flex shrink-1 grow-0 items-center gap-x-2">
               <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
                 <TwitterXIcon height={18} width={18} />
@@ -317,7 +317,7 @@ export default function HomePage() {
                 <ArrowUpRightIconWithGradient />
               </a>
             </div>
-          </Card>
+          </Card> */}
           <Card className="  bg-white  p-4 ">
             <div className="flex shrink-1 grow-0 items-center gap-x-2">
               <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">

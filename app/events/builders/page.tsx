@@ -7,6 +7,7 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
 import {
+  FarcasterConnectorMod2,
   LuksoConnectorMod2,
   TwitterConnectorMod2
 } from '../../../components/auth-linker';
@@ -27,21 +28,51 @@ import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrow
 import { Tooltip } from 'react-tooltip';
 import { Attestation, User } from '../shefi/page';
 import GallryImageCard from '../../../components/galleryImageCard';
+import FarcasterIcon from '../../../components/icons/social/farcaster';
 
-const events: { title: string; subtitle: string; link: string }[] = [];
+const events: {
+  title: string;
+  subtitle: string;
+  link: string;
+  points: number;
+}[] = [
+  {
+    title: 'Show Off The Builders DAO merch',
+    subtitle:
+      'Tweet / Cast a photo of The Builders DAO sticker or merch you collected or you found around the event in Lisbon',
+    link: 'https://twitter.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%40NFCsummit%20in%20Lisbon%21%20%23ProofOfBuilders',
+    points: 100
+  },
+  {
+    title: 'Selfie with a builder',
+    subtitle:
+      'Tweet / Cast a selfie or a photo of a member of The Builders DAO team in Lisbon!',
+    link: 'https://twitter.com/intent/tweet?text=Hello%20everyone%20from%20%40NFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team%21%20%23ProofOfBuilders',
+    points: 200
+  },
+  {
+    title: 'Animals side event',
+    subtitle:
+      'Tweet / Cast a photo of the art exhibition hosted by The Builders DAO and Nox Gallery in Lisbon!',
+    link: '',
+    points: 300
+  }
+];
 interface ProofOfLUKSOEvent {
   title: string;
   subtitle: string;
   showModal: boolean;
   setShowModal: Function;
   link: string;
+  points: number;
 }
 function LuksoQuest({
   title,
   subtitle,
   link,
   showModal,
-  setShowModal
+  setShowModal,
+  points
 }: ProofOfLUKSOEvent) {
   const [showFull, setShowFull] = useState(false);
   const subtitleArray = subtitle.split(' ');
@@ -72,7 +103,7 @@ function LuksoQuest({
         )}
       </div>
       <div className="flex flex-row justify-between items-center mt-[auto]">
-        <p>+100 points</p>
+        <p>+{points} points</p>
         <Tooltip id="lukso-tooltip" />
         {link.length > 0 ? (
           <a href={link} target="_blank" rel="noopener noreferrer">
@@ -81,7 +112,7 @@ function LuksoQuest({
         ) : (
           <a
             data-tooltip-id="lukso-tooltip"
-            data-tooltip-content="Enabled at the Afterparty"
+            data-tooltip-content="Enabled at the side event"
             data-tooltip-place="top"
           >
             <ArrowUpRightIconWithGradient />
@@ -95,7 +126,15 @@ export default function Lukso() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
-  const { authenticated, ready, user, linkTwitter, unlinkTwitter } = usePrivy();
+  const {
+    authenticated,
+    ready,
+    user,
+    linkTwitter,
+    unlinkTwitter,
+    linkFarcaster,
+    unlinkFarcaster
+  } = usePrivy();
   const [primaryWallet, setPrimaryWallet] = useState<string | null>();
   const proofsRef = useRef(collection(db, 'Proof'));
   useEffect(() => {
@@ -131,8 +170,8 @@ export default function Lukso() {
   //       .catch(console.log);
   //   }, [setUsers]);
 
-  const twitterSubject = user?.twitter?.subject;
-  const twitterUsername = user?.twitter?.username;
+  const farcasterSubject = user?.farcaster?.fid;
+  const farcasterName = user?.farcaster?.username;
 
   const [attestations, setAttestations] = useState<Attestation[]>([]);
 
@@ -173,17 +212,17 @@ export default function Lukso() {
   return (
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
-        <TwitterConnectorMod2
-          isActive={Boolean(twitterUsername)}
-          label={twitterUsername ? 'Connected' : 'Connect Twitter'}
-          linkedLabel={twitterUsername ? twitterUsername : undefined}
+        <FarcasterConnectorMod2
+          isActive={Boolean(farcasterName)}
+          label={farcasterName ? 'Connected' : 'Connect Twitter'}
+          linkedLabel={farcasterName ? farcasterName : undefined}
           action={async () => {
-            if (twitterUsername) {
-              return unlinkTwitter(twitterSubject!);
+            if (farcasterName) {
+              return unlinkFarcaster(farcasterSubject!);
             }
-            linkTwitter();
+            linkFarcaster();
           }}
-          icon={<TwitterXIcon height={18} width={18} />}
+          icon={<FarcasterIcon height={18} width={18} />}
         />
         <button
           className="mb-5 mt-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
