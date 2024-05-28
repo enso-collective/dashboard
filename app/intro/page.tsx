@@ -9,6 +9,7 @@ export default function Home() {
   const { ready, authenticated } = usePrivy();
   useEffect(() => {
     if (!authenticated && ready) {
+      localStorage.setItem('nextPage', window.location.href);
       redirect('/');
     }
   }, [ready, authenticated]);
