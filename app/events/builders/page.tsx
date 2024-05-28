@@ -29,6 +29,7 @@ import { Tooltip } from 'react-tooltip';
 import { Attestation, User } from '../shefi/page';
 import GallryImageCard from '../../../components/galleryImageCard';
 import FarcasterIcon from '../../../components/icons/social/farcaster';
+import { chunker, publicClient, sleep } from '../../../lib/utils';
 
 const events: {
   title: string;
@@ -40,21 +41,21 @@ const events: {
     title: 'Show Off The Builders DAO merch',
     subtitle:
       'Tweet / Cast a photo of The Builders DAO sticker or merch you collected or you found around the event in Lisbon',
-    link: 'https://twitter.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%40NFCsummit%20in%20Lisbon%21%20%23ProofOfBuilders',
+    link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2FNFCsummit%20in%20Lisbon!%20%23ProofOfBuilders',
     points: 100
   },
   {
     title: 'Selfie with a builder',
     subtitle:
       'Tweet / Cast a selfie or a photo of a member of The Builders DAO team in Lisbon!',
-    link: 'https://twitter.com/intent/tweet?text=Hello%20everyone%20from%20%40NFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team%21%20%23ProofOfBuilders',
+    link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2FNFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders',
     points: 200
   },
   {
     title: 'Animals side event',
     subtitle:
       'Tweet / Cast a photo of the art exhibition hosted by The Builders DAO and Nox Gallery in Lisbon!',
-    link: '',
+    link: 'https://warpcast.com/~/compose?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon.',
     points: 300
   }
 ];
@@ -153,6 +154,60 @@ export default function Lukso() {
   }, [user?.linkedAccounts]);
   const usersRef = useRef(collection(db, 'User'));
   const [users, setUsers] = useState<User[]>([]);
+  const [items, setItems] = useState<User[]>([]);
+  useEffect(() => {
+    if (users.length > 0) {
+      const resolveEnsAvatars = async () => {
+        try {
+          // @ts-ignore
+          for (const chunk of chunker(users, 10)) {
+            const items = await Promise.allSettled(
+              [...chunk].map(async (t) => {
+                const tempObj = { ...t };
+                const ensName = await publicClient.getEnsName({
+                  address: `${t.userWallet}` as any
+                });
+                if (ensName) {
+                  const ensAvatar = await publicClient.getEnsAvatar({
+                    name: ensName
+                  });
+                  if (ensAvatar) {
+                    return { ...tempObj, image: ensAvatar, ensName };
+                  }
+                  return { ...tempObj, ensName };
+                }
+                return tempObj;
+              })
+            );
+            const filteredItems = items.filter(
+              (d) => d.status === 'fulfilled'
+            ) as any;
+            setItems((t) => [...t, ...filteredItems.map((d: any) => d.value)]);
+            await sleep(5000);
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+        }
+      };
+      resolveEnsAvatars()
+        .finally(() => {})
+        .catch(console.error);
+    }
+  }, [users]);
+
+  useEffect(() => {
+    getDocs(
+      query(usersRef.current, orderBy('buildersPoints', 'desc'), limit(100))
+    )
+      .then((snapshot) => {
+        const tempArr: User[] = [];
+        snapshot.forEach((d) => tempArr.push(d.data() as User));
+        setUsers(tempArr);
+      })
+      .catch(console.log);
+  }, [setUsers]);
+
   //   useEffect(() => {
   //     getDocs(
   //       query(
@@ -272,12 +327,12 @@ export default function Lukso() {
         {expandLeaderboard ? (
           <>
             <div className="leaderboard">
-              {users.map((t, index) => (
-                <div className="list-fix" key={t.id}>
+              {items.map((t, index) => (
+                <div className="list-fix" key={t.userWallet}>
                   <div className="number-col">#{index + 1}</div>
                   <div className="list-body pl-4 pr-4">
                     <div className="flex flex-row items-center">
-                      {/* {t.image ? (
+                      {t.image ? (
                         <img
                           className="rounded-full mr-2"
                           width="30"
@@ -293,19 +348,16 @@ export default function Lukso() {
                           src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293"
                           alt="logo"
                         />
-                      )} */}
-                      <a
-                        className="list-wrap"
-                        href={`https://universalprofile.cloud/${t.luksoAddress}`}
-                        target="_blank"
-                      >
-                        {t.luksoAddress}
-                      </a>
+                      )}
+
+                      <div className="list-wrap">
+                        {t.ensName || t.userWallet}
+                      </div>
                     </div>
 
                     <p className="basis-24 flex-shrink-0 text-right">
                       <span>
-                        {new Intl.NumberFormat().format(t.pointValueLukso)}
+                        {new Intl.NumberFormat().format(t.buildersPoints)}
                       </span>{' '}
                       points
                     </p>

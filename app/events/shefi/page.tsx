@@ -35,6 +35,7 @@ export interface User {
   luksoAddress: string;
   pointValueLukso: number;
   id: string;
+  buildersPoints: number;
 }
 
 export interface MerchItem {
