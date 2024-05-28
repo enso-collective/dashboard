@@ -37,7 +37,7 @@ export default function IndexPage() {
     cachedCountRef.current = 0;
     if (localStorage.getItem('fromLogin')) {
       localStorage.removeItem('fromLogin');
-      setIsOpen(true);
+      // setIsOpen(true);
     }
     return <HomePage />;
   }
