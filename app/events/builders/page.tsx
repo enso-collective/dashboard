@@ -41,14 +41,14 @@ const events: {
     title: 'Show Off The Builders DAO merch',
     subtitle:
       'Tweet / Cast a photo of The Builders DAO sticker or merch you collected or you found around the event in Lisbon',
-    link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2FNFCsummit%20in%20Lisbon!%20%23ProofOfBuilders',
+    link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2Fnfc-summit%20in%20Lisbon!%20%23ProofOfBuilders',
     points: 100
   },
   {
     title: 'Selfie with a builder',
     subtitle:
       'Tweet / Cast a selfie or a photo of a member of The Builders DAO team in Lisbon!',
-    link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2FNFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders',
+    link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2Fnfc-summit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders',
     points: 200
   },
   {
