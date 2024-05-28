@@ -148,7 +148,9 @@ export default function Lukso() {
       a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
     ) as WalletWithMetadata[];
     if (wallets.length > 0) {
-      const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
+      const addressTrimmedToLowerCase = wallets[0]?.address
+        .toLowerCase()
+        .trim();
       setPrimaryWallet(addressTrimmedToLowerCase);
     }
   }, [user?.linkedAccounts]);

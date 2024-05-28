@@ -46,7 +46,7 @@ export default function AuthLinker({
   const getWalletType = (wallet: WalletWithMetadata) => {
     if (isEmbeddedWallet) {
       return {
-        address: formatWallet(wallet.address),
+        address: formatWallet(wallet?.address),
         icon: (
           <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 overflow-hidden rounded-[0.25rem]">
             <img
@@ -63,7 +63,7 @@ export default function AuthLinker({
     }
 
     return {
-      address: formatWallet(wallet.address),
+      address: formatWallet(wallet?.address),
       icon: (
         <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 overflow-hidden rounded-[0.25rem]">
           {walletConnectorName ? (
@@ -104,7 +104,7 @@ export default function AuthLinker({
       return (
         <div
           className="group/tooltip button h-5 shrink-0 grow-0 translate-x-2 cursor-pointer px-1 text-xs text-privy-color-foreground-2 opacity-0 group-hover:translate-x-0 group-hover:opacity-100"
-          onClick={() => connectAction?.(wallet.address)}
+          onClick={() => connectAction?.(wallet?.address)}
         >
           Connect
           <div className="absolute bottom-0 mb-6 hidden flex-col items-center group-hover/tooltip:flex">

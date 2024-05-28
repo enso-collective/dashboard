@@ -33,15 +33,15 @@ export default function Navbar() {
   useEffect(() => {
     const resolveEnsAvatar = async () => {
       const currentWallet = wallets[0];
-      const cachedAvatar = localStorage.getItem(currentWallet.address);
+      const cachedAvatar = localStorage.getItem(currentWallet?.address);
       if (cachedAvatar) {
         return setAvatar(cachedAvatar);
       }
-      const ensName = await getEnsName(currentWallet.address);
+      const ensName = await getEnsName(currentWallet?.address);
       if (ensName) {
         const ensAvatar = await getAvatar(ensName);
         if (ensAvatar) {
-          localStorage.setItem(currentWallet.address, ensAvatar);
+          localStorage.setItem(currentWallet?.address, ensAvatar);
           setAvatar(ensAvatar);
         }
       }
