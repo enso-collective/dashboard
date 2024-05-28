@@ -47,7 +47,7 @@ const events: {
     link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2Fnfc-summit%20in%20Lisbon!%20%23ProofOfBuilders %40proofof',
     points: 100,
     twitterLink:
-      'https://x.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2FNFCsummit%20in%20Lisbon!%20%23ProofOfBuilders %40proofof'
+      'https://x.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%40nfcsummit%20in%20Lisbon!%20%23ProofOfBuilders%20%40proofof'
   },
   {
     title: 'Selfie with a builder',
@@ -56,7 +56,7 @@ const events: {
     link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2Fnfc-summit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders %40proofof',
     points: 200,
     twitterLink:
-      'https://x.com/intent/tweet?text=Hello%20everyone%20from%20%2FNFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders %40proofof'
+      'https://x.com/intent/tweet?text=Hello%20everyone%20from%20%40nfcsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders%20%40proofof'
   },
   {
     title: 'Animals side event',
