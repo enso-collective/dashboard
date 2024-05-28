@@ -7,6 +7,8 @@ import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
 import { redirect } from 'next/navigation';
 import { connectLukso, readLuksoProfile } from '../../../lib/lukso';
 import {
+  ExternalLinker,
+  ExternalLinker2,
   FarcasterConnectorMod2,
   LuksoConnectorMod2,
   TwitterConnectorMod2
@@ -36,27 +38,34 @@ const events: {
   subtitle: string;
   link: string;
   points: number;
+  twitterLink: string;
 }[] = [
   {
     title: 'Show Off The Builders DAO merch',
     subtitle:
       'Tweet / Cast a photo of The Builders DAO sticker or merch you collected or you found around the event in Lisbon',
-    link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2Fnfc-summit%20in%20Lisbon!%20%23ProofOfBuilders',
-    points: 100
+    link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2Fnfc-summit%20in%20Lisbon!%20%23ProofOfBuilders %40proofof',
+    points: 100,
+    twitterLink:
+      'https://x.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2FNFCsummit%20in%20Lisbon!%20%23ProofOfBuilders %40proofof'
   },
   {
     title: 'Selfie with a builder',
     subtitle:
       'Tweet / Cast a selfie or a photo of a member of The Builders DAO team in Lisbon!',
-    link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2Fnfc-summit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders',
-    points: 200
+    link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2Fnfc-summit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders %40proofof',
+    points: 200,
+    twitterLink:
+      'https://x.com/intent/tweet?text=Hello%20everyone%20from%20%2FNFCsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders %40proofof'
   },
   {
     title: 'Animals side event',
     subtitle:
       'Tweet / Cast a photo of the art exhibition hosted by The Builders DAO and Nox Gallery in Lisbon!',
-    link: 'https://warpcast.com/~/compose?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon.',
-    points: 300
+    link: 'https://warpcast.com/~/compose?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon. %40proofof',
+    points: 300,
+    twitterLink:
+      'https://x.com/intent/tweet?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon. %40proofof'
   }
 ];
 interface ProofOfLUKSOEvent {
@@ -66,6 +75,7 @@ interface ProofOfLUKSOEvent {
   setShowModal: Function;
   link: string;
   points: number;
+  twitterLink: string;
 }
 function LuksoQuest({
   title,
@@ -73,7 +83,8 @@ function LuksoQuest({
   link,
   showModal,
   setShowModal,
-  points
+  points,
+  twitterLink
 }: ProofOfLUKSOEvent) {
   const [showFull, setShowFull] = useState(false);
   const subtitleArray = subtitle.split(' ');
@@ -107,9 +118,19 @@ function LuksoQuest({
         <p>+{points} points</p>
         <Tooltip id="lukso-tooltip" />
         {link.length > 0 ? (
-          <a href={link} target="_blank" rel="noopener noreferrer">
-            <ArrowUpRightIconWithGradient />
-          </a>
+          <div className="flex flex-row items-center">
+            <a
+              href={link}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="mr-3"
+            >
+              <FarcasterIcon height={18} width={18} />
+            </a>
+            <a href={twitterLink} target="_blank" rel="noopener noreferrer">
+              <TwitterXIcon height={18} width={18} />
+            </a>
+          </div>
         ) : (
           <a
             data-tooltip-id="lukso-tooltip"
@@ -257,6 +278,9 @@ export default function Lukso() {
   const farcasterSubject = user?.farcaster?.fid;
   const farcasterName = user?.farcaster?.username;
 
+  const twitterSubject = user?.twitter?.subject;
+  const twitterUsername = user?.twitter?.username;
+
   const [attestations, setAttestations] = useState<Attestation[]>([]);
 
   //   useEffect(() => {
@@ -309,6 +333,25 @@ export default function Lukso() {
           }}
           icon={<FarcasterIcon height={18} width={18} />}
         />
+
+        <TwitterConnectorMod2
+          isActive={Boolean(twitterUsername)}
+          label={twitterUsername ? 'Connected' : 'Connect Twitter'}
+          linkedLabel={twitterUsername ? twitterUsername : undefined}
+          action={async () => {
+            if (twitterUsername) {
+              return unlinkTwitter(twitterSubject!);
+            }
+            linkTwitter();
+          }}
+          icon={<TwitterXIcon height={18} width={18} />}
+        />
+
+        <ExternalLinker2
+          className="frosty"
+          label="RSVP for ANIMALS by TheBuildersDao and Partners"
+          url="https://x.com/NoxGallery/status/1795149257558851611"
+        />
         <button
           className="mb-5 mt-5 frosty p-2 rounded-sm flex justify-between items-center w-[100%]"
           onClick={() => {
@@ -333,6 +376,7 @@ export default function Lukso() {
                   showModal={true}
                   setShowModal={() => {}}
                   link={t.link}
+                  twitterLink={t.twitterLink}
                 />
               ))}
             </div>
