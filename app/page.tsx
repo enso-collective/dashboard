@@ -5,6 +5,7 @@ import Empty from '../components/empty';
 import { usePrivyContext } from '../components/privyProvider';
 import HomePage from '../components/homePage';
 import { prviyLoginCallback } from '../lib/handleLogin';
+import { redirect } from 'next/navigation';
 
 export default function IndexPage() {
   const { ready, authenticated } = usePrivy();
@@ -38,6 +39,11 @@ export default function IndexPage() {
     if (localStorage.getItem('fromLogin')) {
       localStorage.removeItem('fromLogin');
       // setIsOpen(true);
+    }
+    const nextPage = localStorage.getItem('nextPage');
+    if (nextPage) {
+      localStorage.removeItem('nextPage');
+      window.location.href = nextPage;
     }
     return <HomePage />;
   }

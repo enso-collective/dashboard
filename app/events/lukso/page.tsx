@@ -247,6 +247,7 @@ export default function Lukso() {
 
   useEffect(() => {
     if (!authenticated && ready) {
+      localStorage.setItem('nextPage', window.location.href);
       redirect('/');
     }
   }, [ready, authenticated]);
