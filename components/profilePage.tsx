@@ -96,7 +96,7 @@ export default function ProfilePage() {
   ) as WalletWithMetadata[];
 
   const linkedAndConnectedWallets = wallets
-    .filter((w) => connectedWallets.some((cw) => cw.address === w.address))
+    .filter((w) => connectedWallets.some((cw) => cw?.address === w?.address))
     .sort((a, b) =>
       b.verifiedAt.toLocaleString().localeCompare(a.verifiedAt.toLocaleString())
     );
@@ -109,7 +109,7 @@ export default function ProfilePage() {
     // if an active wallet was removed from wallets, clear it out
     if (
       !linkedAndConnectedWallets.some(
-        (w) => w.address === activeWallet?.address
+        (w) => w?.address === activeWallet?.address
       )
     ) {
       setActiveWallet(
@@ -178,21 +178,22 @@ export default function ProfilePage() {
                   className="space"
                   isLinked
                   wallet={wallet}
-                  isActive={wallet.address === activeWallet?.address}
+                  isActive={wallet?.address === activeWallet?.address}
                   setActiveWallet={setActiveWallet}
-                  key={wallet.address}
-                  label={formatWallet(wallet.address)}
+                  key={wallet?.address}
+                  label={formatWallet(wallet?.address)}
                   canUnlink={canRemoveAccount}
                   unlinkAction={() => {
-                    unlinkWallet(wallet.address);
+                    unlinkWallet(wallet?.address);
                   }}
                   walletConnectorName={
-                    connectedWallets.find((cw) => cw.address === wallet.address)
-                      ?.walletClientType
+                    connectedWallets.find(
+                      (cw) => cw?.address === wallet?.address
+                    )?.walletClientType
                   }
                   linkAction={linkWallet}
                   isConnected={connectedWallets.some(
-                    (cw) => cw.address === wallet.address
+                    (cw) => cw?.address === wallet?.address
                   )}
                   connectAction={connectWallet}
                 />
@@ -253,7 +254,7 @@ export default function ProfilePage() {
               />
               <div className="w-full">Embedded Wallet</div>
               <div className="flex shrink-0 grow-0 flex-row items-center justify-end gap-x-1 text-privy-color-foreground-3">
-                {formatWallet(embeddedWallet.address)}
+                {formatWallet(embeddedWallet?.address)}
               </div>
             </CanvasCardHeader>
             <div className="text-sm">

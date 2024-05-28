@@ -44,7 +44,7 @@ export default function NewProfilePage() {
   ) as WalletWithMetadata[];
 
   const linkedAndConnectedWallets = wallets
-    .filter((w) => connectedWallets.some((cw) => cw.address === w.address))
+    .filter((w) => connectedWallets.some((cw) => cw?.address === w?.address))
     .sort((a, b) =>
       b.verifiedAt.toLocaleString().localeCompare(a.verifiedAt.toLocaleString())
     );
@@ -57,7 +57,7 @@ export default function NewProfilePage() {
     // if an active wallet was removed from wallets, clear it out
     if (
       !linkedAndConnectedWallets.some(
-        (w) => w.address === activeWallet?.address
+        (w) => w?.address === activeWallet?.address
       )
     ) {
       setActiveWallet(
@@ -78,8 +78,10 @@ export default function NewProfilePage() {
       a.verifiedAt.toLocaleString().localeCompare(b.verifiedAt.toLocaleString())
     ) as WalletWithMetadata[];
     if (wallets.length > 0) {
-      const addressTrimmedToLowerCase = wallets[0].address.toLowerCase().trim();
-      console.log({ addressTrimmedToLowerCase });
+      const addressTrimmedToLowerCase = wallets[0]?.address
+        .toLowerCase()
+        .trim();
+
       const q = query(
         collection(db, 'Proof'),
         or(
@@ -102,7 +104,12 @@ export default function NewProfilePage() {
           setGallery(tempArray.filter((t) => t.image));
           setLoading(false);
         })
-        .catch(console.log);
+        .catch(console.log)
+        .finally(() => {
+          setLoading(false);
+        });
+    } else {
+      setLoading(false);
     }
   }, [user?.linkedAccounts]);
 
