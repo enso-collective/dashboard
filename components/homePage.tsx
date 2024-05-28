@@ -15,7 +15,7 @@ import {
   where
 } from 'firebase/firestore/lite';
 import { db } from '../lib/firebase';
-import { publicClient } from '../lib/utils';
+import { getAvatar, getEnsName, publicClient } from '../lib/utils';
 import { WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import GiganticLoader from './giganticLoader';
 import AuthLinker, {
@@ -153,13 +153,9 @@ export default function HomePage() {
       const items = await Promise.allSettled(
         [...users.slice(page * 10 - 10, page * 10)].map(async (t) => {
           const tempObj = { ...t };
-          const ensName = await publicClient.getEnsName({
-            address: `${t.userWallet}` as any
-          });
+          const ensName = await getEnsName(t.userWallet);
           if (ensName) {
-            const ensAvatar = await publicClient.getEnsAvatar({
-              name: ensName
-            });
+            const ensAvatar = await getAvatar(ensName);
             if (ensAvatar) {
               return { ...tempObj, image: ensAvatar, ensName };
             }

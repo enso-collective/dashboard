@@ -29,7 +29,7 @@ import { Tooltip } from 'react-tooltip';
 import { Attestation, User } from '../shefi/page';
 import GallryImageCard from '../../../components/galleryImageCard';
 import FarcasterIcon from '../../../components/icons/social/farcaster';
-import { chunker, publicClient, sleep } from '../../../lib/utils';
+import { chunker, getAvatar, getEnsName, sleep } from '../../../lib/utils';
 
 const events: {
   title: string;
@@ -164,13 +164,9 @@ export default function Lukso() {
             const items = await Promise.allSettled(
               [...chunk].map(async (t) => {
                 const tempObj = { ...t };
-                const ensName = await publicClient.getEnsName({
-                  address: `${t.userWallet}` as any
-                });
+                const ensName = await getEnsName(t.userWallet);
                 if (ensName) {
-                  const ensAvatar = await publicClient.getEnsAvatar({
-                    name: ensName
-                  });
+                  const ensAvatar = await getAvatar(ensName);
                   if (ensAvatar) {
                     return { ...tempObj, image: ensAvatar, ensName };
                   }
@@ -207,6 +203,37 @@ export default function Lukso() {
       })
       .catch(console.log);
   }, [setUsers]);
+
+  useEffect(() => {
+    const resolveEnsAvatars = async () => {
+      const queryParams = [
+        proofsRef.current,
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
+      ] as any[];
+      //  @ts-ignore
+      const q = query(...queryParams);
+      const tempArray: Attestation[] = [];
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((s) => {
+        const tempData = s.data() as Attestation;
+        const trimmedQuestId = tempData.questId?.toLowerCase()?.trim();
+        if (
+          trimmedQuestId.includes('builder') ||
+          trimmedQuestId.includes('nox')
+        ) {
+          tempArray.push(tempData);
+        }
+      });
+      setAttestations((t) => [...t, ...tempArray]);
+    };
+
+    resolveEnsAvatars().catch(console.log);
+  }, []);
 
   //   useEffect(() => {
   //     getDocs(

@@ -1,6 +1,12 @@
 import { createPublicClient, http } from 'viem';
 import { mainnet } from 'viem/chains';
 import { db } from './firebase'; // Import your Firestore instance
+import { AlchemyProvider } from 'ethers';
+
+const provider = new AlchemyProvider(
+  'homestead',
+  'Nt6dkIkJSB7Rg_R4CALhittnICXXnzeE'
+);
 
 export const getHumanReadableWalletType = (
   walletType:
@@ -50,6 +56,36 @@ export const publicClient = createPublicClient({
   transport: http()
 });
 
+export async function getEnsName(address: string): Promise<string | null> {
+  try {
+    const name = await provider.lookupAddress(address);
+    return name;
+  } catch (error) {
+    console.error(`Error fetching ENS name for ${address}:`);
+    return null;
+  }
+}
+
+export async function getAvatar(name: string): Promise<string | null> {
+  try {
+    const avatar = await provider.getAvatar(`${name}`);
+    return avatar;
+  } catch (error) {
+    console.error(`Error fetching avatar for ${address}:`);
+    return null;
+  }
+}
+
+// Usage
+const address = '0x123...'; // Replace with the Ethereum address
+
+(async () => {
+  const ensName = await getEnsName(address);
+  console.log(`ENS Name: ${ensName}`);
+
+  const avatar = await getAvatar(address);
+  console.log(`Avatar: ${avatar}`);
+})();
 // export const addTwitterAccountToWallet = (userWallet: string, twitterUsername: string): Promise<void> => {
 //   return db.collection('users').where('wallet', '==', userWallet).get().then((querySnapshot) => {
 //     const updates = querySnapshot.docs.map((doc) => {

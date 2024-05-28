@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useLogout, usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
-import { publicClient } from '../lib/utils';
+import { getAvatar, getEnsName } from '../lib/utils';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
@@ -37,11 +37,9 @@ export default function Navbar() {
       if (cachedAvatar) {
         return setAvatar(cachedAvatar);
       }
-      const ensName = await publicClient.getEnsName({
-        address: `${currentWallet.address}` as any
-      });
+      const ensName = await getEnsName(currentWallet.address);
       if (ensName) {
-        const ensAvatar = await publicClient.getEnsAvatar({ name: ensName });
+        const ensAvatar = await getAvatar(ensName);
         if (ensAvatar) {
           localStorage.setItem(currentWallet.address, ensAvatar);
           setAvatar(ensAvatar);
