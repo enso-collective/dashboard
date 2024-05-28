@@ -15,7 +15,7 @@ import {
 } from 'firebase/firestore/lite';
 import { db } from './../../../lib/firebase';
 import { usePrivy, useWallets, WalletWithMetadata } from '@privy-io/react-auth';
-import { chunker, publicClient, sleep } from '../../../lib/utils';
+import { chunker, getAvatar, getEnsName, sleep } from '../../../lib/utils';
 import { MoonLoader } from 'react-spinners';
 import { redirect } from 'next/navigation';
 import Empty from '../../../components/empty';
@@ -35,6 +35,7 @@ export interface User {
   luksoAddress: string;
   pointValueLukso: number;
   id: string;
+  buildersPoints: number;
 }
 
 export interface MerchItem {
@@ -124,13 +125,9 @@ export default function ShefiEvent() {
             const items = await Promise.allSettled(
               [...chunk].map(async (t) => {
                 const tempObj = { ...t };
-                const ensName = await publicClient.getEnsName({
-                  address: `${t.userWallet}` as any
-                });
+                const ensName = await getEnsName(t.userWallet);
                 if (ensName) {
-                  const ensAvatar = await publicClient.getEnsAvatar({
-                    name: ensName
-                  });
+                  const ensAvatar = await getAvatar(ensName);
                   if (ensAvatar) {
                     return { ...tempObj, image: ensAvatar, ensName };
                   }

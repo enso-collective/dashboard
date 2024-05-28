@@ -29,7 +29,7 @@ export default function GallryImageCard({ t }: { t: any }) {
           </div>
           <div className="flex flex-row justify-between items-center ">
             <div tabIndex={3} className="flex-1">
-              <p>+{t.pointValue} points</p>
+              <p>+{t.pointValue || t.pointValueLukso} points</p>
             </div>
             {!t?.transaction ? null : (
               <span

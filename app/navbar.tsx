@@ -5,7 +5,7 @@ import { usePathname } from 'next/navigation';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { Bars3Icon, XMarkIcon } from '@heroicons/react/24/outline';
 import { useLogout, usePrivy, WalletWithMetadata } from '@privy-io/react-auth';
-import { publicClient } from '../lib/utils';
+import { getAvatar, getEnsName } from '../lib/utils';
 import { ChevronDownIcon } from '@heroicons/react/20/solid';
 import Link from 'next/link';
 const defaultAvatarUrl = `https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fleerob.png?alt=media&token=eedc1fc0-65dc-4e6e-a546-ad3840afa293`;
@@ -37,11 +37,9 @@ export default function Navbar() {
       if (cachedAvatar) {
         return setAvatar(cachedAvatar);
       }
-      const ensName = await publicClient.getEnsName({
-        address: `${currentWallet.address}` as any
-      });
+      const ensName = await getEnsName(currentWallet.address);
       if (ensName) {
-        const ensAvatar = await publicClient.getEnsAvatar({ name: ensName });
+        const ensAvatar = await getAvatar(ensName);
         if (ensAvatar) {
           localStorage.setItem(currentWallet.address, ensAvatar);
           setAvatar(ensAvatar);
@@ -223,13 +221,20 @@ export default function Navbar() {
                           {showChildren ? (
                             <>
                               <div
-                                className="absolute min-w-[220px] top-[55px] z-10 "
+                                className="absolute min-w-[270px] top-[55px] z-10 "
                                 data-item="event"
                               >
                                 <div
                                   className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
                                   data-item="event"
                                 >
+                                  <a
+                                    href="/events/builders"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    ◤ ANIMALS ◢
+                                  </a>
                                   <a
                                     href="/events/lukso"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
@@ -409,6 +414,9 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
+                            <a href="/events/builders" className="block mb-3">
+                              ◤ ANIMALS ◢
+                            </a>
                             <a href="/events/lukso" className="block mb-3">
                               LUKSO Berlin
                             </a>

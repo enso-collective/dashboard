@@ -11,6 +11,7 @@ import {
   lukso
 } from 'viem/chains';
 import { Dialog, Transition } from '@headlessui/react';
+import UniversalLoader from './universalLoader';
 
 const defaultConfig = {
   embeddedWallets: {
@@ -32,7 +33,7 @@ const defaultConfig = {
     inDialog: true,
     inParentNodeId: null
   },
-  loginMethods: ['twitter', 'wallet']
+  loginMethods: ['farcaster', 'wallet']
 };
 interface PrivyConfigObject {
   appearance: {
@@ -69,6 +70,7 @@ export default function PrivyProviderWrapper({
         config={config}
       >
         {children}
+        <UniversalLoader />
         <Guide isOpen={isOpen} setIsOpen={setIsOpen} />
       </PrivyProvider>
     </PrivyContext.Provider>

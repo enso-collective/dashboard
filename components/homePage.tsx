@@ -15,7 +15,7 @@ import {
   where
 } from 'firebase/firestore/lite';
 import { db } from '../lib/firebase';
-import { publicClient } from '../lib/utils';
+import { getAvatar, getEnsName, publicClient } from '../lib/utils';
 import { WalletWithMetadata, usePrivy } from '@privy-io/react-auth';
 import GiganticLoader from './giganticLoader';
 import AuthLinker, {
@@ -153,13 +153,9 @@ export default function HomePage() {
       const items = await Promise.allSettled(
         [...users.slice(page * 10 - 10, page * 10)].map(async (t) => {
           const tempObj = { ...t };
-          const ensName = await publicClient.getEnsName({
-            address: `${t.userWallet}` as any
-          });
+          const ensName = await getEnsName(t.userWallet);
           if (ensName) {
-            const ensAvatar = await publicClient.getEnsAvatar({
-              name: ensName
-            });
+            const ensAvatar = await getAvatar(ensName);
             if (ensAvatar) {
               return { ...tempObj, image: ensAvatar, ensName };
             }
@@ -240,7 +236,7 @@ export default function HomePage() {
     <div className="bg-denver min-h-screen">
       <div className="p-4 md:p-10 mx-auto max-w-4xl">
         <div className="grid grid-cols-[repeat(auto-fill,minmax(300px,1fr))] gap-y-2 gap-x-2 mt-2.5  mr-auto ml-auto mb-10">
-          <Card className="  bg-white  p-4 ">
+          {/* <Card className="  bg-white  p-4 ">
             <div className="flex shrink-1 grow-0 items-center gap-x-2">
               <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
                 <TwitterXIcon height={18} width={18} />
@@ -317,7 +313,7 @@ export default function HomePage() {
                 <ArrowUpRightIconWithGradient />
               </a>
             </div>
-          </Card>
+          </Card> */}
           <Card className="  bg-white  p-4 ">
             <div className="flex shrink-1 grow-0 items-center gap-x-2">
               <div className="h-[1.125rem] w-[1.125rem] shrink-0 grow-0 text-privy-color-foreground">
