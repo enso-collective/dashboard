@@ -86,7 +86,7 @@ export default function UniversalLoader() {
               .catch(console.log);
           } else {
             console.log('everything is not ready here');
-            // createWallet();
+            createWallet().then(console.log).catch(console.log);
           }
         }
       }
