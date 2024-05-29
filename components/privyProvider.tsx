@@ -14,9 +14,9 @@ import { Dialog, Transition } from '@headlessui/react';
 import UniversalLoader from './universalLoader';
 
 const defaultConfig = {
-  embeddedWallets: {
-    createOnLogin: 'users-without-wallets'
-  },
+  // embeddedWallets: {
+  //   createOnLogin: 'users-without-wallets'
+  // },
   supportedChains: [
     mainnet,
     sepolia,
