@@ -33,59 +33,61 @@ export default function UniversalLoader() {
               .toLocaleString()
               .localeCompare(b.verifiedAt.toLocaleString())
           ) as WalletWithMetadata[];
-          const addressTrimmedToLowerCase = wallets[0]?.address
-            .toLowerCase()
-            .trim();
-          console.log({ addressTrimmedToLowerCase });
-          const q = query(
-            collection(db, 'User'),
-            or(
-              where('userWallet', '==', addressTrimmedToLowerCase),
-              where('userWalletToLowerCase', '==', addressTrimmedToLowerCase),
-              where('userWalletLower', '==', addressTrimmedToLowerCase)
-            ),
-            limit(1)
-          );
-          getDocs(q)
-            .then(async (snapshot) => {
-              const payload = {
-                privyId: user.id,
-                mainWallet: addressTrimmedToLowerCase,
-                userWalletToLowerCase: addressTrimmedToLowerCase
-              } as any;
-              if (user?.twitter?.username) {
-                payload.twitterUsername = user?.twitter?.username;
-              }
-              try {
-                if (snapshot.empty) {
-                  const docRef = doc(db, 'User', user.id);
-
-                  await setDoc(docRef, {
-                    ...payload,
-                    userWallet: addressTrimmedToLowerCase,
-                    userWalletLower: addressTrimmedToLowerCase,
-                    points: 0,
-                    proofs: [],
-                    attestationUID: []
-                  });
-                } else {
-                  snapshot.forEach(async (s) => {
-                    try {
-                      const docRef = doc(db, 'User', s.id);
-                      await updateDoc(docRef, { ...payload });
-                    } catch (error) {
-                      console.log(error);
-                    }
-                  });
+          if (wallets[0]?.address) {
+            const addressTrimmedToLowerCase = wallets[0]?.address
+              .toLowerCase()
+              .trim();
+            console.log({ addressTrimmedToLowerCase });
+            const q = query(
+              collection(db, 'User'),
+              or(
+                where('userWallet', '==', addressTrimmedToLowerCase),
+                where('userWalletToLowerCase', '==', addressTrimmedToLowerCase),
+                where('userWalletLower', '==', addressTrimmedToLowerCase)
+              ),
+              limit(1)
+            );
+            getDocs(q)
+              .then(async (snapshot) => {
+                const payload = {
+                  privyId: user.id,
+                  mainWallet: addressTrimmedToLowerCase,
+                  userWalletToLowerCase: addressTrimmedToLowerCase
+                } as any;
+                if (user?.twitter?.username) {
+                  payload.twitterUsername = user?.twitter?.username;
                 }
-              } catch (error) {
-                console.log(error);
-              }
-            })
-            .catch(console.log);
-        } else {
-          console.log('everything is not ready here');
-          // createWallet();
+                try {
+                  if (snapshot.empty) {
+                    const docRef = doc(db, 'User', user.id);
+
+                    await setDoc(docRef, {
+                      ...payload,
+                      userWallet: addressTrimmedToLowerCase,
+                      userWalletLower: addressTrimmedToLowerCase,
+                      points: 0,
+                      proofs: [],
+                      attestationUID: []
+                    });
+                  } else {
+                    snapshot.forEach(async (s) => {
+                      try {
+                        const docRef = doc(db, 'User', s.id);
+                        await updateDoc(docRef, { ...payload });
+                      } catch (error) {
+                        console.log(error);
+                      }
+                    });
+                  }
+                } catch (error) {
+                  console.log(error);
+                }
+              })
+              .catch(console.log);
+          } else {
+            console.log('everything is not ready here');
+            createWallet().then(console.log).catch(console.log);
+          }
         }
       }
     } catch (error) {
