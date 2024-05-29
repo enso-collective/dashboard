@@ -47,25 +47,25 @@ const events: {
     link: 'https://warpcast.com/~/compose?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%2Fnfc-summit%20in%20Lisbon!%20%23ProofOfBuilders %40proofof',
     points: 100,
     twitterLink:
-      'https://x.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%40nfcsummit%20in%20Lisbon!%20%23ProofOfBuilders%20%40proofof'
+      'https://x.com/intent/tweet?text=Shout-out%20to%20%40TheBuildersDAO%20for%20the%20coolest%20merch%20of%20%40nfcsummit%20in%20Lisbon!%20%23ProofOfBuilders%20%400xproofof'
   },
   {
     title: 'Selfie with a builder',
     subtitle:
       'Tweet / Cast a selfie or a photo of a member of The Builders DAO team in Lisbon!',
     link: 'https://warpcast.com/~/compose?text=Hello%20everyone%20from%20%2Fnfc-summit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders %40proofof',
-    points: 200,
+    points: 100,
     twitterLink:
-      'https://x.com/intent/tweet?text=Hello%20everyone%20from%20%40nfcsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders%20%40proofof'
+      'https://x.com/intent/tweet?text=Hello%20everyone%20from%20%40nfcsummit%20in%20Lisbon%20with%20%40TheBuildersDAO%20team!%20%23ProofOfBuilders%20%400xproofof'
   },
   {
     title: 'Animals side event',
     subtitle:
       'Tweet / Cast a photo of the art exhibition hosted by The Builders DAO and Nox Gallery in Lisbon!',
     link: 'https://warpcast.com/~/compose?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon. %40proofof',
-    points: 300,
+    points: 100,
     twitterLink:
-      'https://x.com/intent/tweet?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon. %40proofof'
+      'https://x.com/intent/tweet?text=We%20Love%20the%20Art%20at%20the%20Animals%20event%2C%20with%20%40TheBuildersDAO%20and%20%40NOXGallery%20in%20Lisbon. %400xproofof'
   }
 ];
 interface ProofOfLUKSOEvent {
