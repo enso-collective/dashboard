@@ -27,7 +27,21 @@ const defaultConfig = {
     lukso
   ],
   appearance: {
+    walletList: [
+      'coinbase_wallet',
+      'metamask',
+      'rainbow',
+      'wallet_connect',
+      'zerion',
+      'phantom',
+      'detected_wallets'
+    ],
     showWalletLoginFirst: false
+  },
+  externalWallets: {
+    coinbaseWallet: {
+      connectionOptions: 'smartWalletOnly'
+    }
   },
   _render: {
     inDialog: true,
