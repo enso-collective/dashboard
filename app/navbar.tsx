@@ -249,6 +249,13 @@ export default function Navbar() {
                                   >
                                     Shefi Summit Denver
                                   </a>
+                                  <a
+                                    href="/events/shefi_brussels"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    Shefi Summit Brussels
+                                  </a>
                                 </div>
                               </div>
                             </>
@@ -422,6 +429,12 @@ export default function Navbar() {
                             </a>
                             <a href="/events/shefi" className="block mb-3">
                               Shefi Summit Denver
+                            </a>
+                            <a
+                              href="/events/shefi_brussels"
+                              className="block mb-3"
+                            >
+                              Shefi Summit Brussels
                             </a>
                           </div>
                         ) : null}
