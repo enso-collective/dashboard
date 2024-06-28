@@ -75,6 +75,31 @@ const events = [
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
     points: 5
+  },
+  {
+    title: 'FitCheck for Brussels',
+    subtitle:
+      'Upload your fit check for SheFi Summit Brussels, tag @Proofof for extra points',
+    link: '/events/shefi_brussels',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+    points: 5
+  },
+  {
+    title: 'Lens Connection',
+    subtitle: 'Create a Lens handle if you haven’t done so already link',
+    link: 'https://www.lens.xyz/mint',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+    points: 5
+  },
+  {
+    title: 'Harpie connection',
+    subtitle: 'Create a Lens handle if you haven’t done so already link',
+    link: 'https://harpie.io/onboarding/basic/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+    points: 5
   }
 ];
 export default function ShefiBrusselsEvent() {
