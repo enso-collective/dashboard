@@ -87,7 +87,7 @@ const events = [
   },
   {
     title: 'Lens Connection',
-    subtitle: 'Create a Lens handle if you haven’t done so already link',
+    subtitle: 'Create a Lens handle if you haven’t done so already',
     link: 'https://www.lens.xyz/mint',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
