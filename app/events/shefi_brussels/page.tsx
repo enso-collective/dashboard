@@ -73,16 +73,7 @@ const events = [
       'Go to the Profile section and connect your twitter to use the bot',
     link: '/profile',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
-    points: 5
-  },
-  {
-    title: 'FitCheck for Brussels',
-    subtitle:
-      'Upload your fit check for SheFi Summit Brussels, tag @Proofof for extra points',
-    link: '/events/shefi_brussels',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FX_logo.jpg?alt=media&token=03d2222b-e7db-4a0a-a9e6-6a7c75fb0c8b',
     points: 5
   },
   {
@@ -93,6 +84,16 @@ const events = [
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
     points: 5
   },
+  {
+    title: 'FitCheck for Brussels',
+    subtitle:
+      'Upload your fit check for SheFi Summit Brussels, tag @Proofof for extra points',
+    link: '/events/shefi_brussels',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+    points: 5
+  },
+
   {
     title: 'Harpie connection',
     subtitle: 'Create an account on Harpie',
@@ -231,7 +232,7 @@ export default function ShefiBrusselsEvent() {
               setExpandQuests((t) => !t);
             }}
           >
-            <Title>Quests</Title>
+            <Title>Pre-Event Quests</Title>
 
             <ChevronDownIcon
               className="-mr-1 ml-2 h-10 w-10 text-black"
