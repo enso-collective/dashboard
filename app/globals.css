@@ -85,10 +85,10 @@
 }
 
 .bg-brussels {
-  /* background-image: url('/brussels.jpg'); */
+  background-image: url('/brussels.jpg');
   background-size: cover;
-  background-position: top;
-  background-repeat: repeat;
+  background-position: center;
+  background-repeat: no-repeat;
   background-attachment: fixed;
 }
 
