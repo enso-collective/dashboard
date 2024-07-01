@@ -328,7 +328,8 @@ export default function ShefiBrusselsEvent() {
                         )}
 
                         <div className="list-wrap">
-                          {t.ensName || t.userWallet}
+                          {/* @ts-ignore */}
+                          {t.ensName || t.twitterUsername || t.userWallet}
                         </div>
                       </div>
 
