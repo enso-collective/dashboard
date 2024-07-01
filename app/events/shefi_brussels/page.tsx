@@ -99,7 +99,7 @@ const events = [
     subtitle: 'Create an account on Harpie',
     link: 'https://harpie.io/onboarding/basic/',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Logo%402x.png?alt=media&token=e770eaf2-6a39-486e-901f-6441bf8d70bc',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Aeonik-Logo.png?alt=media&token=0d884663-18b5-464d-b3c9-ca8a406c79d0',
     points: 5
   }
 ];
@@ -232,7 +232,7 @@ export default function ShefiBrusselsEvent() {
               setExpandQuests((t) => !t);
             }}
           >
-            <Title>Pre-Event Quests</Title>
+            <Title>SheFi Summit Pre-Quests</Title>
 
             <ChevronDownIcon
               className="-mr-1 ml-2 h-10 w-10 text-black"
