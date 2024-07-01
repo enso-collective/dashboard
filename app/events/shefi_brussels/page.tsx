@@ -128,100 +128,60 @@ export default function ShefiBrusselsEvent() {
       redirect('/');
     }
   }, [ready, authenticated]);
-  //   useEffect(() => {
-  //     getDocs(questsRef.current)
-  //       .then((snapshot) => {
-  //         const tempArr: MerchItem[] = [];
-  //         snapshot.forEach((d) => tempArr.push(d.data() as MerchItem));
-  //         setQuests(
-  //           tempArr.filter((t) => t.image.toLowerCase().includes('shefi'))
-  //         );
-  //         setLoadingQuests(false);
-  //       })
-  //       .catch(console.log);
-  //   }, [setQuests, setLoadingQuests]);
 
-  //   useEffect(() => {
-  //     getDocs(query(usersRef.current, orderBy('points', 'desc'), limit(100)))
-  //       .then((snapshot) => {
-  //         const tempArr: User[] = [];
-  //         snapshot.forEach((d) => tempArr.push(d.data() as User));
-  //         setUsers(tempArr);
-  //         setPage(1);
-  //       })
-  //       .catch(console.log);
-  //   }, [setUsers]);
+  useEffect(() => {
+    getDocs(
+      query(
+        usersRef.current,
+        orderBy('shefiPoints', 'desc'),
+        where('shefiPoints', '>', 0),
+        limit(100)
+      )
+    )
+      .then((snapshot) => {
+        const tempArr: any[] = [];
+        snapshot.forEach((d) => tempArr.push(d.data() as any));
+        setUsers(tempArr);
+      })
+      .catch(console.log);
+  }, [setUsers]);
 
-  //   useEffect(() => {
-  //     if (users.length > 0) {
-  //       const resolveEnsAvatars = async () => {
-  //         setLoading(true);
-
-  //         try {
-  //           // @ts-ignore
-  //           for (const chunk of chunker(users, 10)) {
-  //             const items = await Promise.allSettled(
-  //               [...chunk].map(async (t) => {
-  //                 const tempObj = { ...t };
-  //                 const ensName = await getEnsName(t.userWallet);
-  //                 if (ensName) {
-  //                   const ensAvatar = await getAvatar(ensName);
-  //                   if (ensAvatar) {
-  //                     return { ...tempObj, image: ensAvatar, ensName };
-  //                   }
-  //                   return { ...tempObj, ensName };
-  //                 }
-  //                 return tempObj;
-  //               })
-  //             );
-  //             const filteredItems = items.filter(
-  //               (d) => d.status === 'fulfilled'
-  //             ) as any;
-  //             setItems((t) => [...t, ...filteredItems.map((d: any) => d.value)]);
-  //             await sleep(5000);
-  //           }
-  //         } catch (error) {
-  //           console.log(error);
-  //         } finally {
-  //           setLoading(false);
-  //         }
-  //       };
-  //       resolveEnsAvatars()
-  //         .finally(() => {
-  //           setLoading(false);
-  //         })
-  //         .catch(console.error);
-  //     }
-  //   }, [users]);
-
-  //   useEffect(() => {
-  //     const resolveEnsAvatars = async () => {
-  //       const queryParams = [
-  //         proofsRef.current,
-  //         orderBy('timestamp', 'desc'),
-  //         where('timestamp', '!=', 0),
-  //         where('ipfsImageURL', '>', ''),
-  //         where('image', '==', true)
-  //         // orderBy('ipfsImageURL', 'desc'),
-  //       ] as any[];
-  //       //  @ts-ignore
-  //       const q = query(...queryParams);
-  //       const tempArray: Attestation[] = [];
-  //       const snapshot = await getDocs(q);
-
-  //       snapshot.forEach((s) => {
-  //         const tempData = s.data() as Attestation;
-
-  //         if (tempData.questId?.toLowerCase()?.trim() === 'shefi') {
-  //           tempArray.push(tempData);
-  //         }
-  //       });
-  //       setAttestations((t) => [...t, ...tempArray]);
-  //     };
-
-  //     resolveEnsAvatars().catch(console.log);
-  //   }, []);
-
+  useEffect(() => {
+    if (users.length > 0) {
+      const resolveEnsAvatars = async () => {
+        try {
+          // @ts-ignore
+          for (const chunk of chunker(users, 10)) {
+            const items = await Promise.allSettled(
+              [...chunk].map(async (t) => {
+                const tempObj = { ...t };
+                const ensName = await getEnsName(t.userWallet);
+                if (ensName) {
+                  const ensAvatar = await getAvatar(ensName);
+                  if (ensAvatar) {
+                    return { ...tempObj, image: ensAvatar, ensName };
+                  }
+                  return { ...tempObj, ensName };
+                }
+                return tempObj;
+              })
+            );
+            const filteredItems = items.filter(
+              (d) => d.status === 'fulfilled'
+            ) as any;
+            setItems((t) => [...t, ...filteredItems.map((d: any) => d.value)]);
+            await sleep(5000);
+          }
+        } catch (error) {
+          console.log(error);
+        } finally {
+        }
+      };
+      resolveEnsAvatars()
+        .finally(() => {})
+        .catch(console.error);
+    }
+  }, [users]);
   if (ready && authenticated) {
     return (
       <div className="bg-brussels min-h-screen">
@@ -373,7 +333,10 @@ export default function ShefiBrusselsEvent() {
                       </div>
 
                       <p className="basis-24 flex-shrink-0 text-right">
-                        <span>{new Intl.NumberFormat().format(t.points)}</span>{' '}
+                        <span>
+                          {/* @ts-ignore */}
+                          {new Intl.NumberFormat().format(t.shefiPoints)}
+                        </span>{' '}
                         points
                       </p>
                     </div>
