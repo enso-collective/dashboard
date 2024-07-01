@@ -84,6 +84,14 @@
   background-attachment: fixed;
 }
 
+.bg-brussels {
+  /* background-image: url('/brussels.jpg'); */
+  background-size: cover;
+  background-position: top;
+  background-repeat: repeat;
+  background-attachment: fixed;
+}
+
 .list-fix {
   display: grid;
   grid-template-columns: 60px auto;

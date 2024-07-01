@@ -229,6 +229,13 @@ export default function Navbar() {
                                   data-item="event"
                                 >
                                   <a
+                                    href="/events/shefi_brussels"
+                                    className="block mb-3 text-gray-500 hover:text-gray-700"
+                                    data-item="event"
+                                  >
+                                    Shefi Summit Brussels
+                                  </a>
+                                  <a
                                     href="/events/builders"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
                                     data-item="event"
@@ -414,6 +421,12 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
+                            <a
+                              href="/events/shefi_brussels"
+                              className="block mb-3"
+                            >
+                              Shefi Summit Brussels
+                            </a>
                             <a href="/events/builders" className="block mb-3">
                               ◤ ANIMALS ◢
                             </a>
