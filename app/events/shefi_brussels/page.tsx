@@ -88,7 +88,7 @@ const events = [
     title: 'FitCheck for Brussels',
     subtitle:
       'Upload your fit check for SheFi Summit Brussels, tag @Proofof for extra points',
-    link: '/events/shefi_brussels',
+    link: 'https://hey.xyz/?text=Getting+ready+for+SheFi+Summit+in+Brussels+with+the+girls+%40Proofof+%23SheFiSummitBrussels',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
     points: 5
