@@ -10,7 +10,8 @@ import {
   where,
   or,
   updateDoc,
-  setDoc
+  setDoc,
+  getDoc
 } from 'firebase/firestore/lite';
 import { db } from './../lib/firebase';
 
@@ -60,20 +61,35 @@ export default function UniversalLoader() {
                 try {
                   if (snapshot.empty) {
                     const docRef = doc(db, 'User', user.id);
-
-                    await setDoc(docRef, {
+                    const tempDoc = {
                       ...payload,
                       userWallet: addressTrimmedToLowerCase,
                       userWalletLower: addressTrimmedToLowerCase,
                       points: 0,
                       proofs: [],
                       attestationUID: []
-                    });
+                    };
+                    if (payload.twitterUsername) {
+                      tempDoc.shefiVersion = 2;
+                      tempDoc.shefiPoints = 5;
+                    }
+                    await setDoc(docRef, { ...tempDoc });
                   } else {
                     snapshot.forEach(async (s) => {
                       try {
                         const docRef = doc(db, 'User', s.id);
-                        await updateDoc(docRef, { ...payload });
+                        const docSnap = await getDoc(docRef);
+                        const oldDoc: any = docSnap.data();
+                        const tempDoc = { ...payload };
+                        if (
+                          payload.twitterUsername &&
+                          oldDoc?.shefiVersion !== 2
+                        ) {
+                          tempDoc.shefiVersion = 2;
+                          tempDoc.shefiPoints =
+                            Number(oldDoc?.shefiPoints || 0) + 5;
+                        }
+                        await updateDoc(docRef, { ...tempDoc });
                       } catch (error) {
                         console.log(error);
                       }
