@@ -69,8 +69,7 @@ export interface Attestation {
 const events = [
   {
     title: 'Twitter Connection',
-    subtitle:
-      'Go to the Profile section and connect your twitter to use the bot',
+    subtitle: 'Connect your Twitter in the Profile section to use the AI bot',
     link: '/profile',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FX_logo.jpg?alt=media&token=03d2222b-e7db-4a0a-a9e6-6a7c75fb0c8b',
@@ -78,7 +77,7 @@ const events = [
   },
   {
     title: 'Lens Connection',
-    subtitle: 'Create a Lens handle if you haven’t done so already',
+    subtitle: 'Create a Lens Handle — if you do not already have one',
     link: 'https://www.lens.xyz/mint',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
@@ -87,7 +86,7 @@ const events = [
   {
     title: 'FitCheck for Brussels',
     subtitle:
-      'Upload your fit check for SheFi Summit Brussels, tag @Proofof for extra points',
+      'Upload your Fit Check for SheFi Summit Brussels, and tag @proofof for points',
     link: 'https://hey.xyz/?text=Getting+ready+for+SheFi+Summit+in+Brussels+with+the+girls+%40Proofof+%23SheFiSummitBrussels',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
@@ -95,7 +94,7 @@ const events = [
   },
 
   {
-    title: 'Harpie connection',
+    title: 'Harpie Connection',
     subtitle: 'Create an account on Harpie',
     link: 'https://harpie.io/onboarding/basic/',
     image:
@@ -217,9 +216,7 @@ export default function ShefiBrusselsEvent() {
                       />
                       <p className="font-medium">{t.title}</p>
                     </div>
-                    <p className="mb-5 capitalize text-sm text-gray-600">
-                      {t.subtitle}
-                    </p>
+                    <p className="mb-5  text-sm text-gray-600">{t.subtitle}</p>
 
                     <div className="flex flex-row justify-between items-center mt-[auto]">
                       <p>+{t.points} points</p>
