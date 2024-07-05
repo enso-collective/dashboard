@@ -91,7 +91,7 @@ const events = [
       'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
     points: 5
   },
   {
@@ -100,7 +100,7 @@ const events = [
       'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
   },
   {
@@ -109,7 +109,7 @@ const events = [
       'Create a playlist you think would be great for pregaming for rAAVE and share it.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
   }
 ];
