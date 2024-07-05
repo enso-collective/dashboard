@@ -23,6 +23,9 @@ import GiganticLoader from '../../../components/giganticLoader';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 import GallryImageCard from '../../../components/galleryImageCard';
 import Link from 'next/link';
+import { Tooltip } from 'react-tooltip';
+import FarcasterIcon from '../../../components/icons/social/farcaster';
+import TwitterXIcon from '../../../components/icons/social/twitter-x';
 
 export interface User {
   poapId: string[];
@@ -73,7 +76,8 @@ const events = [
     link: '/profile',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FX_logo.jpg?alt=media&token=03d2222b-e7db-4a0a-a9e6-6a7c75fb0c8b',
-    points: 5
+    points: 5,
+    isActive: true
   },
   {
     title: 'Lens Connection',
@@ -81,7 +85,8 @@ const events = [
     link: 'https://www.lens.xyz/mint',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
-    points: 5
+    points: 5,
+    isActive: true
   },
   {
     title: 'FitCheck for Brussels',
@@ -90,7 +95,8 @@ const events = [
     link: 'https://hey.xyz/?text=Getting+ready+for+SheFi+Summit+in+Brussels+with+the+girls+%40Proofof+%23SheFiSummitBrussels',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
-    points: 5
+    points: 5,
+    isActive: true
   },
 
   {
@@ -99,7 +105,57 @@ const events = [
     link: 'https://harpie.io/onboarding/basic/',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Aeonik-Logo.png?alt=media&token=0d884663-18b5-464d-b3c9-ca8a406c79d0',
-    points: 5
+    points: 5,
+    isActive: true
+  },
+  {
+    title: 'Earn Points for SheFi Talks',
+    subtitle: 'Attend talks and earn points by collecting POAPs',
+    link: '/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+    points: 5,
+    isActive: false
+  },
+  {
+    title: 'Connect and Earn with Stellar',
+    subtitle:
+      'Earn points by connecting your passkey at the Stellar booth and share your experience on socials tagging @Proofof on Lens and @0xproofof on (X)',
+    link: '/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FStellar%20Logo%20Final%20RGB.svg?alt=media&token=ff549e2b-802f-46c9-af8c-5cc25716c0bb',
+    points: 5,
+    isActive: false
+  },
+  {
+    title: 'Collect Exclusive Harpie POAPs',
+    subtitle:
+      'Visit the Harpie booth to collect unique POAP’s for exclusive merch',
+    link: 'https://harpie.io/onboarding/basic/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Aeonik-Logo.png?alt=media&token=0d884663-18b5-464d-b3c9-ca8a406c79d0',
+    points: 5,
+    isActive: false
+  },
+  {
+    title: 'Showcase Your Minted Rari NFT',
+    subtitle:
+      'Post your unique minted NFT on social media with the hashtag #RariNFT and tag @rarible and @0xproofof',
+    link: '/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Frarible_logo_icon_248698.png?alt=media&token=8aa88583-8be9-40b2-92e1-14b96de3efe5',
+    points: 5,
+    isActive: false
+  },
+  {
+    title: 'Capture Your Custom Linea PFP',
+    subtitle:
+      'Take a photo of your customized sketch and share it on Twitter using the hashtag #OnLinea and tag @0xProofof #SheFiSummitxLinea',
+    link: '/',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flinea-logo-png_seeklogo-527155.png?alt=media&token=870b5428-2133-4b83-ad97-67870d32aac1',
+    points: 5,
+    isActive: false
   }
 ];
 export default function ShefiBrusselsEvent() {
@@ -191,7 +247,7 @@ export default function ShefiBrusselsEvent() {
               setExpandQuests((t) => !t);
             }}
           >
-            <Title>SheFi Summit Pre-Quests</Title>
+            <Title>Quests</Title>
 
             <ChevronDownIcon
               className="-mr-1 ml-2 h-10 w-10 text-black"
@@ -220,8 +276,27 @@ export default function ShefiBrusselsEvent() {
 
                     <div className="flex flex-row justify-between items-center mt-[auto]">
                       <p>+{t.points} points</p>
-                      {t.link && t.link.startsWith('/') ? (
-                        // Uncomment the following lines when you want to make the links starting with '/' clickable
+                      <Tooltip id="shefi-tooltip" />
+                      {!t.isActive ? (
+                        <div
+                          data-tooltip-id="shefi-tooltip"
+                          data-tooltip-content="Coming soon"
+                          data-tooltip-place="top"
+                        >
+                          {t.subtitle.toLowerCase().includes('social') ? (
+                            <div className="flex">
+                              <span className="mr-3">
+                                <FarcasterIcon height={18} width={18} />
+                              </span>
+                              <span>
+                                <TwitterXIcon height={18} width={18} />
+                              </span>
+                            </div>
+                          ) : (
+                            <ArrowUpRightIconWithGradient />
+                          )}
+                        </div>
+                      ) : t.link && t.link.startsWith('/') ? (
                         <Link href={t.link}>
                           <ArrowUpRightIconWithGradient />
                         </Link>

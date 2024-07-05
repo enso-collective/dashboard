@@ -73,7 +73,7 @@ const events = [
       'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
     points: 5
   },
   {
