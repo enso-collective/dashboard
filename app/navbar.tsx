@@ -61,7 +61,7 @@ export default function Navbar() {
                 <Link href={'/'} className="flex flex-col justify-center mr-8">
                   <img
                     width={'100px'}
-                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FLens-Black.svg?alt=media&token=dd6477d1-71ca-4112-b21f-b93ee9bd8630"
+                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fwordmark%20blue.svg?alt=media&token=d7632ac6-2901-4590-8ebe-93c3edc5fceb"
                     alt="logo"
                     style={{ objectFit: 'contain', maxHeight: '50px' }}
                   />

@@ -82,7 +82,7 @@ const events = [
       'Document keynotes, panels, and innovations from Open Finance Day through your lens.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FScreenshot%202024-07-05%20at%2018.09.55.png?alt=media&token=7e846021-f6bf-43b6-92a1-492cc5e1ee1d',
     points: 5
   },
   {
