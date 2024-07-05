@@ -60,9 +60,10 @@ export default function Navbar() {
               <div className="flex flex-shrink-0 ">
                 <Link href={'/'} className="flex flex-col justify-center mr-8">
                   <img
-                    width="100"
-                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fwordmark%20blue.svg?alt=media&token=d7632ac6-2901-4590-8ebe-93c3edc5fceb"
+                    width={'100px'}
+                    src="https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b"
                     alt="logo"
+                    style={{ objectFit: 'contain', maxHeight: '50px' }}
                   />
                 </Link>
 
@@ -173,7 +174,7 @@ export default function Navbar() {
                   >
                     Home
                   </a>
-                  <DropdownHOC>
+                  {/* <DropdownHOC>
                     {(showChildren: boolean, setShowChildren: Function) => {
                       return (
                         <div
@@ -270,7 +271,7 @@ export default function Navbar() {
                         </div>
                       );
                     }}
-                  </DropdownHOC>
+                  </DropdownHOC> */}
 
                   <a
                     href={'/profile'}
@@ -409,7 +410,7 @@ export default function Navbar() {
                 Profile
               </Disclosure.Button>
 
-              <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
+              {/* <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
                 <DropdownHOC>
                   {(showChildren: boolean, setShowChildren: Function) => {
                     return (
@@ -452,7 +453,7 @@ export default function Navbar() {
                     );
                   }}
                 </DropdownHOC>
-              </div>
+              </div> */}
 
               <Disclosure.Button
                 as="a"

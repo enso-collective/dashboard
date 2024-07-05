@@ -6,6 +6,7 @@ import { usePrivyContext } from '../components/privyProvider';
 import HomePage from '../components/homePage';
 import { prviyLoginCallback } from '../lib/handleLogin';
 import { redirect } from 'next/navigation';
+import LensEvent from './events/lens/lens';
 
 export default function IndexPage() {
   const { ready, authenticated } = usePrivy();
@@ -45,7 +46,7 @@ export default function IndexPage() {
       localStorage.removeItem('nextPage');
       window.location.href = nextPage;
     }
-    return <HomePage />;
+    return <LensEvent />;
   }
   return <Empty />;
 }

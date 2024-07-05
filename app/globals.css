@@ -84,13 +84,13 @@
   background-attachment: fixed;
 }
 
-.bg-brussels {
-  /* background-image: url('/brussels.jpg');
+/* .bg-brussels {
+  background-image: url('/brussels.jpg');
   background-size: cover;
   background-position: center;
   background-repeat: no-repeat;
-  background-attachment: fixed; */
-}
+  background-attachment: fixed;
+} */
 
 .list-fix {
   display: grid;
