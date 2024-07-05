@@ -380,6 +380,10 @@ export default function LensEvent() {
             </>
           ) : null}
         </div>
+        <div
+          style={authenticated ? { display: 'none' } : {}}
+          id="render-privy"
+        />
       </div>
     );
   }
