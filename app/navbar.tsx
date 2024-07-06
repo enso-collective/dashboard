@@ -228,13 +228,13 @@ export default function Navbar() {
                                   className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
                                   data-item="event"
                                 >
-                                  <a
+                                  {/* <a
                                     href="/events/lens"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
                                     data-item="event"
                                   >
                                     Lens
-                                  </a>
+                                  </a> */}
                                   <a
                                     href="/events/shefi_brussels"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
@@ -428,9 +428,9 @@ export default function Navbar() {
                         </div>
                         {showChildren ? (
                           <div className="ml-4 mt-3">
-                            <a href="/events/lens" className="block mb-3">
+                            {/* <a href="/events/lens" className="block mb-3">
                               Lens
-                            </a>
+                            </a> */}
                             <a
                               href="/events/shefi_brussels"
                               className="block mb-3"
