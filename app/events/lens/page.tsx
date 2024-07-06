@@ -23,11 +23,8 @@ import GiganticLoader from '../../../components/giganticLoader';
 import ArrowUpRightIconWithGradient from '../../../components/icons/social/arrowTopRight';
 import GallryImageCard from '../../../components/galleryImageCard';
 import Link from 'next/link';
-import { Tooltip } from 'react-tooltip';
-import FarcasterIcon from '../../../components/icons/social/farcaster';
-import TwitterXIcon from '../../../components/icons/social/twitter-x';
 
-export interface User {
+interface User {
   poapId: string[];
   attestationUID: string[];
   proofs: string[];
@@ -42,7 +39,7 @@ export interface User {
   buildersPoints: number;
 }
 
-export interface MerchItem {
+interface MerchItem {
   description: string;
   image: string;
   link: string;
@@ -50,7 +47,7 @@ export interface MerchItem {
   points: string;
 }
 
-export interface Attestation {
+interface Attestation {
   poapId: string;
   image: boolean;
   pointValue: number;
@@ -71,94 +68,52 @@ export interface Attestation {
 }
 const events = [
   {
-    title: 'Twitter Connection',
-    subtitle: 'Connect your Twitter in the Profile section to use the AI bot',
-    link: '/profile',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FX_logo.jpg?alt=media&token=03d2222b-e7db-4a0a-a9e6-6a7c75fb0c8b',
-    points: 5,
-    isActive: true
-  },
-  {
-    title: 'Lens Connection',
-    subtitle: 'Create a Lens Handle — if you do not already have one',
+    title: 'Capture and Post Photos',
+    subtitle:
+      'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.',
     link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
-    points: 5,
-    isActive: true
-  },
-  {
-    title: 'FitCheck for Brussels',
-    subtitle:
-      'Upload your Fit Check for SheFi Summit Brussels, and tag @proofof for points',
-    link: 'https://hey.xyz/?text=Getting+ready+for+SheFi+Summit+in+Brussels+with+the+girls+%40Proofof+%23SheFiSummitBrussels',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FIcon-Black_%402x.png?alt=media&token=d04dabca-99af-4f70-93d8-8fb77ac7de8b',
-    points: 5,
-    isActive: true
-  },
-
-  {
-    title: 'Harpie Connection',
-    subtitle: 'Create an account on Harpie',
-    link: 'https://harpie.io/onboarding/basic/',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Aeonik-Logo.png?alt=media&token=0d884663-18b5-464d-b3c9-ca8a406c79d0',
-    points: 5,
-    isActive: true
-  },
-  {
-    title: 'Earn Points for SheFi Talks',
-    subtitle: 'Attend talks and earn points by collecting POAPs',
-    link: '/',
-    image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
-    points: 5,
-    isActive: false
+    points: 5
   },
   {
-    title: 'Connect and Earn with Stellar',
+    title: 'Document Keynotes and Panels',
     subtitle:
-      'Earn points by connecting your passkey at the Stellar booth and share your experience on socials tagging @Proofof on Lens and @0xproofof on (X)',
-    link: '/',
+      'Document keynotes, panels, and innovations from Open Finance Day through your lens.',
+    link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FStellar%20Logo%20Final%20RGB.svg?alt=media&token=ff549e2b-802f-46c9-af8c-5cc25716c0bb',
-    points: 5,
-    isActive: false
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FScreenshot%202024-07-05%20at%2018.09.55.png?alt=media&token=7e846021-f6bf-43b6-92a1-492cc5e1ee1d',
+    points: 5
   },
   {
-    title: 'Collect Exclusive Harpie POAPs',
+    title: 'Share Standout Moments',
     subtitle:
-      'Visit the Harpie booth to collect unique POAP’s for exclusive merch',
-    link: 'https://harpie.io/onboarding/basic/',
+      'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
+    link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FHarpie-Aeonik-Logo.png?alt=media&token=0d884663-18b5-464d-b3c9-ca8a406c79d0',
-    points: 5,
-    isActive: false
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
+    points: 5
   },
   {
-    title: 'Showcase Your Minted Rari NFT',
+    title: 'Showcase Your rAAVE Outfits',
     subtitle:
-      'Post your unique minted NFT on social media with the hashtag #RariNFT and tag @rarible and @0xproofof',
-    link: '/',
+      'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.',
+    link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Frarible_logo_icon_248698.png?alt=media&token=8aa88583-8be9-40b2-92e1-14b96de3efe5',
-    points: 5,
-    isActive: false
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
+    points: 5
   },
   {
-    title: 'Capture Your Custom Linea PFP',
+    title: 'Create and Share Playlists',
     subtitle:
-      'Take a photo of your customized sketch and share it on Twitter using the hashtag #OnLinea and tag @0xProofof #SheFiSummitxLinea',
-    link: '/',
+      'Create a playlist you think would be great for pregaming for rAAVE and share it.',
+    link: 'https://www.lens.xyz/mint',
     image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Flinea-logo-png_seeklogo-527155.png?alt=media&token=870b5428-2133-4b83-ad97-67870d32aac1',
-    points: 5,
-    isActive: false
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
+    points: 5
   }
 ];
-export default function ShefiBrusselsEvent() {
+export default function LensEvent() {
   const [expandQuests, setExpandQuests] = useState(true);
   const [expandLeaderboard, setExpandLeaderboard] = useState(true);
   const [expandGallery, setExpandGallery] = useState(true);
@@ -188,8 +143,8 @@ export default function ShefiBrusselsEvent() {
     getDocs(
       query(
         usersRef.current,
-        orderBy('shefiPoints', 'desc'),
-        where('shefiPoints', '>', 0),
+        orderBy('lensPoints', 'desc'),
+        where('lensPoints', '>', 0),
         limit(100)
       )
     )
@@ -276,27 +231,8 @@ export default function ShefiBrusselsEvent() {
 
                     <div className="flex flex-row justify-between items-center mt-[auto]">
                       <p>+{t.points} points</p>
-                      <Tooltip id="shefi-tooltip" />
-                      {!t.isActive ? (
-                        <div
-                          data-tooltip-id="shefi-tooltip"
-                          data-tooltip-content="Coming soon"
-                          data-tooltip-place="top"
-                        >
-                          {t.subtitle.toLowerCase().includes('social') ? (
-                            <div className="flex">
-                              <span className="mr-3">
-                                <FarcasterIcon height={18} width={18} />
-                              </span>
-                              <span>
-                                <TwitterXIcon height={18} width={18} />
-                              </span>
-                            </div>
-                          ) : (
-                            <ArrowUpRightIconWithGradient />
-                          )}
-                        </div>
-                      ) : t.link && t.link.startsWith('/') ? (
+                      {t.link && t.link.startsWith('/') ? (
+                        // Uncomment the following lines when you want to make the links starting with '/' clickable
                         <Link href={t.link}>
                           <ArrowUpRightIconWithGradient />
                         </Link>
@@ -401,14 +337,14 @@ export default function ShefiBrusselsEvent() {
 
                         <div className="list-wrap">
                           {/* @ts-ignore */}
-                          {t.ensName || t.twitterUsername || t.userWallet}
+                          {t.ensName || t.userWallet}
                         </div>
                       </div>
 
                       <p className="basis-24 flex-shrink-0 text-right">
                         <span>
                           {/* @ts-ignore */}
-                          {new Intl.NumberFormat().format(t.shefiPoints)}
+                          {new Intl.NumberFormat().format(t.lensPoints)}
                         </span>{' '}
                         points
                       </p>
