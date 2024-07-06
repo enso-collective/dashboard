@@ -26,6 +26,7 @@ import Link from 'next/link';
 import { Tooltip } from 'react-tooltip';
 import FarcasterIcon from '../../../components/icons/social/farcaster';
 import TwitterXIcon from '../../../components/icons/social/twitter-x';
+import LensIcon from '../../../components/icons/solid/lens';
 
 export interface User {
   poapId: string[];
@@ -121,11 +122,12 @@ const events = [
     title: 'Connect and Earn with Stellar',
     subtitle:
       'Earn points by connecting your passkey at the Stellar booth and share your experience on socials tagging @Proofof on Lens and @0xproofof on (X)',
-    link: '/',
+    link: 'https://orb.club/@proofof',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FStellar%20Logo%20Final%20RGB.svg?alt=media&token=ff549e2b-802f-46c9-af8c-5cc25716c0bb',
     points: 5,
-    isActive: false
+    isActive: true,
+    twitterLink: `https://twitter.com/intent/tweet?text=I%20just%20connected%20my%20passkey%20at%20the%20Stellar%20booth%20during%20the%20SheFi%20Summit%20Brussels%20%40StellarOrg%20%40shefiorg%20%400xproofof`
   },
   {
     title: 'Collect Exclusive Harpie POAPs',
@@ -138,14 +140,34 @@ const events = [
     isActive: false
   },
   {
-    title: 'Showcase Your Minted Rari NFT',
+    title: 'Bridge Ethereum to RARI',
     subtitle:
-      'Post your unique minted NFT on social media with the hashtag #RariNFT and tag @rarible and @0xproofof',
-    link: '/',
+      'Head over to https://bridge.arbitrum.io/ (Link out) and bridge $1.5-2 USD worth of ETH from Ethereum to RARI Chain to cover the fees',
+    link: ' https://bridge.arbitrum.io/',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Frarible_logo_icon_248698.png?alt=media&token=8aa88583-8be9-40b2-92e1-14b96de3efe5',
     points: 5,
-    isActive: false
+    isActive: true
+  },
+  {
+    title: 'Mint Rari NFT',
+    subtitle: 'Once you have ETH on RARI Chain, and mint your Poor Fella NFT',
+    link: 'https://rarible.com/collection/rari/0xB17e1C774707a2a8eDeD2497e53985Bbe6B2DA19/drops',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Frarible_logo_icon_248698.png?alt=media&token=8aa88583-8be9-40b2-92e1-14b96de3efe5',
+    points: 5,
+    isActive: true
+  },
+  {
+    title: 'Showcase Your Minted Rari NFT',
+    subtitle:
+      'Tweet out about the mint tagging @RariChain @shefiorg @0xproofof to complete your attestation & be eligible to get swag & a future RARI distribution :purple_heart:',
+    link: 'https://orb.club/@proofof',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Frarible_logo_icon_248698.png?alt=media&token=8aa88583-8be9-40b2-92e1-14b96de3efe5',
+    points: 5,
+    isActive: true,
+    twitterLink: `https://twitter.com/intent/tweet?text=I%20just%20minted%20my%20%22Poor%20Fella%27s%20NFT%22%20by%20Alyssa%20Mae%20at%20the%20SheFi%20Summit%20Brussels%20%40RariChain%20%40shefiorg%20%400xproofof`
   },
   {
     title: 'Capture Your Custom Linea PFP',
@@ -283,25 +305,31 @@ export default function ShefiBrusselsEvent() {
                           data-tooltip-content="Coming soon"
                           data-tooltip-place="top"
                         >
-                          {t.subtitle.toLowerCase().includes('social') ? (
-                            <div className="flex">
-                              <span className="mr-3">
-                                <FarcasterIcon height={18} width={18} />
-                              </span>
-                              <span>
-                                <TwitterXIcon height={18} width={18} />
-                              </span>
-                            </div>
-                          ) : (
-                            <ArrowUpRightIconWithGradient />
-                          )}
+                          <ArrowUpRightIconWithGradient />
                         </div>
                       ) : t.link && t.link.startsWith('/') ? (
                         <Link href={t.link}>
                           <ArrowUpRightIconWithGradient />
                         </Link>
+                      ) : t.twitterLink ? (
+                        <div className="flex">
+                          <a
+                            className="mr-3"
+                            href={t.link}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <LensIcon height={18} width={18} />
+                          </a>
+                          <a
+                            href={t.twitterLink}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                          >
+                            <TwitterXIcon height={18} width={18} />
+                          </a>
+                        </div>
                       ) : (
-                        // <ArrowUpRightIconWithGradient />
                         <a
                           href={t.link}
                           target="_blank"
