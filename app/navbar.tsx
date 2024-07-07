@@ -256,13 +256,13 @@ export default function Navbar() {
                                   >
                                     LUKSO Berlin
                                   </a>
-                                  <a
+                                  {/* <a
                                     href="/events/shefi"
                                     className="block mb-3 text-gray-500 hover:text-gray-700"
                                     data-item="event"
                                   >
                                     Shefi Summit Denver
-                                  </a>
+                                  </a> */}
                                 </div>
                               </div>
                             </>
@@ -443,9 +443,9 @@ export default function Navbar() {
                             <a href="/events/lukso" className="block mb-3">
                               LUKSO Berlin
                             </a>
-                            <a href="/events/shefi" className="block mb-3">
+                            {/* <a href="/events/shefi" className="block mb-3">
                               Shefi Summit Denver
-                            </a>
+                            </a> */}
                           </div>
                         ) : null}
                       </>
