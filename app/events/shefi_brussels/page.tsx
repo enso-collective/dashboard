@@ -405,7 +405,21 @@ export default function ShefiBrusselsEvent() {
             <>
               <div className="leaderboard">
                 {items.map((t, index) => (
-                  <div className="list-fix" key={t.userWallet}>
+                  <a
+                    className="list-fix"
+                    key={t.userWallet}
+                    href={
+                      t.ensName
+                        ? `https://app.zerion.io/${t.ensName}`
+                        : // @ts-ignore
+                          t.twitterUsername
+                          ? // @ts-ignore
+                            `https://twitter.com/${t.twitterUsername}`
+                          : `https://base.easscan.org/address/${t.userWallet}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <div className="number-col">#{index + 1}</div>
                     <div className="list-body pl-4 pr-4">
                       <div className="flex flex-row items-center">
@@ -441,7 +455,7 @@ export default function ShefiBrusselsEvent() {
                         points
                       </p>
                     </div>
-                  </div>
+                  </a>
                 ))}
 
                 <div className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"></div>
