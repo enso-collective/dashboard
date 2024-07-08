@@ -71,7 +71,7 @@ const events = [
     title: 'Capture and Post Photos',
     subtitle:
       'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.',
-    link: 'https://orb.club/c/ethcc',
+    link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
     points: 5
@@ -81,7 +81,7 @@ const events = [
     title: 'Share Standout Moments',
     subtitle:
       'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
-    link: 'https://orb.club/c/ethcc',
+    link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
     points: 5
@@ -90,7 +90,7 @@ const events = [
     title: 'Document Keynotes and Panels',
     subtitle:
       'Document keynotes, panels, and innovations from Open Finance Day through your lens.',
-    link: 'https://orb.club/c/ethcc',
+    link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FScreenshot%202024-07-05%20at%2018.09.55.png?alt=media&token=7e846021-f6bf-43b6-92a1-492cc5e1ee1d',
     points: 5
