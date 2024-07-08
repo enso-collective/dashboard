@@ -70,7 +70,7 @@ const events = [
   {
     title: 'Capture and Post Photos',
     subtitle:
-      'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.',
+      'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.Tag @proofof to join the quests',
     link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
@@ -80,7 +80,7 @@ const events = [
   {
     title: 'Share Standout Moments',
     subtitle:
-      'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
+      'Share standout moments from afk, such as your favorite talks, merch, or sounds.Tag @proofof to join the quests',
     link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
@@ -89,7 +89,7 @@ const events = [
   {
     title: 'Document Keynotes and Panels',
     subtitle:
-      'Document keynotes, panels, and innovations from Open Finance Day through your lens.',
+      'Document keynotes, panels, and innovations from Open Finance Day through your lens.Tag @proofof to join the quests',
     link: 'https://orb.club/c/afk',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FScreenshot%202024-07-05%20at%2018.09.55.png?alt=media&token=7e846021-f6bf-43b6-92a1-492cc5e1ee1d',
@@ -98,7 +98,7 @@ const events = [
   {
     title: 'Showcase Your rAAVE Outfits',
     subtitle:
-      'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.',
+      'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.Tag @proofof to join the quests',
     link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
@@ -107,7 +107,7 @@ const events = [
   {
     title: 'Create and Share Playlists',
     subtitle:
-      'Create a playlist you think would be great for pregaming for rAAVE and share it.',
+      'Create a playlist you think would be great for pregaming for rAAVE and share it.Tag @proofof to join the quests',
     link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
