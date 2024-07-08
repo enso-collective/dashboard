@@ -99,7 +99,7 @@ const events = [
     title: 'Showcase Your rAAVE Outfits',
     subtitle:
       'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.',
-    link: 'https://orb.club/c/ethcc',
+    link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
@@ -108,7 +108,7 @@ const events = [
     title: 'Create and Share Playlists',
     subtitle:
       'Create a playlist you think would be great for pregaming for rAAVE and share it.',
-    link: 'https://orb.club/c/ethcc',
+    link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
