@@ -192,6 +192,34 @@ export default function LensEvent() {
         .catch(console.error);
     }
   }, [users]);
+
+  useEffect(() => {
+    const resolveEnsAvatars = async () => {
+      const queryParams = [
+        proofsRef.current,
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
+      ] as any[];
+      //  @ts-ignore
+      const q = query(...queryParams);
+      const tempArray: Attestation[] = [];
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((s) => {
+        const tempData = s.data() as Attestation;
+        const trimmedQuestId = tempData.ipfsImageURL.toLowerCase()?.trim();
+        if (trimmedQuestId.includes('lens')) {
+          tempArray.push(tempData);
+        }
+      });
+      setAttestations((t) => [...t, ...tempArray]);
+    };
+
+    resolveEnsAvatars().catch(console.log);
+  }, []);
   if (ready && authenticated) {
     return (
       <div className="bg-brussels min-h-screen">
@@ -313,7 +341,21 @@ export default function LensEvent() {
             <>
               <div className="leaderboard">
                 {items.map((t, index) => (
-                  <div className="list-fix" key={t.userWallet}>
+                  <a
+                    className="list-fix"
+                    key={t.userWallet}
+                    href={
+                      t.ensName
+                        ? `https://app.zerion.io/${t.ensName}`
+                        : // @ts-ignore
+                          t.twitterUsername
+                          ? // @ts-ignore
+                            `https://twitter.com/${t.twitterUsername}`
+                          : `https://base.easscan.org/address/${t.userWallet}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <div className="number-col">#{index + 1}</div>
                     <div className="list-body pl-4 pr-4">
                       <div className="flex flex-row items-center">
@@ -337,19 +379,19 @@ export default function LensEvent() {
 
                         <div className="list-wrap">
                           {/* @ts-ignore */}
-                          {t.ensName || t.userWallet}
+                          {t.ensName || t.twitterUsername || t.userWallet}
                         </div>
                       </div>
 
                       <p className="basis-24 flex-shrink-0 text-right">
                         <span>
                           {/* @ts-ignore */}
-                          {new Intl.NumberFormat().format(t.lensPoints)}
+                          {new Intl.NumberFormat().format(t.shefiPoints)}
                         </span>{' '}
                         points
                       </p>
                     </div>
-                  </div>
+                  </a>
                 ))}
 
                 <div className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"></div>

@@ -173,104 +173,6 @@ export default function Navbar() {
                   >
                     Home
                   </a>
-                  <DropdownHOC>
-                    {(showChildren: boolean, setShowChildren: Function) => {
-                      return (
-                        <div
-                          className="inline-flex items-center relative"
-                          data-item="event"
-                        >
-                          <div
-                            data-item="event"
-                            onClick={() => {
-                              setShowChildren((t: boolean) => !t);
-                              const handleClickOutside = (e: any) => {
-                                const dataEvent =
-                                  e.target.getAttribute('data-item');
-                                if (dataEvent !== 'event') {
-                                  setShowChildren(false);
-                                  document.removeEventListener(
-                                    'click',
-                                    handleClickOutside
-                                  );
-                                }
-                              };
-
-                              document.addEventListener(
-                                'click',
-                                handleClickOutside
-                              );
-                            }}
-                            className={
-                              'no-underline ' +
-                              classNames(
-                                pathname === '/company'
-                                  ? 'border-slate-500 text-gray-900'
-                                  : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
-                                ' px-1 pt-1 text-sm font-medium cursor-pointer flex'
-                              )
-                            }
-                          >
-                            <span data-item="event">Events</span>
-                            <ChevronDownIcon
-                              data-item="event"
-                              className="-mr-1 ml-2 h-5 w-5 text-gray-600 hover:text-gray-800"
-                              aria-hidden="true"
-                            />
-                          </div>
-                          {showChildren ? (
-                            <>
-                              <div
-                                className="absolute min-w-[270px] top-[55px] z-10 "
-                                data-item="event"
-                              >
-                                <div
-                                  className="bg-white p-4 mt-4 rounded-md shadow-[10px_10px_71px_-7px_rgba(0,0,0,0.75)]"
-                                  data-item="event"
-                                >
-                                  {/* <a
-                                    href="/events/lens"
-                                    className="block mb-3 text-gray-500 hover:text-gray-700"
-                                    data-item="event"
-                                  >
-                                    Lens
-                                  </a> */}
-                                  <a
-                                    href="/events/shefi_brussels"
-                                    className="block mb-3 text-gray-500 hover:text-gray-700"
-                                    data-item="event"
-                                  >
-                                    Shefi Summit Brussels
-                                  </a>
-                                  <a
-                                    href="/events/builders"
-                                    className="block mb-3 text-gray-500 hover:text-gray-700"
-                                    data-item="event"
-                                  >
-                                    ◤ ANIMALS ◢
-                                  </a>
-                                  <a
-                                    href="/events/lukso"
-                                    className="block mb-3 text-gray-500 hover:text-gray-700"
-                                    data-item="event"
-                                  >
-                                    LUKSO Berlin
-                                  </a>
-                                  {/* <a
-                                    href="/events/shefi"
-                                    className="block mb-3 text-gray-500 hover:text-gray-700"
-                                    data-item="event"
-                                  >
-                                    Shefi Summit Denver
-                                  </a> */}
-                                </div>
-                              </div>
-                            </>
-                          ) : null}
-                        </div>
-                      );
-                    }}
-                  </DropdownHOC>
 
                   <a
                     href={'/profile'}
@@ -286,6 +188,23 @@ export default function Navbar() {
                     aria-current={pathname === '/profile' ? 'page' : undefined}
                   >
                     Profile
+                  </a>
+                  <a
+                    href={'/events/afk'}
+                    className={
+                      'no-underline ' +
+                      classNames(
+                        pathname === '/events/afk'
+                          ? 'border-slate-500 text-gray-900'
+                          : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300',
+                        'inline-flex items-center px-1 pt-1 border-b-2 text-sm font-medium'
+                      )
+                    }
+                    aria-current={
+                      pathname === '/events/afk' ? 'page' : undefined
+                    }
+                  >
+                    afk Brussels
                   </a>
                   <a
                     href={'/gallery'}
@@ -408,51 +327,19 @@ export default function Navbar() {
               >
                 Profile
               </Disclosure.Button>
-
-              <div className=" w-full  rounded-lg px-4 py-2 text-left text-sm font-medium border-transparent text-gray-600">
-                <DropdownHOC>
-                  {(showChildren: boolean, setShowChildren: Function) => {
-                    return (
-                      <>
-                        <div
-                          className="justify-between flex"
-                          onClick={(e) => {
-                            setShowChildren((t: boolean) => !t);
-                          }}
-                        >
-                          <span className="text-base">Events</span>
-                          <ChevronDownIcon
-                            className="-mr-1 ml-2 h-8 w-8 text-black"
-                            aria-hidden="true"
-                          />
-                        </div>
-                        {showChildren ? (
-                          <div className="ml-4 mt-3">
-                            {/* <a href="/events/lens" className="block mb-3">
-                              Lens
-                            </a> */}
-                            <a
-                              href="/events/shefi_brussels"
-                              className="block mb-3"
-                            >
-                              Shefi Summit Brussels
-                            </a>
-                            <a href="/events/builders" className="block mb-3">
-                              ◤ ANIMALS ◢
-                            </a>
-                            <a href="/events/lukso" className="block mb-3">
-                              LUKSO Berlin
-                            </a>
-                            {/* <a href="/events/shefi" className="block mb-3">
-                              Shefi Summit Denver
-                            </a> */}
-                          </div>
-                        ) : null}
-                      </>
-                    );
-                  }}
-                </DropdownHOC>
-              </div>
+              <Disclosure.Button
+                as="a"
+                href={'/events/afk'}
+                className={classNames(
+                  pathname === '/events/afk'
+                    ? 'bg-slate-50 border-slate-500 text-slate-700'
+                    : 'border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800',
+                  'block pl-3 pr-4 py-2 border-l-4 text-base font-medium'
+                )}
+                aria-current={pathname === '/events/afk' ? 'page' : undefined}
+              >
+                afk Brussels
+              </Disclosure.Button>
 
               <Disclosure.Button
                 as="a"
