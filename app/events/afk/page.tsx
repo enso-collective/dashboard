@@ -71,34 +71,35 @@ const events = [
     title: 'Capture and Post Photos',
     subtitle:
       'Capture and post photos at the SheFi Summit, including the Lens booth and any Lens merch booths from previous events.',
-    link: 'https://www.lens.xyz/mint',
+    link: 'https://orb.club/c/ethcc',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fshefilogo.png?alt=media&token=16fe367f-eeaf-4750-837a-66e0bd0389be',
+    points: 5
+  },
+
+  {
+    title: 'Share Standout Moments',
+    subtitle:
+      'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
+    link: 'https://orb.club/c/ethcc',
+    image:
+      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
     points: 5
   },
   {
     title: 'Document Keynotes and Panels',
     subtitle:
       'Document keynotes, panels, and innovations from Open Finance Day through your lens.',
-    link: 'https://www.lens.xyz/mint',
+    link: 'https://orb.club/c/ethcc',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2FScreenshot%202024-07-05%20at%2018.09.55.png?alt=media&token=7e846021-f6bf-43b6-92a1-492cc5e1ee1d',
-    points: 5
-  },
-  {
-    title: 'Share Standout Moments',
-    subtitle:
-      'Share standout moments from afk, such as your favorite talks, merch, or sounds.',
-    link: 'https://www.lens.xyz/mint',
-    image:
-      'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.53.jpeg?alt=media&token=93dc3e22-1d1b-40ec-9da2-fa2fc25c213f',
     points: 5
   },
   {
     title: 'Showcase Your rAAVE Outfits',
     subtitle:
       'Showcase your rAAVE outfits, contribute to the mood board, or post AI-generated outfit suggestions.',
-    link: 'https://www.lens.xyz/mint',
+    link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
@@ -107,7 +108,7 @@ const events = [
     title: 'Create and Share Playlists',
     subtitle:
       'Create a playlist you think would be great for pregaming for rAAVE and share it.',
-    link: 'https://www.lens.xyz/mint',
+    link: 'https://orb.ac/p/0x04-0x47-DA-b340c177',
     image:
       'https://firebasestorage.googleapis.com/v0/b/enso-collective.appspot.com/o/avatars%2Fphoto_2024-07-05%2015.11.58.jpeg?alt=media&token=877b9ef8-3aee-4810-844d-7a65e87d1121',
     points: 5
@@ -192,6 +193,34 @@ export default function LensEvent() {
         .catch(console.error);
     }
   }, [users]);
+
+  useEffect(() => {
+    const resolveEnsAvatars = async () => {
+      const queryParams = [
+        proofsRef.current,
+        orderBy('timestamp', 'desc'),
+        where('timestamp', '!=', 0),
+        where('ipfsImageURL', '>', ''),
+        where('image', '==', true)
+        // orderBy('ipfsImageURL', 'desc'),
+      ] as any[];
+      //  @ts-ignore
+      const q = query(...queryParams);
+      const tempArray: Attestation[] = [];
+      const snapshot = await getDocs(q);
+
+      snapshot.forEach((s) => {
+        const tempData = s.data() as Attestation;
+        const trimmedQuestId = tempData.ipfsImageURL.toLowerCase()?.trim();
+        if (trimmedQuestId.includes('lens')) {
+          tempArray.push(tempData);
+        }
+      });
+      setAttestations((t) => [...t, ...tempArray]);
+    };
+
+    resolveEnsAvatars().catch(console.log);
+  }, []);
   if (ready && authenticated) {
     return (
       <div className="bg-brussels min-h-screen">
@@ -313,7 +342,17 @@ export default function LensEvent() {
             <>
               <div className="leaderboard">
                 {items.map((t, index) => (
-                  <div className="list-fix" key={t.userWallet}>
+                  <a
+                    className="list-fix"
+                    key={t.userWallet}
+                    href={
+                      t.ensName
+                        ? `https://app.zerion.io/${t.ensName}`
+                        : `https://base.easscan.org/address/${t.userWallet}`
+                    }
+                    target="_blank"
+                    rel="noopener noreferrer"
+                  >
                     <div className="number-col">#{index + 1}</div>
                     <div className="list-body pl-4 pr-4">
                       <div className="flex flex-row items-center">
@@ -336,7 +375,6 @@ export default function LensEvent() {
                         )}
 
                         <div className="list-wrap">
-                          {/* @ts-ignore */}
                           {t.ensName || t.userWallet}
                         </div>
                       </div>
@@ -344,12 +382,12 @@ export default function LensEvent() {
                       <p className="basis-24 flex-shrink-0 text-right">
                         <span>
                           {/* @ts-ignore */}
-                          {new Intl.NumberFormat().format(t.lensPoints)}
+                          {new Intl.NumberFormat().format(t.shefiPoints)}
                         </span>{' '}
                         points
                       </p>
                     </div>
-                  </div>
+                  </a>
                 ))}
 
                 <div className="bg-transparent min-h-12  mt-5 h-12 flex flex-row justify-center"></div>
