@@ -37,6 +37,7 @@ interface User {
   pointValueLukso: number;
   id: string;
   buildersPoints: number;
+  lensHandle : string
 }
 
 interface MerchItem {
@@ -375,14 +376,14 @@ export default function LensEvent() {
                         )}
 
                         <div className="list-wrap">
-                          {t.ensName || t.userWallet}
+                          {t.ensName || t.lensHandle || t.userWallet}
                         </div>
                       </div>
 
                       <p className="basis-24 flex-shrink-0 text-right">
                         <span>
                           {/* @ts-ignore */}
-                          {new Intl.NumberFormat().format(t.shefiPoints)}
+                          {new Intl.NumberFormat().format(t.lensPoints)}
                         </span>{' '}
                         points
                       </p>
